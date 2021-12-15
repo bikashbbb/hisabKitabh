@@ -17,8 +17,8 @@ class MyApp extends StatelessWidget {
       designSize: const Size(390.0, 844.0),
       builder: () {
         return GetMaterialApp(
+          theme: ThemeData(fontFamily: "customfont"),
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(brightness: Brightness.dark),
           darkTheme: ThemeData.dark(),
           title: "Hisab Kitab",
           home: const HisabKitabHome(),

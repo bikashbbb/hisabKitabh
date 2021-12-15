@@ -1,6 +1,7 @@
+import 'package:app/palette/commonWidgets/appbar.dart';
 import 'package:app/palette/commonWidgets/navigationbar.dart';
+import 'package:app/screens/dailygoals/ui.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HisabKitabHome extends StatelessWidget {
@@ -11,12 +12,20 @@ class HisabKitabHome extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        systemOverlayStyle: SystemUiOverlayStyle.light,
         toolbarHeight: 0,
+        backgroundColor: Colors.black,
       ),
       //  we will have a custom unique appbar...
-      bottomNavigationBar: SizedBox(height: 90.h, child: BottomNav()),
-      // just change the body of home
+      bottomNavigationBar: SizedBox(height: 90.h, child: const BottomNav()),
+      body: Stack(
+        children: [
+          const CustomAppBar(),
+          Padding(
+            padding: EdgeInsets.only(top: 65.h),
+            child: const DailyGoalsPage(),
+          )
+        ],
+      ),
     );
   }
 }

@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // components: three , todays goal, daily khata, Lend khata
 class BottomNav extends StatefulWidget {
-  BottomNav({Key? key}) : super(key: key);
+  const BottomNav({Key? key}) : super(key: key);
 
   @override
   State<BottomNav> createState() => _BottomNavState();
