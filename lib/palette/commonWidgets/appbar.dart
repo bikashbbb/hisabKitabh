@@ -16,23 +16,22 @@ class CustomAppBar extends StatelessWidget {
       color: iconGreen,
       height: 210.h,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          SizedBox(
-              height: 65.h,
-              width: 120.w,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [loginButoon('Login'), loginButoon('Join')],
-              )),
+          loginButoon('Login'),
           Padding(
-            padding: EdgeInsets.only(left: 30.w),
+            padding: EdgeInsets.only(left: 50.w),
             child: Text(
               'Hisab Kitab',
               style: appbarStyle,
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 40.w, top: 10.h),
+            padding: EdgeInsets.only(left: 25.w),
+            child: loginButoon('Join'),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 4.w, top: 4.h, right: 4.w),
             child: iconRounder(Icons.settings),
           )
         ],
