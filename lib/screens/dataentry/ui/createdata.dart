@@ -60,7 +60,11 @@ class CreateEntry extends StatelessWidget {
                   color: Colors.black, fontWeight: FontWeight.bold),
             ),
           ),
-          formheader()
+          formheader(),
+          SizedBox(
+            height: 20.h,
+          ),
+          formbody()
         ],
       ),
     );
@@ -93,8 +97,11 @@ class CreateEntry extends StatelessWidget {
   Widget formbody() {
     return Material(
       elevation: 3,
+      color: Colors.white,
       borderRadius: const BorderRadius.all(Radius.circular(10)),
-      child: Container(),
+      child: Container(
+        height: 300,
+      ),
     );
   }
 }
