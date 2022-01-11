@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Widget helptext(String text) {
-  return Container(
+  return SizedBox(
     width: 330.w,
-    height: 200.h,
     child: Text(
       text,
-      style: appbarStyle,
+      style: helpTextStyle,
+      textAlign: TextAlign.justify,
     ),
   );
 }

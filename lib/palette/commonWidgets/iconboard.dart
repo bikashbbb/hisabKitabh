@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class IconBoard extends StatelessWidget {
-  String imagePath;
-  IconBoard({Key? key, this.imagePath = ''}) : super(key: key);
+  final String imagePath;
+  const IconBoard({Key? key, required this.imagePath}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +22,7 @@ class IconBoard extends StatelessWidget {
             Image.asset(
               'assets/images/noun-curved-arrow-3067940-2.png',
               height: 60.h,
-              color: Colors.red,
+              color: Colors.red[200],
             )
           ],
         ),

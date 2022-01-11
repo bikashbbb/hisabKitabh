@@ -1,6 +1,8 @@
 import 'package:app/palette/styles/colors.dart';
+import 'package:app/screens/homescreen/controller/homecontrolls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import "package:get/get.dart";
 
 // components: three , todays goal, daily khata, Lend khata
 class BottomNav extends StatefulWidget {
@@ -12,6 +14,7 @@ class BottomNav extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNav> {
   ValueNotifier activeIndex = ValueNotifier<int>(0);
+  var obj = HomeController.to;
 
   @override
   Widget build(BuildContext context) {
@@ -29,22 +32,24 @@ class _BottomNavState extends State<BottomNav> {
                   child: InkWell(
                       onTap: () {
                         activeIndex.value = 0;
+                        obj.changePage(1);
                       },
-                      child:
-                          navbarItems(Icons.attach_money, 'Daily Goals', 0))),
+                      child: navbarItems(Icons.attach_money, 'daily'.tr, 0))),
               InkWell(
                   onTap: () {
                     activeIndex.value = 1;
+                    obj.changePage(2);
                   },
                   child: navbarItems(
-                      Icons.drive_file_move_rounded, 'Daily entry', 1)),
+                      Icons.drive_file_move_rounded, 'entry'.tr, 1)),
               Padding(
                 padding: EdgeInsets.only(right: 10.w),
                 child: InkWell(
                     onTap: () {
                       activeIndex.value = 2;
+                      obj.changePage(3);
                     },
-                    child: navbarItems(Icons.handyman, 'Lend Entry', 2)),
+                    child: navbarItems(Icons.handyman, 'entry2'.tr, 2)),
               )
             ],
           ),
@@ -59,28 +64,36 @@ class _BottomNavState extends State<BottomNav> {
         builder: (_, value, p) {
           bool isactive = activeIndex.value == iconnum;
 
-          return Column(
-            children: [
-              Align(
-                  child: Container(
-                height: isactive ? 50.h : 33.h,
-                width: 45.w,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border:
-                        Border.all(color: isactive ? iconGreen : iconwhite)),
-                child: Icon(
-                  icon,
-                  color: isactive ? iconGreen : iconwhite,
-                ),
-              )),
-              Text(
-                subtitle,
-                style: TextStyle(
-                    fontSize: 15.sp,
-                    color: isactive ? textGreen : Colors.white54),
-              )
-            ],
+          return SizedBox(
+            child: Column(
+              children: [
+                Align(
+                    child: Container(
+                  height: isactive ? 50.h : 33.h,
+                  width: 45.w,
+                  decoration: BoxDecoration(
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.white,
+                          spreadRadius: 1,
+                        )
+                      ],
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                          color: isactive ? iconGreen : Colors.black)),
+                  child: Icon(
+                    icon,
+                    color: isactive ? iconGreen : Colors.black,
+                  ),
+                )),
+                Text(
+                  subtitle,
+                  style: TextStyle(
+                      fontSize: 15.sp,
+                      color: isactive ? textGreen : Colors.white54),
+                )
+              ],
+            ),
           );
         });
   }

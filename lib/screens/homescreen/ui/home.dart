@@ -1,10 +1,11 @@
 import 'package:app/palette/commonWidgets/appbar.dart';
-import 'package:app/palette/commonWidgets/helptext.dart';
-import 'package:app/palette/commonWidgets/iconboard.dart';
 import 'package:app/palette/commonWidgets/navigationbar.dart';
-import 'package:app/screens/dailygoals/ui.dart';
+import 'package:app/screens/dailygoals/ui/dailyhome.dart';
+import 'package:app/screens/dataentry/ui/entryhome.dart';
+import 'package:app/screens/homescreen/controller/homecontrolls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class HisabKitabHome extends StatelessWidget {
   const HisabKitabHome({Key? key}) : super(key: key);
@@ -17,25 +18,31 @@ class HisabKitabHome extends StatelessWidget {
         toolbarHeight: 0,
         backgroundColor: Colors.black,
       ),
-      //  we will have a custom unique appbar...
       bottomNavigationBar: SizedBox(height: 90.h, child: const BottomNav()),
       body: Stack(
         children: [
           const CustomAppBar(),
-          Padding(
-            padding: EdgeInsets.only(top: 55.h),
-            child: const DailyGoalsPage(),
-          ),
-          IconBoard(
-            imagePath: 'assets/images/noun-target-money-4380518-2.png',
-          ),
-          Positioned(
-            top: 390.h,
-            left: 40.h,
-            right: 40.h,
-            child: helptext(
-                'Set Todays Sales Goal here so, that you can track your sales target at the \n                  end of the day.'),
-          ),
+          GetBuilder<HomeController>(
+              init: HomeController(),
+              builder: (controlls) {
+                return Builder(builder: (con) {
+                  if (controlls.pageIndex == 1) {
+                    return Padding(
+                      padding: EdgeInsets.only(top: 55.h),
+                      child: const DailyGoalsPage(),
+                    );
+                  } else if (controlls.pageIndex == 2) {
+                    return Padding(
+                      padding: EdgeInsets.only(top: 55.h),
+                      child: const DailyEntryPage(),
+                    );
+                  }
+                  return Padding(
+                    padding: EdgeInsets.only(top: 55.h),
+                    //child: const DailyGoalsPage(),
+                  );
+                });
+              })
         ],
       ),
     );
