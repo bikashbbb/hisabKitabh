@@ -18,7 +18,7 @@ class HisabKitabHome extends StatelessWidget {
         toolbarHeight: 0,
         backgroundColor: Colors.black,
       ),
-      bottomNavigationBar: SizedBox(height: 90.h, child: const BottomNav()),
+      bottomNavigationBar: SizedBox(height: 80.h, child: const BottomNav()),
       body: Stack(
         children: [
           const CustomAppBar(),

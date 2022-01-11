@@ -1,5 +1,6 @@
+import 'package:app/palette/commonWidgets/ctextfields.dart';
 import 'package:app/palette/commonWidgets/icon_rounder.dart';
-import 'package:app/palette/styles/colors.dart';
+import 'package:app/palette/commonWidgets/rollswitch.dart';
 import 'package:app/palette/styles/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,7 +12,16 @@ class CreateEntry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      floatingActionButton: FloatingActionButton(
+        elevation: 10,
+        onPressed: () {},
+        backgroundColor: Colors.black,
+        child: const Icon(
+          Icons.done_all,
+          color: Colors.white,
+        ),
+      ),
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
         title: Text(
           "add".tr,
@@ -40,7 +50,15 @@ class CreateEntry extends StatelessWidget {
         children: [
           Divider(
             height: 2.h,
-            color: iconGreen,
+            color: Colors.black,
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 125.w, bottom: 4.h, top: 4.h),
+            child: Text(
+              "acctypee".tr,
+              style: const TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.bold),
+            ),
           ),
           formheader()
         ],
@@ -49,8 +67,34 @@ class CreateEntry extends StatelessWidget {
   }
 
   Widget formheader() {
-    return Row(
-      children: [],
+    return Material(
+      elevation: 3,
+      borderRadius: const BorderRadius.all(Radius.circular(10)),
+      color: Colors.white,
+      child: Container(
+        alignment: Alignment(0, -0.8.h),
+        width: 380.w,
+        height: 80.h,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: 190.w,
+              child: addTransactionField(),
+            ),
+            const RollSwitcher()
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget formbody() {
+    return Material(
+      elevation: 3,
+      borderRadius: const BorderRadius.all(Radius.circular(10)),
+      child: Container(),
     );
   }
 }

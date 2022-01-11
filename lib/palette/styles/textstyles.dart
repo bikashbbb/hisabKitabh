@@ -8,8 +8,9 @@ TextStyle appbarStyle = TextStyle(
 TextStyle white15 = TextStyle(color: Colors.white, fontSize: 20.sp);
 
 TextStyle helpTextStyle = TextStyle(
-  
   color: Colors.black54,
-    fontWeight: FontWeight.bold,
+  fontWeight: FontWeight.bold,
   fontSize: 22.sp,
 );
+
+TextStyle inputStyle = TextStyle(color: Colors.black, fontSize: 20.sp);

@@ -18,28 +18,31 @@ class DailyEntryPage extends StatelessWidget {
       backgroundColor: iconGreen,
       body: Container(
         width: MediaQuery.of(context).size.width,
+        height: 700.h,
         decoration: homeDecoration,
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(right: 40.w),
-              child: const IconBoard(
-                imagePath: 'assets/images/bookwriting.png',
-              ),
-            ),
-            helptext("goal2".tr),
-            SizedBox(
-              height: 30.h,
-            ),
-            TextButton(
-                style: ButtonStyle(
-                  overlayColor: MaterialStateProperty.all(Colors.black12),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: 40.w),
+                child: const IconBoard(
+                  imagePath: 'assets/images/bookwriting.png',
                 ),
-                onPressed: () {
-                  Get.to(const CreateEntry());
-                },
-                child: dailyEntryButton())
-          ],
+              ),
+              helptext("goal2".tr),
+              SizedBox(
+                height: 29.h,
+              ),
+              TextButton(
+                  style: ButtonStyle(
+                    overlayColor: MaterialStateProperty.all(Colors.black12),
+                  ),
+                  onPressed: () {
+                    Get.to(const CreateEntry());
+                  },
+                  child: dailyEntryButton())
+            ],
+          ),
         ),
       ),
     );

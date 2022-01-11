@@ -20,40 +20,42 @@ class _BottomNavState extends State<BottomNav> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                  padding: EdgeInsets.only(left: 10.w),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                    padding: EdgeInsets.only(left: 10.w),
+                    child: InkWell(
+                        onTap: () {
+                          activeIndex.value = 0;
+                          obj.changePage(1);
+                        },
+                        child: navbarItems(Icons.attach_money, 'daily'.tr, 0))),
+                InkWell(
+                    onTap: () {
+                      activeIndex.value = 1;
+                      obj.changePage(2);
+                    },
+                    child: navbarItems(
+                        Icons.drive_file_move_rounded, 'entry'.tr, 1)),
+                Padding(
+                  padding: EdgeInsets.only(right: 10.w),
                   child: InkWell(
                       onTap: () {
-                        activeIndex.value = 0;
-                        obj.changePage(1);
+                        activeIndex.value = 2;
+                        obj.changePage(3);
                       },
-                      child: navbarItems(Icons.attach_money, 'daily'.tr, 0))),
-              InkWell(
-                  onTap: () {
-                    activeIndex.value = 1;
-                    obj.changePage(2);
-                  },
-                  child: navbarItems(
-                      Icons.drive_file_move_rounded, 'entry'.tr, 1)),
-              Padding(
-                padding: EdgeInsets.only(right: 10.w),
-                child: InkWell(
-                    onTap: () {
-                      activeIndex.value = 2;
-                      obj.changePage(3);
-                    },
-                    child: navbarItems(Icons.handyman, 'entry2'.tr, 2)),
-              )
-            ],
-          ),
-        ],
+                      child: navbarItems(Icons.handyman, 'entry2'.tr, 2)),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -65,34 +67,36 @@ class _BottomNavState extends State<BottomNav> {
           bool isactive = activeIndex.value == iconnum;
 
           return SizedBox(
-            child: Column(
-              children: [
-                Align(
-                    child: Container(
-                  height: isactive ? 50.h : 33.h,
-                  width: 45.w,
-                  decoration: BoxDecoration(
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.white,
-                          spreadRadius: 1,
-                        )
-                      ],
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                          color: isactive ? iconGreen : Colors.black)),
-                  child: Icon(
-                    icon,
-                    color: isactive ? iconGreen : Colors.black,
-                  ),
-                )),
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                      fontSize: 15.sp,
-                      color: isactive ? textGreen : Colors.white54),
-                )
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Align(
+                      child: Container(
+                    height: isactive ? 50.h : 33.h,
+                    width: 45.w,
+                    decoration: BoxDecoration(
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.white,
+                            spreadRadius: 1,
+                          )
+                        ],
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                            color: isactive ? iconGreen : Colors.black)),
+                    child: Icon(
+                      icon,
+                      color: isactive ? iconGreen : Colors.black,
+                    ),
+                  )),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                        fontSize: 15.sp,
+                        color: isactive ? textGreen : Colors.white54),
+                  )
+                ],
+              ),
             ),
           );
         });
