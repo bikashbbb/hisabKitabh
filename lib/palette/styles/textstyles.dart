@@ -14,3 +14,7 @@ TextStyle helpTextStyle = TextStyle(
 );
 
 TextStyle inputStyle = TextStyle(color: Colors.black, fontSize: 20.sp);
+
+TextStyle redtext =  TextStyle(color: Colors.red,fontSize: 15.sp,
+fontWeight: FontWeight.bold
+);

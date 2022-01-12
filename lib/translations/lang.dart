@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-
 class Languages extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
@@ -19,7 +18,13 @@ class Languages extends Translations {
           "acc": "Account Name",
           "acctype": "BUY",
           "acctype2": "SELL",
-          "acctypee": "Account type"
+          "acctypee": "*Account type",
+          "eg1":"eg. Store buy entries",
+          "item":"Item Name",
+          "summary":"Transaction Summary",
+          "sold":"sold",
+          "buy":"bought",
+          "price":""
         }
       };
 }
