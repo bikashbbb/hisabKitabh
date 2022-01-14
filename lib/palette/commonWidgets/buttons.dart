@@ -123,7 +123,7 @@ Widget dropDownButton(List itemlist) {
         dropdownColor: Colors.black87,
         underline: const SizedBox(),
         hint: Text(
-          "KG",
+          " I",
           style: TextStyle(color: Colors.black),
         ),
         items: itemlist.map(
