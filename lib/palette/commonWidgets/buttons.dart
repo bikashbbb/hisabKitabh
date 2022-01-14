@@ -112,24 +112,28 @@ class _DatePickerState extends State<DatePicker> {
 }
 
 Widget dropDownButton(List itemlist) {
-  return DropdownButton(
-
-      //value: ,
-      hint: MaterialButton(
-        color: Colors.green,
-        onPressed: () {},
-        child: Text(
+  return Container(
+    height: 30.h,
+    width: 45.w,
+    decoration: entryButton,
+    child: DropdownButton(
+        iconEnabledColor: Colors.black,
+        isExpanded: true,
+        borderRadius: BorderRadius.circular(13.0),
+        dropdownColor: Colors.black87,
+        underline: const SizedBox(),
+        hint: Text(
           "KG",
-          style: small16,
+          style: TextStyle(color: Colors.black),
         ),
-      ),
-      items: itemlist.map(
-        (val) {
-          return DropdownMenuItem<String>(
-            value: val,
-            child: Text(val),
-          );
-        },
-      ).toList(),
-      onChanged: (change) {});
+        items: itemlist.map(
+          (val) {
+            return DropdownMenuItem<String>(
+              value: val,
+              child: Text(val),
+            );
+          },
+        ).toList(),
+        onChanged: (change) {}),
+  );
 }
