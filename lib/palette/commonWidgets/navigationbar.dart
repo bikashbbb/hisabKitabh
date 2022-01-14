@@ -19,7 +19,7 @@ class _BottomNavState extends State<BottomNav> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -93,7 +93,7 @@ class _BottomNavState extends State<BottomNav> {
                     subtitle,
                     style: TextStyle(
                         fontSize: 15.sp,
-                        color: isactive ? textGreen : Colors.white54),
+                        color: isactive ? Colors.black : Colors.black87),
                   )
                 ],
               ),

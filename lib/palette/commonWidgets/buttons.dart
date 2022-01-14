@@ -92,3 +92,44 @@ class _AddButtonState extends State<AddButton> {
     );
   }
 }
+
+class DatePicker extends StatefulWidget {
+  const DatePicker({Key? key}) : super(key: key);
+
+  @override
+  _DatePickerState createState() => _DatePickerState();
+}
+
+class _DatePickerState extends State<DatePicker> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 200.w,
+      height: 50.h,
+      decoration: entryButton,
+    );
+  }
+}
+
+Widget dropDownButton(List itemlist) {
+  return DropdownButton(
+
+      //value: ,
+      hint: MaterialButton(
+        color: Colors.green,
+        onPressed: () {},
+        child: Text(
+          "KG",
+          style: small16,
+        ),
+      ),
+      items: itemlist.map(
+        (val) {
+          return DropdownMenuItem<String>(
+            value: val,
+            child: Text(val),
+          );
+        },
+      ).toList(),
+      onChanged: (change) {});
+}

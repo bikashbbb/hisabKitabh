@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+
 class Languages extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
@@ -19,12 +20,17 @@ class Languages extends Translations {
           "acctype": "BUY",
           "acctype2": "SELL",
           "acctypee": "*Account type",
-          "eg1":"eg. Store buy entries",
-          "item":"Item Name",
-          "summary":"Transaction Summary",
-          "sold":"sold",
-          "buy":"bought",
-          "price":""
+          "eg1": "eg. Store buy entries",
+          "item": "Item Name",
+          "summary": "Transaction Summary",
+          "sold": "sold",
+          "buy": "bought",
+          "price": "Price per quantity",
+          "option": "*Optional",
+          "quantity": "Quantity",
+          "total": "Total",
+          "amnt":"Amount",
+          "per":"Per"
         }
       };
 }

@@ -33,7 +33,7 @@ class CustomAppBar extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.only(left: 4.w, top: 4.h, right: 4.w),
-            child: iconRounder(const Icon(Icons.settings),true),
+            child: iconRounder(const Icon(Icons.settings), true),
           ),
         ],
       ),

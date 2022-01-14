@@ -27,3 +27,7 @@ BoxDecoration entryButton = BoxDecoration(
           blurRadius: 15,
           spreadRadius: 1),
     ]);
+
+BoxDecoration dateButtonDec = BoxDecoration(
+  color:  Colors.green
+);
