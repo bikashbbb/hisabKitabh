@@ -104,36 +104,78 @@ class _DatePickerState extends State<DatePicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 200.w,
       height: 50.h,
       decoration: entryButton,
     );
   }
 }
 
-Widget dropDownButton(List itemlist) {
-  return Container(
-    height: 30.h,
-    width: 45.w,
-    decoration: entryButton,
-    child: DropdownButton(
-        iconEnabledColor: Colors.black,
-        isExpanded: true,
-        borderRadius: BorderRadius.circular(13.0),
-        dropdownColor: Colors.black87,
-        underline: const SizedBox(),
-        hint: Text(
-          " I",
-          style: TextStyle(color: Colors.black),
-        ),
-        items: itemlist.map(
-          (val) {
-            return DropdownMenuItem<String>(
-              value: val,
-              child: Text(val),
-            );
-          },
-        ).toList(),
-        onChanged: (change) {}),
-  );
+class DropDownButton extends StatefulWidget {
+  List<String> dropdownItems;
+  DropDownButton(this.dropdownItems, {Key? key}) : super(key: key);
+
+  static String initialitem = " Ɪ";
+
+  @override
+  State<DropDownButton> createState() => _DropDownButtonState();
+}
+
+class _DropDownButtonState extends State<DropDownButton> {
+  double width = 45.w;
+  bool isopen = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 30.h,
+      width: width,
+      decoration: entryButton,
+      child: DropdownButton(
+          iconEnabledColor: Colors.black,
+          isExpanded: true,
+          borderRadius: BorderRadius.circular(13.0),
+          dropdownColor: Colors.black87,
+          hint: Text(
+            DropDownButton.initialitem,
+            style: const TextStyle(color: Colors.black),
+          ),
+          items: widget.dropdownItems.map(
+            (val) {
+              return DropdownMenuItem<String>(
+                  value: val,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(val),
+                      Builder(builder: (builder) {
+                        if (val == DropDownButton.initialitem ||
+                            val == widget.dropdownItems[3] &&
+                                DropDownButton.initialitem == " I") {
+                          return Icon(
+                            Icons.check,
+                            size: 15,
+                            color: Colors.green[900],
+                          );
+                        } else {
+                          return const SizedBox();
+                        }
+                      }),
+                    ],
+                  ));
+            },
+          ).toList(),
+          onChanged: (change) {
+            changeHintText(change);
+          }),
+    );
+  }
+
+  void changeHintText(Object? change) {
+    if (change.toString() == widget.dropdownItems[3]) {
+      change = " I";
+    }
+    setState(() {
+      DropDownButton.initialitem = change.toString();
+    });
+  }
 }
