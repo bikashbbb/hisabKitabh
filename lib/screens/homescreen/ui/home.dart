@@ -1,5 +1,6 @@
 import 'package:app/palette/commonWidgets/appbar.dart';
 import 'package:app/palette/commonWidgets/navigationbar.dart';
+import 'package:app/palette/styles/decorations.dart';
 import 'package:app/screens/dailygoals/ui/dailyhome.dart';
 import 'package:app/screens/dataentry/ui/entryhome.dart';
 import 'package:app/screens/homescreen/controller/homecontrolls.dart';
@@ -18,7 +19,8 @@ class HisabKitabHome extends StatelessWidget {
         toolbarHeight: 0,
         backgroundColor: Colors.black,
       ),
-      bottomNavigationBar: SizedBox(height: 80.h, child: const BottomNav()),
+      bottomNavigationBar: Container(
+          decoration: entryButton, height: 80.h, child: const BottomNav()),
       body: Stack(
         children: [
           const CustomAppBar(),
@@ -28,17 +30,17 @@ class HisabKitabHome extends StatelessWidget {
                 return Builder(builder: (con) {
                   if (controlls.pageIndex == 1) {
                     return Padding(
-                      padding: EdgeInsets.only(top: 55.h),
+                      padding: EdgeInsets.only(top: 62.h),
                       child: const DailyGoalsPage(),
                     );
                   } else if (controlls.pageIndex == 2) {
                     return Padding(
-                      padding: EdgeInsets.only(top: 55.h),
+                      padding: EdgeInsets.only(top: 62.h),
                       child: const DailyEntryPage(),
                     );
                   }
                   return Padding(
-                    padding: EdgeInsets.only(top: 55.h),
+                    padding: EdgeInsets.only(top: 62.h),
                     //child: const DailyGoalsPage(),
                   );
                 });

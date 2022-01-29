@@ -1,4 +1,4 @@
-import 'package:app/palette/commonWidgets/buttons.dart';
+import 'package:app/palette/commonWidgets/buttons/buttons.dart';
 import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/commonWidgets/helptext.dart';
 import 'package:app/palette/commonWidgets/iconboard.dart';

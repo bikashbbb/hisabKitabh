@@ -28,6 +28,9 @@ BoxDecoration entryButton = BoxDecoration(
           spreadRadius: 1),
     ]);
 
-BoxDecoration dateButtonDec =const  BoxDecoration(
-  color:  Colors.green
+BoxDecoration dateButtonDec = const BoxDecoration(color: Colors.green);
+
+BoxDecoration clearButtonDec = BoxDecoration(
+  shape: BoxShape.circle,
+  color: Colors.red[100],
 );

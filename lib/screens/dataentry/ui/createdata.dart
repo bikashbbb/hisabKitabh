@@ -1,33 +1,30 @@
-import 'package:app/palette/commonWidgets/buttons.dart';
+import 'package:app/palette/commonWidgets/buttons/buttons.dart';
+import 'package:app/palette/commonWidgets/buttons/expandedtile.dart';
 import 'package:app/palette/commonWidgets/ctextfields.dart';
-import 'package:app/palette/commonWidgets/helptext.dart';
 import 'package:app/palette/commonWidgets/icon_rounder.dart';
 import 'package:app/palette/commonWidgets/rollswitch.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/textstyles.dart';
+import 'package:app/screens/dataentry/controller/createdatac.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class CreateEntry extends StatelessWidget {
-  DateTime initialDate = DateTime.now();
-  List itemlist = [
-    "KG",
-    "G",
-    "L",
-    "piece",
-  ];
-
   CreateEntry({Key? key}) : super(key: key);
-
+  DateTime initialDate = DateTime.now();
+  List<String> itemlist = ["Kg", "G", "L", "Item", "plate"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       floatingActionButton: FloatingActionButton(
         elevation: 10,
-        onPressed: () {},
+        onPressed: () {
+          // TODO:
+        },
         backgroundColor: Colors.black,
         child: const Icon(
           Icons.done_all,
@@ -63,35 +60,37 @@ class CreateEntry extends StatelessWidget {
               ))
         ],
       ),
-      body: Column(
-        children: [
-          Divider(
-            height: 2.h,
-            color: Colors.black,
-          ),
-          formheader(),
-          SizedBox(
-            height: 20.h,
-          ),
-          formbody(context),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.summarize,
-                  color: iconGreen,
-                ),
-                Text(
-                  "summary".tr,
-                  style: helpTextStyle,
-                ),
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Divider(
+              height: 2.h,
+              color: Colors.black,
             ),
-          ),
-          formTail()
-        ],
+            formheader(),
+            SizedBox(
+              height: 13.h,
+            ),
+            formbody(context),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.summarize,
+                    color: iconGreen,
+                  ),
+                  Text(
+                    "summary".tr,
+                    style: helpTextStyle,
+                  ),
+                ],
+              ),
+            ),
+            formTail()
+          ],
+        ),
       ),
     );
   }
@@ -103,8 +102,8 @@ class CreateEntry extends StatelessWidget {
       color: Colors.white,
       child: Container(
         alignment: Alignment(0, -0.8.h),
-        width: 380.w,
-        height: 90.h,
+        width: 385.w,
+        height: 70.h,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -114,7 +113,7 @@ class CreateEntry extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 SizedBox(
-                  width: 190.w,
+                  width: 170.w,
                   height: 40.h,
                   child: addTransactionField('acc'.tr),
                 ),
@@ -122,44 +121,54 @@ class CreateEntry extends StatelessWidget {
                   padding: EdgeInsets.only(left: 5.w),
                   child: Text(
                     "eg1".tr,
-                    style: redtext,
+                    style: optionblack,
                   ),
                 )
               ],
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const RollSwitcher(),
-                Padding(
-                  padding: EdgeInsets.only(left: 14.0.w),
-                  child: Text("acctypee".tr, style: redtext),
-                ),
-              ],
-            )
+            GetBuilder<RollSwitcherControlls>(
+                init: RollSwitcherControlls(),
+                builder: (controlls) {
+                  return Column(
+                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const RollSwitcher(),
+                      Padding(
+                          padding: EdgeInsets.only(left: 31.0.w),
+                          child: Text(
+                            "acctypee".tr,
+                            style: controlls.isSale ? optionred : optiongreen,
+                          ))
+                    ],
+                  );
+                })
           ],
         ),
       ),
     );
   }
 
-// what will body contain? item name, item price, item quantity , total price
+// add per quantity,price per quanity and SI unit in More Details Expansion tile,also bs/ad option in date
   Widget formbody(BuildContext context) {
-    Text optional = Text(
-      "option".tr,
-      style: redtext,
-    );
-    Widget divEr = const Divider(
+    var optional = GetBuilder<RollSwitcherControlls>(
+        init: RollSwitcherControlls(),
+        builder: (controlls) {
+          return Text(
+            "option".tr,
+            style: controlls.isSale ? optionred : optiongreen,
+          );
+        });
+    Widget divEr = Divider(
+      height: 2.h,
       color: Colors.black45,
     );
-    //DateTime initialdate = DateTime.now().year;
     return Material(
       elevation: 3,
       color: Colors.white,
       borderRadius: const BorderRadius.all(Radius.circular(10)),
-      child: SizedBox(
-        height: 300.h,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: 220.h, minHeight: 200.h),
         child: Padding(
           padding: const EdgeInsets.only(top: 12.0),
           child: Column(
@@ -168,10 +177,17 @@ class CreateEntry extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  SizedBox(
-                      height: 40.h,
-                      width: 190.w,
-                      child: addTransactionField("item".tr, type: "sold".tr)),
+                  GetBuilder<RollSwitcherControlls>(
+                      init: RollSwitcherControlls(),
+                      builder: (controlls) {
+                        return SizedBox(
+                            height: 40.h,
+                            width: 190.w,
+                            child: controlls.isSale
+                                ? addTransactionField("item".tr, type: "buy".tr)
+                                : addTransactionField("item".tr,
+                                    type: "sold".tr));
+                      }),
                   SizedBox(
                       height: 40.h,
                       width: 190.w,
@@ -180,41 +196,51 @@ class CreateEntry extends StatelessWidget {
                 ],
               ),
               optional,
-              divEr,
+              Padding(
+                padding: EdgeInsets.only(top: 2.h, bottom: 3.h),
+                child: divEr,
+              ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                      height: 40.h,
-                      width: 100.w,
-                      child: addTransactionField("per".tr + " " + "quantity".tr,
-                          isnum: true)),
-                  // quantity type have a drop down button
-                  dropDownButton(itemlist),
-                  SizedBox(
-                      height: 40.h,
-                      width: 180.w,
-                      child: addTransactionField("price".tr, isnum: true)),
-                  SizedBox(
-                      height: 40.h,
-                      width: 100.w,
-                      child: addTransactionField(
-                          "total".tr + " " + "quantity".tr,
-                          isnum: true)),
-
-                  // quantity if price is inputted !
+                  Padding(
+                    padding: EdgeInsets.only(right: 18.w),
+                    child: SizedBox(
+                        height: 40.h,
+                        width: 110.w,
+                        child: addTransactionField(
+                            "total".tr + " " + "quantity".tr,
+                            isnum: true)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 20.0.w),
+                    child: clearBUtton("✘"),
+                  ),
+                  const Calender(),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [optional, optional, optional, optional],
+                children: [
+                  optional,
+                ],
               ),
               divEr,
-              Row(
-                children: [
-                  dateIcon,
-                ],
-              )
+              // additional details
+              /* CustomTile(
+                expansionHeight: 20.h,
+                nonExpandedHeight: 20.h,
+                //nonExpandedcolor: Colors.red,
+                nonExpandedWidth: 388.w,
+                title: Material(
+                    color: Colors.black,
+                    child: Center(
+                      child: Text(
+                        "details".tr,
+                        style: white15,
+                      ),
+                    )),
+              ) */
             ],
           ),
         ),
@@ -222,17 +248,30 @@ class CreateEntry extends StatelessWidget {
     );
   }
 
+  Widget expandedTile() {
+    return Row(
+      children: [
+        SizedBox(
+            height: 40.h,
+            width: 100.w,
+            child: addTransactionField("per".tr + " " + "quantity".tr,
+                isnum: true)),
+        DropDownButton(itemlist),
+        SizedBox(
+            height: 40.h,
+            width: 110.w,
+            child: addTransactionField("price".tr, isnum: true)),
+      ],
+    );
+  }
+
   Widget formTail() {
     return Material(
       elevation: 3,
       child: Container(
-        height: 280.h,
+        height: 350.h,
         color: Colors.white,
       ),
     );
   }
-
-  // Future<Widget> _datePicker(){
-
-  // }
 }

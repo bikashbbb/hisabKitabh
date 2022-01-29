@@ -23,9 +23,7 @@ Widget addTransactionField(String label,
             TextSpan(text: label, style: const TextStyle(color: Colors.black)),
             TextSpan(
                 text: type[0] == "p" ? "" : "  ( $type )",
-                style: TextStyle(
-                    color: type[0] == "s" ? Colors.green : Colors.red,
-                    fontWeight: FontWeight.bold))
+                style: TextStyle(color: black, fontWeight: FontWeight.bold))
           ]),
         ),
         labelStyle: const TextStyle(color: Colors.black)),

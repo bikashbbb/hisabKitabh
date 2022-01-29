@@ -30,7 +30,10 @@ class Languages extends Translations {
           "quantity": "Quantity",
           "total": "Total",
           "amnt":"Amount",
-          "per":"Per"
+          "per":"Per",
+          "A.D":"A.D",
+          "B.S":"B.S",
+          "details":"Additional Details"
         }
       };
 }

@@ -1,23 +1,38 @@
 import 'package:app/palette/styles/textstyles.dart';
+import 'package:app/screens/dataentry/controller/createdatac.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
-import 'package:rolling_switch/rolling_switch.dart';
+import 'package:get/get.dart';
 
-class RollSwitcher extends StatelessWidget {
+class RollSwitcher extends StatefulWidget {
   const RollSwitcher({Key? key}) : super(key: key);
+
+  @override
+  State<RollSwitcher> createState() => _RollSwitcherState();
+}
+
+class _RollSwitcherState extends State<RollSwitcher> {
+  final RollSwitcherControlls controlls = Get.find();
+  bool ist = false;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 10.h, left: 4.w),
+      padding: EdgeInsets.only(top: 2.h, left: 4.w),
       child: SizedBox(
-        width: 175.w,
+        width: 210.w,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("acctype2".tr, style: helpTextStyle),
-            rollswitecher(),
+            SizedBox(
+              child: CupertinoSwitch(
+                  activeColor: Colors.red,
+                  trackColor: Colors.green,
+                  value: ist,
+                  onChanged: onChnaged),
+            ), // SizedBox(height: 50.h, width: 100.w, child: rollswitecher()),
             Text("acctype".tr, style: helpTextStyle),
           ],
         ),
@@ -25,16 +40,10 @@ class RollSwitcher extends StatelessWidget {
     );
   }
 
-  static Widget rollswitecher() {
-    return RollingSwitch.icon(
-      width: 80.w,
-      onChanged: (bool state) {},
-      rollingInfoRight: const RollingIconInfo(
-          icon: Icons.arrow_right, backgroundColor: Colors.red),
-      rollingInfoLeft: const RollingIconInfo(
-        icon: Icons.arrow_left,
-        backgroundColor: Colors.green,
-      ),
-    );
+  void onChnaged(bool change) {
+    setState(() {
+      ist = change;
+    });
+    controlls.rollSwitched(change);
   }
 }

@@ -1,4 +1,4 @@
-import 'package:app/palette/commonWidgets/buttons.dart';
+import 'package:app/palette/commonWidgets/buttons/buttons.dart';
 import 'package:app/palette/commonWidgets/icon_rounder.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/textstyles.dart';
