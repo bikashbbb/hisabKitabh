@@ -1,5 +1,7 @@
 import 'package:app/palette/styles/colors.dart';
+import 'package:app/palette/styles/decorations.dart';
 import 'package:flutter/material.dart';
+
 // complete it today and curve container
 class CustomTile extends StatefulWidget {
   CustomTile(
@@ -12,7 +14,9 @@ class CustomTile extends StatefulWidget {
       //required this.body,
       required this.title,
       this.nonExpandedcolor,
-      this.leding})
+      this.leding,
+      this.onclikDisapper = false,
+      this.body})
       : super(key: key);
 
   /// height when tile is not opened
@@ -28,7 +32,7 @@ class CustomTile extends StatefulWidget {
   Color? nonExpandedcolor;
 
   /// tilte widget to display at the head before expansion
-  Widget? title;
+  final Widget? title;
 
   /// state of the tile
   bool isExpanded;
@@ -41,6 +45,9 @@ class CustomTile extends StatefulWidget {
 
   /// a widget before a title widget
   Widget? leding;
+
+  /// title disapper on click
+  bool onclikDisapper;
 
   @override
   _CustomTileState createState() => _CustomTileState();
@@ -58,14 +65,17 @@ class _CustomTileState extends State<CustomTile> {
         InkWell(
           onTap: _opentheBody,
           child: Container(
+            decoration: entryButton,
             color: widget.nonExpandedcolor,
             height: widget.nonExpandedHeight,
             width: widget.nonExpandedWidth,
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(child: widget.title!),
                 Icon(
                   widget.trailingicon,
+                  color: iconGreen,
                 )
               ],
             ),
@@ -74,9 +84,9 @@ class _CustomTileState extends State<CustomTile> {
         ValueListenableBuilder(
           valueListenable: istileopen,
           builder: (context, value, child) => istileopen.value
-              ? Container(
+              ? SizedBox(
                   height: widget.expansionHeight,
-                  color: iconGreen,
+                  child: widget.body,
                 )
               : const SizedBox(),
         ),

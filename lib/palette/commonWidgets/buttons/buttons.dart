@@ -39,8 +39,8 @@ Widget dailyEntryButton() {
 }
 
 class AddButton extends StatefulWidget {
-  String text;
-  AddButton(this.text, {Key? key}) : super(key: key);
+  final String text;
+  const AddButton(this.text, {Key? key}) : super(key: key);
 
   @override
   _AddButtonState createState() => _AddButtonState();
@@ -91,6 +91,7 @@ class _AddButtonState extends State<AddButton> {
         duration: const Duration(seconds: 1),
         child: Text(
           widget.text,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -103,8 +104,8 @@ class DropDownButton extends StatefulWidget {
     size: 15,
     color: Colors.green[900],
   );
-  List<String> dropdownItems;
-  DropDownButton(this.dropdownItems, {Key? key}) : super(key: key);
+  final List<String> dropdownItems;
+  const DropDownButton(this.dropdownItems, {Key? key}) : super(key: key);
 
   @override
   State<DropDownButton> createState() => _DropDownButtonState();
@@ -115,16 +116,17 @@ class _DropDownButtonState extends State<DropDownButton> {
   Widget build(BuildContext context) {
     return Container(
       height: 40.h,
-      width: 50.w,
+      width: 60.w,
       decoration: entryButton,
       child: DropdownButton(
+          elevation: 0,
           iconSize: 14.w,
           iconEnabledColor: Colors.black,
           isExpanded: true,
           borderRadius: BorderRadius.circular(13.0),
           dropdownColor: Colors.black87,
           hint: Text(
-            initialitem,
+            "  " + initialitem,
             style: TextStyle(
                 color: Colors.black,
                 fontSize: 15.sp,
@@ -148,9 +150,7 @@ class _DropDownButtonState extends State<DropDownButton> {
                   ));
             },
           ).toList(),
-          onChanged: (change) {
-            changeHintText(change);
-          }),
+          onChanged: changeHintText),
     );
   }
 

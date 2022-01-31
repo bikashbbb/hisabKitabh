@@ -1,12 +1,12 @@
 import 'package:app/palette/commonWidgets/buttons/buttons.dart';
 import 'package:app/palette/commonWidgets/buttons/expandedtile.dart';
+import 'package:app/palette/commonWidgets/constants/dropdowncons.dart';
 import 'package:app/palette/commonWidgets/ctextfields.dart';
 import 'package:app/palette/commonWidgets/icon_rounder.dart';
 import 'package:app/palette/commonWidgets/rollswitch.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/controller/createdatac.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,25 +14,15 @@ import 'package:get/get.dart';
 
 class CreateEntry extends StatelessWidget {
   CreateEntry({Key? key}) : super(key: key);
-  DateTime initialDate = DateTime.now();
-  List<String> itemlist = ["Kg", "G", "L", "Item", "plate"];
+  final DateTime initialDate = DateTime.now();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      floatingActionButton: FloatingActionButton(
-        elevation: 10,
-        onPressed: () {
-          // TODO:
-        },
-        backgroundColor: Colors.black,
-        child: const Icon(
-          Icons.done_all,
-          color: Colors.white,
-        ),
-      ),
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
         systemOverlayStyle: const SystemUiOverlayStyle(
             statusBarColor: Colors.black,
             statusBarBrightness: Brightness.light,
@@ -168,7 +158,7 @@ class CreateEntry extends StatelessWidget {
       color: Colors.white,
       borderRadius: const BorderRadius.all(Radius.circular(10)),
       child: ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: 220.h, minHeight: 200.h),
+        constraints: BoxConstraints(minHeight: 170.h),
         child: Padding(
           padding: const EdgeInsets.only(top: 12.0),
           child: Column(
@@ -227,20 +217,24 @@ class CreateEntry extends StatelessWidget {
               ),
               divEr,
               // additional details
-              /* CustomTile(
-                expansionHeight: 20.h,
-                nonExpandedHeight: 20.h,
-                //nonExpandedcolor: Colors.red,
+              CustomTile(
+                trailingicon: Icons.more_horiz,
+                body: Container(
+                  child: expandedTile(),
+                ),
+                expansionHeight: 50.h,
+                nonExpandedHeight: 24.h,
                 nonExpandedWidth: 388.w,
-                title: Material(
-                    color: Colors.black,
-                    child: Center(
-                      child: Text(
-                        "details".tr,
-                        style: white15,
-                      ),
-                    )),
-              ) */
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "details".tr,
+                      style: optionblack,
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),
@@ -250,16 +244,21 @@ class CreateEntry extends StatelessWidget {
 
   Widget expandedTile() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
+        Icon(
+          Icons.production_quantity_limits,
+          color: red,
+        ),
+        DropDownButton(itemlist),
         SizedBox(
             height: 40.h,
             width: 100.w,
             child: addTransactionField("per".tr + " " + "quantity".tr,
                 isnum: true)),
-        DropDownButton(itemlist),
         SizedBox(
             height: 40.h,
-            width: 110.w,
+            width: 130.w,
             child: addTransactionField("price".tr, isnum: true)),
       ],
     );
