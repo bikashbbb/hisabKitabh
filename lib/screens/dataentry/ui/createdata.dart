@@ -5,6 +5,7 @@ import 'package:app/palette/commonWidgets/ctextfields.dart';
 import 'package:app/palette/commonWidgets/icon_rounder.dart';
 import 'package:app/palette/commonWidgets/rollswitch.dart';
 import 'package:app/palette/styles/colors.dart';
+import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/controller/createdatac.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,31 @@ class CreateEntry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: Container(
+        height: 30.h,
+        //color: Colors.red,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            Positioned(
+                right: 20.w,
+                bottom: 8.h,
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: circleblackDec,
+                  height: 50.h,
+                  width: 50.w,
+                  child: Text(
+                    "+",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25.sp,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ))
+          ],
+        ),
+      ),
       resizeToAvoidBottomInset: true,
       backgroundColor: Colors.grey[100],
       appBar: AppBar(

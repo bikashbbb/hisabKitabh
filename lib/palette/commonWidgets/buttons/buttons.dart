@@ -75,10 +75,7 @@ class _AddButtonState extends State<AddButton> {
       alignment: Alignment.center,
       height: 60.h,
       width: 60.w,
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.black,
-      ),
+      decoration: circleblackDec,
       child: AnimatedDefaultTextStyle(
         onEnd: () {
           setState(() {
@@ -91,7 +88,7 @@ class _AddButtonState extends State<AddButton> {
         duration: const Duration(seconds: 1),
         child: Text(
           widget.text,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: addbuttonStyle
         ),
       ),
     );

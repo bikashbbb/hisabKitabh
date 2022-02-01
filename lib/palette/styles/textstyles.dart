@@ -24,3 +24,6 @@ TextStyle optionalstyles(Color color) {
 TextStyle optiongreen = optionalstyles(iconGreen);
 TextStyle optionred = optionalstyles(red!);
 TextStyle optionblack = optionalstyles(black);
+
+TextStyle addbuttonStyle = const TextStyle(
+    color: Colors.white, fontWeight: FontWeight.bold,);

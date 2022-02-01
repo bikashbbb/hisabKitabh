@@ -34,3 +34,9 @@ BoxDecoration clearButtonDec = BoxDecoration(
   shape: BoxShape.circle,
   color: Colors.red[100],
 );
+
+BoxDecoration circleblackDec = const BoxDecoration(
+  shape: BoxShape.circle,
+  color: Colors.black,
+  
+);
