@@ -38,7 +38,7 @@ class DailyEntryPage extends StatelessWidget {
                     overlayColor: MaterialStateProperty.all(Colors.black12),
                   ),
                   onPressed: () {
-                    Get.to(() => CreateEntry());
+                    Get.to(() => CreateEntry("add".tr));
                   },
                   child: dailyEntryButton())
             ],

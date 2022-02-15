@@ -8,43 +8,53 @@ import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/controller/createdatac.dart';
+import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class CreateEntry extends StatelessWidget {
-  CreateEntry({Key? key}) : super(key: key);
+// this is same for two screens,just make the app bar name a variable,and identify if its editing option,
+class CreateEntry extends StatefulWidget {
+  final String appbarTitle;
+  const CreateEntry(this.appbarTitle, {Key? key}) : super(key: key);
+
+  @override
+  State<CreateEntry> createState() => _CreateEntryState();
+}
+
+class _CreateEntryState extends State<CreateEntry> {
   final DateTime initialDate = DateTime.now();
+  var obscontroll = Get.put(CreateControlls());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: Container(
+      floatingActionButton: GetBuilder<CreateControlls>(
+          init: CreateControlls(),
+          builder: (context) {
+            return InkWell(
+              onTap: obscontroll.onAdditem,
+              child: Container(
+                alignment: Alignment.center,
+                decoration: circleblackDec,
+                height: 50.h,
+                width: 50.w,
+                child: Text(
+                  "+",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25.sp,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            );
+          }),
+      bottomNavigationBar: SizedBox(
         height: 30.h,
-        //color: Colors.red,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Positioned(
-                right: 20.w,
-                bottom: 8.h,
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: circleblackDec,
-                  height: 50.h,
-                  width: 50.w,
-                  child: Text(
-                    "+",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 25.sp,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ))
-          ],
-        ),
+        //child:
       ),
-      resizeToAvoidBottomInset: true,
+      //resizeToAvoidBottomInset: true,
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -54,7 +64,7 @@ class CreateEntry extends StatelessWidget {
             statusBarBrightness: Brightness.light,
             statusBarIconBrightness: Brightness.light),
         title: Text(
-          "add".tr,
+          widget.appbarTitle,
           style: appbarStyle,
         ),
         elevation: 0.0,
@@ -131,15 +141,23 @@ class CreateEntry extends StatelessWidget {
                 SizedBox(
                   width: 170.w,
                   height: 40.h,
-                  child: addTransactionField('acc'.tr),
+                  child: Obx(() => addTransactionField('acc'.tr,
+                      con: fieldslist[0],
+                      isReq: obscontroll.reqFields[0].value)),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 5.w),
-                  child: Text(
-                    "eg1".tr,
-                    style: optionblack,
-                  ),
-                )
+                    padding: EdgeInsets.only(left: 5.w),
+                    child: Obx(
+                      () => obscontroll.reqFields[0].value
+                          ? Text(
+                              "req".tr,
+                              style: optionred,
+                            )
+                          : Text(
+                              "eg1".tr,
+                              style: optionblack,
+                            ),
+                    ))
               ],
             ),
             GetBuilder<RollSwitcherControlls>(
@@ -200,18 +218,29 @@ class CreateEntry extends StatelessWidget {
                             height: 40.h,
                             width: 190.w,
                             child: controlls.isSale
-                                ? addTransactionField("item".tr, type: "buy".tr)
+                                ? addTransactionField("item".tr,
+                                    type: "buy".tr, con: fieldslist[2])
                                 : addTransactionField("item".tr,
-                                    type: "sold".tr));
+                                    type: "sold".tr, con: fieldslist[2]));
                       }),
                   SizedBox(
                       height: 40.h,
                       width: 190.w,
-                      child: addTransactionField("total".tr + " " + "amnt".tr,
-                          isnum: true)),
+                      child: Obx(() => addTransactionField(
+                          "total".tr + " " + "amnt".tr,
+                          con: fieldslist[1],
+                          isnum: true,
+                          isReq: obscontroll.reqFields[1].value))),
                 ],
               ),
-              optional,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  optional,
+                ],
+              ),
+              // TODO: MAKE THE REUQIRED THING !
+
               Padding(
                 padding: EdgeInsets.only(top: 2.h, bottom: 3.h),
                 child: divEr,
@@ -226,11 +255,12 @@ class CreateEntry extends StatelessWidget {
                         width: 110.w,
                         child: addTransactionField(
                             "total".tr + " " + "quantity".tr,
-                            isnum: true)),
+                            isnum: true,
+                            con: fieldslist[3])),
                   ),
                   Padding(
                     padding: EdgeInsets.only(right: 20.0.w),
-                    child: clearBUtton("✘"),
+                    child: clearBUtton("✘", CreateControlls().onclearFields),
                   ),
                   const Calender(),
                 ],
@@ -281,11 +311,12 @@ class CreateEntry extends StatelessWidget {
             height: 40.h,
             width: 100.w,
             child: addTransactionField("per".tr + " " + "quantity".tr,
-                isnum: true)),
+                con: fieldslist[4], isnum: true)),
         SizedBox(
             height: 40.h,
             width: 130.w,
-            child: addTransactionField("price".tr, isnum: true)),
+            child: addTransactionField("price".tr,
+                isnum: true, con: fieldslist[5])),
       ],
     );
   }
@@ -298,5 +329,16 @@ class CreateEntry extends StatelessWidget {
         color: Colors.white,
       ),
     );
+  }
+/* 
+  Widget builderCreator() {
+    return GetBuilder<CreateControlls>(
+        init: CreateControlls(), builder: (controlls) {});
+  } */
+
+  @override
+  void dispose() {
+    super.dispose();
+    CreateControlls().onclearFields();
   }
 }

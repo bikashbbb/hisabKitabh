@@ -26,4 +26,6 @@ TextStyle optionred = optionalstyles(red!);
 TextStyle optionblack = optionalstyles(black);
 
 TextStyle addbuttonStyle = const TextStyle(
-    color: Colors.white, fontWeight: FontWeight.bold,);
+  color: Colors.white,
+  fontWeight: FontWeight.bold,
+);

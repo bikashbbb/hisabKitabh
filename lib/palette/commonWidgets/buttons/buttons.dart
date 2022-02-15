@@ -298,14 +298,16 @@ class _CalenderState extends State<Calender> {
   }
 }
 
-Widget clearBUtton(String title) {
+Widget clearBUtton(String title,
+var onpressed
+) {
   return SizedBox(
     height: 45.h,
     width: 45.w,
     child: ElevatedButton(
       style: ElevatedButton.styleFrom(
           primary: Colors.red[100], shape: const CircleBorder(), elevation: 15),
-      onPressed: () {},
+      onPressed: onpressed,
       child: Text(
         title,
         style: optionred,

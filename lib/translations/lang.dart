@@ -29,11 +29,12 @@ class Languages extends Translations {
           "option": "*Optional",
           "quantity": "Quantity",
           "total": "Total",
-          "amnt":"Amount",
-          "per":"Per",
-          "A.D":"A.D",
-          "B.S":"B.S",
-          "details":"Additional Details"
+          "amnt": "Amount",
+          "per": "Per",
+          "A.D": "A.D",
+          "B.S": "B.S",
+          "details": "Additional Details",
+          "req": "*required"
         }
       };
 }
