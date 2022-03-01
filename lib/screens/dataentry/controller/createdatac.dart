@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:app/screens/dataentry/hive/datasaver.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
@@ -66,23 +68,6 @@ class CreateControlls extends GetxController {
 
   } */
 
-  static double getTotalAmount() {
-    return (_parseDouble(totalQuantity.text) /
-        _parseDouble(perQuanity.text) *
-        _parseDouble(priceperQuantity.text));
-  }
-
-  static void changeAmount(String controllText) {
-     if (totalQuantity.text.isNotEmpty && priceperQuantity.text.isNotEmpty) {
-      totalAmnt.text = getTotalAmount().toString();
-    } else {
-      totalAmnt.text = "";
-    }
-  }
-
-  static double _parseDouble(String text) {
-    return double.parse(text);
-  }
 }
 
 class RollSwitcherControlls extends GetxController {
@@ -92,5 +77,42 @@ class RollSwitcherControlls extends GetxController {
   void rollSwitched(bool state) {
     isSale = state;
     update();
+  }
+}
+
+class TextFieldController {
+  static double getTotalAmount() {
+    return (_parseDouble(totalQuantity.text) /
+        _parseDouble(perQuanity.text) *
+        _parseDouble(priceperQuantity.text));
+  }
+
+  static void changeAmount(String controllText) {
+    if (totalQuantity.text.isNotEmpty && priceperQuantity.text.isNotEmpty) {
+      checkOnNegativeVal(controllText);
+
+      totalAmnt.text = getTotalAmount().toString();
+    } else {
+      totalAmnt.text = "";
+    }
+  }
+
+  static double _parseDouble(String text) {
+    return double.parse(text);
+  }
+
+  /// checks if a textcontroller holds negative value if true then erases it
+  static void checkOnNegativeVal(String text) {
+    int len = text.length;
+    if (len > 0) {
+      text = "300000";
+      /* if(text){
+
+      } */
+    }
+
+    /* if (text[len]) {
+
+    } */
   }
 }

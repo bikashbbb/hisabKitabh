@@ -227,11 +227,13 @@ class _CreateEntryState extends State<CreateEntry> {
                   SizedBox(
                       height: 40.h,
                       width: 190.w,
-                      child: Obx(() => addTransactionField(
-                          "total".tr + " " + "amnt".tr,
-                          con: fieldslist[1],
-                          isnum: true,
-                          isReq: obscontroll.reqFields[1].value))),
+                      child: Obx(
+                        () => addTransactionField("total".tr + " " + "amnt".tr,
+                            onchanged: TextFieldController.checkOnNegativeVal,
+                            con: fieldslist[1],
+                            isnum: true,
+                            isReq: obscontroll.reqFields[1].value),
+                      )),
                 ],
               ),
               Row(
@@ -257,8 +259,7 @@ class _CreateEntryState extends State<CreateEntry> {
                             "total".tr + " " + "quantity".tr,
                             isnum: true,
                             con: fieldslist[3],
-                            onchanged: CreateControlls.changeAmount
-                            )),
+                            onchanged: TextFieldController.changeAmount)),
                   ),
                   Padding(
                     padding: EdgeInsets.only(right: 20.0.w),
