@@ -1,4 +1,7 @@
+import 'package:app/screens/dataentry/hive/datasaver.dart';
+import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
@@ -6,6 +9,12 @@ import 'package:get/get.dart';
 // have a separate file for controller
 class CreateControlls extends GetxController {
   List reqFields = [false.obs, false.obs].obs;
+
+  static void checkPerQuantity() {
+    if (perQuanity.text == "") {
+      perQuanity.text = "1";
+    }
+  }
 
   /// clear the textfields
   void onclearFields() {
@@ -15,9 +24,15 @@ class CreateControlls extends GetxController {
   }
 
   /// when clicked on add item
-  void onAdditem() {
+  void onAdditem() async {
+    HiveDatabase datasaver = HiveDatabase();
     checkReqFields();
-    //checkWifiSignal();
+    if (await checkWifiSignal()) {
+      // save data online
+    } else {
+      // save data on hive database
+      datasaver.saveModel(Transaction.toModel());
+    }
   }
 
   void checkReqFields() {
@@ -31,7 +46,43 @@ class CreateControlls extends GetxController {
   }
 
   /// check if user has network returns true else false
-  //bool checkWifiSignal() {}
+  Future<bool> checkWifiSignal() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi) {
+      return true;
+    }
+    return false;
+  }
+
+  /* /// adds data offline and returns true if no error
+  bool saveOffline() {
+    // have a exception catcher
+  }
+
+  /// adds data offline and returns true if no error
+
+  bool saveOnline() {
+
+  } */
+
+  static double getTotalAmount() {
+    return (_parseDouble(totalQuantity.text) /
+        _parseDouble(perQuanity.text) *
+        _parseDouble(priceperQuantity.text));
+  }
+
+  static void changeAmount(String controllText) {
+     if (totalQuantity.text.isNotEmpty && priceperQuantity.text.isNotEmpty) {
+      totalAmnt.text = getTotalAmount().toString();
+    } else {
+      totalAmnt.text = "";
+    }
+  }
+
+  static double _parseDouble(String text) {
+    return double.parse(text);
+  }
 }
 
 class RollSwitcherControlls extends GetxController {

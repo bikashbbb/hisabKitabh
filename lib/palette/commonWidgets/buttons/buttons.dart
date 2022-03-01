@@ -3,6 +3,7 @@ import 'package:app/palette/commonWidgets/helptext.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/styles/textstyles.dart';
+import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -86,10 +87,7 @@ class _AddButtonState extends State<AddButton> {
           fontSize: isAnimated ? 50.sp : 40.sp,
         ),
         duration: const Duration(seconds: 1),
-        child: Text(
-          widget.text,
-          style: addbuttonStyle
-        ),
+        child: Text(widget.text, style: addbuttonStyle),
       ),
     );
   }
@@ -171,7 +169,6 @@ class Calender extends StatefulWidget {
 
 class _CalenderState extends State<Calender> {
   dynamic initaldate = DateTime.now();
-  String? nowdate;
   bool isAd = true;
   @override
   void initState() {
@@ -298,9 +295,7 @@ class _CalenderState extends State<Calender> {
   }
 }
 
-Widget clearBUtton(String title,
-var onpressed
-) {
+Widget clearBUtton(String title, var onpressed) {
   return SizedBox(
     height: 45.h,
     width: 45.w,

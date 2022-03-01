@@ -14,6 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+// add Daily entry
 // this is same for two screens,just make the app bar name a variable,and identify if its editing option,
 class CreateEntry extends StatefulWidget {
   final String appbarTitle;
@@ -239,7 +240,6 @@ class _CreateEntryState extends State<CreateEntry> {
                   optional,
                 ],
               ),
-              // TODO: MAKE THE REUQIRED THING !
 
               Padding(
                 padding: EdgeInsets.only(top: 2.h, bottom: 3.h),
@@ -256,7 +256,9 @@ class _CreateEntryState extends State<CreateEntry> {
                         child: addTransactionField(
                             "total".tr + " " + "quantity".tr,
                             isnum: true,
-                            con: fieldslist[3])),
+                            con: fieldslist[3],
+                            onchanged: CreateControlls.changeAmount
+                            )),
                   ),
                   Padding(
                     padding: EdgeInsets.only(right: 20.0.w),
@@ -316,7 +318,9 @@ class _CreateEntryState extends State<CreateEntry> {
             height: 40.h,
             width: 130.w,
             child: addTransactionField("price".tr,
-                isnum: true, con: fieldslist[5])),
+                isnum: true,
+                con: fieldslist[5],
+                ontap: CreateControlls.checkPerQuantity)),
       ],
     );
   }

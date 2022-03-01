@@ -34,7 +34,7 @@ class DailyGoalsPage extends StatelessWidget {
             decoration: homeDecoration),
         floatingActionButton: Padding(
           padding: EdgeInsets.only(bottom: 40.h, right: 20.w),
-          child: InkWell(onTap: () {}, child: AddButton("+")),
+          child: InkWell(onTap: () {}, child:const AddButton("+")),
         ));
   }
 }

@@ -1,3 +1,4 @@
+
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,13 @@ Widget addTransactionField(String label,
         {String type = "p",
         bool isnum = false,
         bool isReq = false,
-        required TextEditingController con}) =>
+        required TextEditingController con,
+        ontap,
+        onchanged
+        }) =>
     TextField(
+      onTap: ontap,
+      onChanged: onchanged,
       controller: con,
       keyboardType: isnum ? TextInputType.number : TextInputType.text,
       style: inputStyle,

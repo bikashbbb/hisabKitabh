@@ -15,7 +15,7 @@ class Languages extends Translations {
           "goal2":
               "Here you can store the daily transaction for your business, click on the button below.",
           "entryb": "Create a new transaction record",
-          "add": "Add a Transaction",
+          "add": "Add Daily Entry",
           "acc": "Account Name",
           "acctype": "BUY",
           "acctype2": "SELL",
@@ -28,7 +28,7 @@ class Languages extends Translations {
           "price": "Price per quantity",
           "option": "*Optional",
           "quantity": "Quantity",
-          "total": "Total",
+          "totadd Daily entryal": "Total",
           "amnt": "Amount",
           "per": "Per",
           "A.D": "A.D",
