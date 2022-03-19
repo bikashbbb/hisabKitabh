@@ -1,5 +1,4 @@
-import 'dart:ffi';
-
+import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/hive/datasaver.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
@@ -10,6 +9,7 @@ import 'package:get/get.dart';
 // planning lets create controller
 // have a separate file for controller
 class CreateControlls extends GetxController {
+  static bool isDailyE = true;
   List reqFields = [false.obs, false.obs].obs;
 
   static void checkPerQuantity() {
@@ -27,13 +27,18 @@ class CreateControlls extends GetxController {
 
   /// when clicked on add item
   void onAdditem() async {
-    HiveDatabase datasaver = HiveDatabase();
+    HiveDatabase datasaver = HiveDatabase(dailyBox);
+    // have if else statement here
     checkReqFields();
-    if (await checkWifiSignal()) {
+    if (await _checkWifiSignal()) {
       // save data online
     } else {
       // save data on hive database
-      datasaver.saveModel(Transaction.toModel());
+      datasaver.saveModel(
+        Transaction.toModel(
+          datasaver.giveUniqueNum(),
+        ),
+      );
     }
   }
 
@@ -48,7 +53,7 @@ class CreateControlls extends GetxController {
   }
 
   /// check if user has network returns true else false
-  Future<bool> checkWifiSignal() async {
+  Future<bool> _checkWifiSignal() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile ||
         connectivityResult == ConnectivityResult.wifi) {
@@ -71,7 +76,7 @@ class CreateControlls extends GetxController {
 }
 
 class RollSwitcherControlls extends GetxController {
-  bool isSale = false;
+  static bool isSale = false;
 
   static RollSwitcherControlls get to => Get.find();
   void rollSwitched(bool state) {
@@ -82,14 +87,14 @@ class RollSwitcherControlls extends GetxController {
 
 class TextFieldController {
   static double getTotalAmount() {
-    return (_parseDouble(totalQuantity.text) /
-        _parseDouble(perQuanity.text) *
-        _parseDouble(priceperQuantity.text));
+    return (parseDouble(totalQuantity.text) /
+        parseDouble(perQuanity.text) *
+        parseDouble(priceperQuantity.text));
   }
 
   static void changeAmount(String controllText) {
     if (totalQuantity.text.isNotEmpty && priceperQuantity.text.isNotEmpty) {
-      checkOnNegativeVal(controllText);
+      //checkOnNegativeVal(controllText);
 
       totalAmnt.text = getTotalAmount().toString();
     } else {
@@ -97,22 +102,17 @@ class TextFieldController {
     }
   }
 
-  static double _parseDouble(String text) {
+  static double parseDouble(String text) {
     return double.parse(text);
   }
 
   /// checks if a textcontroller holds negative value if true then erases it
-  static void checkOnNegativeVal(String text) {
+  /* static void checkOnNegativeVal(String text) {
     int len = text.length;
     if (len > 0) {
       text = "300000";
       /* if(text){
 
       } */
-    }
-
-    /* if (text[len]) {
-
     } */
-  }
 }

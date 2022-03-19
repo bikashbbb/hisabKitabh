@@ -1,5 +1,8 @@
 // planning: Create some model,with hive
 
+import 'package:app/palette/commonWidgets/constants/dropdowncons.dart';
+import 'package:app/screens/dataentry/controller/createdatac.dart';
+import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:hive/hive.dart';
 part 'datamodel.g.dart';
 
@@ -14,7 +17,7 @@ class Transaction extends HiveObject {
   @HiveType(typeId: 4)
   double? totalAmount;
   @HiveType(typeId: 5)
-  double? totalQuantity;
+  double? totalQuantit;
   //date is required
   @HiveType(typeId: 6)
   String quantityType;
@@ -30,23 +33,36 @@ class Transaction extends HiveObject {
   String? createdDate;
   @HiveType(typeId: 11)
   String? editedDate;
+  @HiveType(typeId: 12)
+  bool isOnlineStored;
 
   Transaction({
     this.accName,
     this.isSell = true,
     this.itemname = "",
     this.totalAmount,
-    this.totalQuantity,
+    this.totalQuantit,
     this.uniqueId,
     this.createdDate,
     this.perQuantity = 0.0,
     this.perQuantityPrice = 0.0,
     this.quantityType = "plate",
+    this.isOnlineStored = false
   });
-  /// returns transaction by using the variables.
-  static Transaction toModel() {
-    return Transaction(
 
-    );
+  /// returns transaction by using the variables.
+  static Transaction toModel(int uid) {
+    return Transaction(
+        accName: accountName.text,
+        isSell: RollSwitcherControlls.isSale,
+        itemname: itemName.text,
+        totalAmount: TextFieldController.parseDouble(totalAmnt.text),
+        totalQuantit: TextFieldController.parseDouble(totalQuantity.text),
+        uniqueId: uid,
+        createdDate: nowdate,
+        perQuantityPrice:
+            TextFieldController.parseDouble(priceperQuantity.text),
+        quantityType: initialitem,
+        perQuantity: TextFieldController.parseDouble(perQuanity.text));
   }
 }

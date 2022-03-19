@@ -1,3 +1,4 @@
+
 import 'package:app/palette/commonWidgets/buttons/buttons.dart';
 import 'package:app/palette/commonWidgets/buttons/expandedtile.dart';
 import 'package:app/palette/commonWidgets/constants/dropdowncons.dart';
@@ -13,12 +14,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 
 // add Daily entry
 // this is same for two screens,just make the app bar name a variable,and identify if its editing option,
 class CreateEntry extends StatefulWidget {
   final String appbarTitle;
-  const CreateEntry(this.appbarTitle, {Key? key}) : super(key: key);
+  final bool isDaily;
+  const CreateEntry(this.appbarTitle, {Key? key, this.isDaily = true})
+      : super(key: key);
 
   @override
   State<CreateEntry> createState() => _CreateEntryState();
@@ -27,6 +31,12 @@ class CreateEntry extends StatefulWidget {
 class _CreateEntryState extends State<CreateEntry> {
   final DateTime initialDate = DateTime.now();
   var obscontroll = Get.put(CreateControlls());
+
+  @override
+  void initState() {
+    CreateControlls.isDailyE = widget.isDaily;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +183,9 @@ class _CreateEntryState extends State<CreateEntry> {
                           padding: EdgeInsets.only(left: 31.0.w),
                           child: Text(
                             "acctypee".tr,
-                            style: controlls.isSale ? optionred : optiongreen,
+                            style: RollSwitcherControlls.isSale
+                                ? optionred
+                                : optiongreen,
                           ))
                     ],
                   );
@@ -191,7 +203,7 @@ class _CreateEntryState extends State<CreateEntry> {
         builder: (controlls) {
           return Text(
             "option".tr,
-            style: controlls.isSale ? optionred : optiongreen,
+            style: RollSwitcherControlls.isSale ? optionred : optiongreen,
           );
         });
     Widget divEr = Divider(
@@ -218,7 +230,7 @@ class _CreateEntryState extends State<CreateEntry> {
                         return SizedBox(
                             height: 40.h,
                             width: 190.w,
-                            child: controlls.isSale
+                            child: RollSwitcherControlls.isSale
                                 ? addTransactionField("item".tr,
                                     type: "buy".tr, con: fieldslist[2])
                                 : addTransactionField("item".tr,
@@ -228,11 +240,12 @@ class _CreateEntryState extends State<CreateEntry> {
                       height: 40.h,
                       width: 190.w,
                       child: Obx(
-                        () => addTransactionField("total".tr + " " + "amnt".tr,
-                            onchanged: TextFieldController.checkOnNegativeVal,
-                            con: fieldslist[1],
-                            isnum: true,
-                            isReq: obscontroll.reqFields[1].value),
+                        () => addTransactionField(
+                          "total".tr + " " + "amnt".tr,
+                          con: fieldslist[1],
+                          isnum: true,
+                          isReq: obscontroll.reqFields[1].value,
+                        ),
                       )),
                 ],
               ),
@@ -314,11 +327,14 @@ class _CreateEntryState extends State<CreateEntry> {
             height: 40.h,
             width: 100.w,
             child: addTransactionField("per".tr + " " + "quantity".tr,
-                con: fieldslist[4], isnum: true)),
+                onchanged: TextFieldController.changeAmount,
+                con: fieldslist[4],
+                isnum: true)),
         SizedBox(
             height: 40.h,
             width: 130.w,
             child: addTransactionField("price".tr,
+                onchanged: TextFieldController.changeAmount,
                 isnum: true,
                 con: fieldslist[5],
                 ontap: CreateControlls.checkPerQuantity)),
@@ -344,6 +360,7 @@ class _CreateEntryState extends State<CreateEntry> {
   @override
   void dispose() {
     super.dispose();
+    Hive.close();
     CreateControlls().onclearFields();
   }
 }

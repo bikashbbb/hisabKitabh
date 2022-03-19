@@ -1,3 +1,6 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
+import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/homescreen/ui/home.dart';
 import 'package:app/translations/lang.dart';
@@ -9,14 +12,27 @@ import 'package:hive_flutter/hive_flutter.dart';
 // I AM FOLLOWING THE BLOC PATTERN FOR EACH SCREEN I HAVE 4 COOMPONENTS
 // let it be coming from hive database...
 void main() async {
+  Box obj = await hiveInitializer();
+  loginValidator(obj);
+}
+
+Future<Box> hiveInitializer() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(TransactionAdapter());
-  runApp(const MyApp());
+  await Hive.openBox(lendbox);
+  return await Hive.openBox(userD);
+}
+
+void loginValidator(Box box) {
+  if (box.isEmpty) {
+    runApp(const MyApp());
+  }
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final bool isloggedIn;
+  const MyApp({Key? key, this.isloggedIn = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

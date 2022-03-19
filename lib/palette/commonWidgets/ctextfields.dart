@@ -1,22 +1,25 @@
-
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 Widget addTransactionField(String label,
         {String type = "p",
         bool isnum = false,
         bool isReq = false,
         required TextEditingController con,
         ontap,
-        onchanged
-        }) =>
+        onchanged}) =>
     TextField(
       onTap: ontap,
       onChanged: onchanged,
       controller: con,
-      keyboardType: isnum ? TextInputType.number : TextInputType.text,
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
+      ],
+      keyboardType: isnum
+          ? const TextInputType.numberWithOptions(decimal: true)
+          : TextInputType.text,
       style: inputStyle,
       decoration: InputDecoration(
           contentPadding:
