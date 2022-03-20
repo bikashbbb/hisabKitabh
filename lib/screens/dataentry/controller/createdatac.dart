@@ -27,18 +27,15 @@ class CreateControlls extends GetxController {
 
   /// when clicked on add item
   void onAdditem() async {
-    HiveDatabase datasaver = HiveDatabase(dailyBox);
-    // have if else statement here
+    HiveDatabase datasaver = HiveDatabase(dailyBox, Transaction.toModel());
+
+    // have if else statement hw
     checkReqFields();
     if (await _checkWifiSignal()) {
       // save data online
     } else {
       // save data on hive database
-      datasaver.saveModel(
-        Transaction.toModel(
-          datasaver.giveUniqueNum(),
-        ),
-      );
+      datasaver.saveModel();
     }
   }
 

@@ -5,17 +5,23 @@ import 'package:hive/hive.dart';
 
 class HiveDatabase {
   Box boxname;
+  Transaction object;
+
+  HiveDatabase(this.boxname, this.object);
+
+  /// holds all the data of total account
   late Map allaccount;
+
+  /// code of the account name
   late int code;
+
+  /// length of the current account where user is adding up the model
   late int totalLength;
 
-  int? indexNcode;
+  /// index of the object that we current are adding upp.
+  int? objectindex;
 
-  HiveDatabase(this.boxname);
-
-  bool saveModel(
-    Transaction object,
-  ) {
+  bool saveModel() {
     try {
       setAcc();
       setData();
@@ -26,9 +32,10 @@ class HiveDatabase {
     }
   }
 
-// {"code":{"l":length,"online":upto}} - key name
+// {"code":{"l":length,"online":upto,"uid":"0"}} - key is the unique code we have settt..
 // ("accounts":"code", "bik":0) - acc
 // {"index+code":model,"00":transaobj} - key name
+
   void setAcc() {
     if (boxname.containsKey(acc)) {
       //boxname.put(acc, allAccountstosjon(false, giveUniqueNum(boxname)));
@@ -43,25 +50,42 @@ class HiveDatabase {
         setLength;
       }
     } else {
-      boxname.put(acc, allAccountstosjon(true, setUniqueNum(boxname)));
+      boxname.put(acc, allAccountstosjon(true, setUniqueNum()));
+      setLength;
     }
   }
 
   /// set the data also upate the length of the map.
   void setData() {
-    //boxname.put(key, value);
     // key will be code+Totallength
+    // if object index is empty then set the first one to 0
+    objectindex = getobjectIndex;
+    object.uniqueId = objectindex;
+
+    upateObject();
+    updateObjIndex();
+    upadteMapLen();
   }
 
-  //set onlineSaver(B) {}
+  void upateObject() {
+    boxname.put(code + objectindex!, object);
+  }
+
+  /// update the index of the transaction object
+  void updateObjIndex() {
+    setObjectIndex(getKey(objectkoIndex), i: objectindex! + 1);
+  }
+
+  /// update the length of the particular account
+  void upadteMapLen() {
+    totalLength += 1;
+    updateLength();
+  }
 
   /// uses the account name as key to set the data..
-
   Map allAccountstosjon(bool isfirst, int uid) {
     if (isfirst) {
-      return {
-        acc: {accountName.text: uid}
-      };
+      return {accountName.text: uid};
     }
     return {
       // else add the account name and the uniq num in
@@ -69,30 +93,22 @@ class HiveDatabase {
     };
   }
 
-  /// update the transaction key in our box ....
-  bool updateTdb(Transaction obj) {
-    bool issucess = true;
-    return issucess;
-  }
-
-  void adduIdDb() {}
-
-  /*  bool isUserLoggedIn(){
-
+  /* get giveObjectIndex {
+    // "code":{"l":length}
+    objectindex = boxname.get(code)["index"] + 1;
+    boxname.put(code, value)
   } */
 
+  /// this gives unique number for the total account
   int giveUniqueNum() {
     return boxname.get(lastUniq) + 1;
   }
 
-  int setUniqueNum(Box boxname) {
+  int setUniqueNum() {
     boxname.put(lastUniq, 0);
-    return 0;
+    code = 0;
+    return code;
   }
-
-  /*  int findUniqueNum(Box boxname) {
-    allaccount: boxname.get(acc);
-  }  */
 
   get getAllaccount {
     allaccount = boxname.get(acc);
@@ -106,9 +122,21 @@ class HiveDatabase {
   }
 
   get getTotalLength {
-    // {"code":{"l":length,"online":upto}}
+    // "code":"length"
+    totalLength = boxname.get(code);
+  }
 
-    totalLength = boxname.get(code)["l"];
+  get getobjectIndex {
+    String keeey = getKey(objectkoIndex);
+    if (boxname.containsKey(keeey)) {
+      return boxname.get(getKey(objectkoIndex));
+    }
+    setObjectIndex(keeey);
+    return 0;
+  }
+
+  void setObjectIndex(String ke, {int i = 0}) {
+    boxname.put(ke, i);
   }
 
   void setCode() {
@@ -120,21 +148,23 @@ class HiveDatabase {
 
   void setLength() {
     // getTotalLength;
-    Map res = {
-      "l": 0,
-    };
-    updateLength(res);
+    totalLength = 0;
+    updateLength();
   }
 
   void updateCode() {
     boxname.put(acc, allaccount);
   }
 
-  void updateLength(Map res) {
-    boxname.put(code, res);
+  void updateLength() {
+    boxname.put(code, totalLength);
   }
 
   void hClose() {
     Hive.close();
+  }
+
+  String getKey(String secKey) {
+    return code.toString() + secKey;
   }
 }

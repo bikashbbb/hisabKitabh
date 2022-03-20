@@ -13,4 +13,7 @@ String lastUniq = "last unique num";
 
 Box dailyBox = Hive.box(userD);
 Box lendBox = Hive.box(lendbox);
-// ("account":"code", "bik":0) - acc
+
+// secret keyword for itemnms
+String objectkoIndex = "I";
+String uptoOnline = "up";

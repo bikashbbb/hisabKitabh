@@ -51,14 +51,13 @@ class Transaction extends HiveObject {
   });
 
   /// returns transaction by using the variables.
-  static Transaction toModel(int uid) {
+  static Transaction toModel() {
     return Transaction(
         accName: accountName.text,
         isSell: RollSwitcherControlls.isSale,
         itemname: itemName.text,
         totalAmount: TextFieldController.parseDouble(totalAmnt.text),
         totalQuantit: TextFieldController.parseDouble(totalQuantity.text),
-        uniqueId: uid,
         createdDate: nowdate,
         perQuantityPrice:
             TextFieldController.parseDouble(priceperQuantity.text),
