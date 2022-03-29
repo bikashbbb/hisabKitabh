@@ -34,7 +34,7 @@ Widget dailyEntryButton() {
     child: Text(
       "entryb".tr,
       style: TextStyle(
-          color: Colors.red[300], fontSize: 16.sp, fontWeight: FontWeight.bold),
+          color: darkBlack, fontSize: 16.sp, fontWeight: FontWeight.bold),
     ),
   );
 }

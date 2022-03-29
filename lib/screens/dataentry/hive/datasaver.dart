@@ -6,8 +6,8 @@ import 'package:hive/hive.dart';
 class HiveDatabase {
   Box boxname;
   Transaction object;
-
-  HiveDatabase(this.boxname, this.object);
+  bool isUpdate;
+  HiveDatabase(this.boxname, this.object, {this.isUpdate = false});
 
   /// holds all the data of total account
   late Map allaccount;
@@ -23,6 +23,9 @@ class HiveDatabase {
 
   bool saveModel() {
     try {
+      // this worked lets check data..
+      // lets get its length ...
+      
       setAcc();
       setData();
 
@@ -38,20 +41,18 @@ class HiveDatabase {
 
   void setAcc() {
     if (boxname.containsKey(acc)) {
-      //boxname.put(acc, allAccountstosjon(false, giveUniqueNum(boxname)));
-
       if (getAllaccount.containsKey(accountName.text)) {
         // get its code ...
-        getcode;
-        getTotalLength;
+        getcode();
+        getTotalLength();
       } else {
         // set its code and totallength
-        setCode;
-        setLength;
+        setCode();
+        setLength();
       }
     } else {
-      boxname.put(acc, allAccountstosjon(true, setUniqueNum()));
-      setLength;
+      boxname.put(acc, allAccountstosjon(setUniqueNum()));
+      setLength();
     }
   }
 
@@ -68,7 +69,7 @@ class HiveDatabase {
   }
 
   void upateObject() {
-    boxname.put(code + objectindex!, object);
+    boxname.put(code.toString() + objectindex!.toString(), object);
   }
 
   /// update the index of the transaction object
@@ -83,21 +84,9 @@ class HiveDatabase {
   }
 
   /// uses the account name as key to set the data..
-  Map allAccountstosjon(bool isfirst, int uid) {
-    if (isfirst) {
-      return {accountName.text: uid};
-    }
-    return {
-      // else add the account name and the uniq num in
-      acc: {acc}
-    };
+  Map allAccountstosjon(int uid) {
+    return {accountName.text: uid};
   }
-
-  /* get giveObjectIndex {
-    // "code":{"l":length}
-    objectindex = boxname.get(code)["index"] + 1;
-    boxname.put(code, value)
-  } */
 
   /// this gives unique number for the total account
   int giveUniqueNum() {
@@ -122,7 +111,6 @@ class HiveDatabase {
   }
 
   get getTotalLength {
-    // "code":"length"
     totalLength = boxname.get(code);
   }
 

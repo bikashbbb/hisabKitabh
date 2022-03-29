@@ -1,3 +1,4 @@
+import 'package:app/palette/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -18,11 +19,12 @@ class IconBoard extends StatelessWidget {
               imagePath,
               height: 220.h,
               width: 280.w,
+              color: iconGreen,
             ),
             Image.asset(
               'assets/images/noun-curved-arrow-3067940-2.png',
               height: 60.h,
-              color: Colors.red[200],
+              color: darkBlack,
             )
           ],
         ),

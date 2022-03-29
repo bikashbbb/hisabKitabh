@@ -1,6 +1,9 @@
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/decorations.dart';
+import 'package:app/palette/styles/textstyles.dart';
+import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // complete it today and curve container
 class CustomTile extends StatefulWidget {
@@ -96,5 +99,101 @@ class _CustomTileState extends State<CustomTile> {
 
   void _opentheBody() {
     istileopen.value = !istileopen.value;
+  }
+}
+
+class InfoTile extends StatelessWidget {
+  final Transaction object;
+  InfoTile(this.object, {Key? key}) : super(key: key);
+
+  final Icon moneyI = Icon(
+    Icons.monetization_on_outlined,
+    color: iconGreen,
+    size: 22,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      //color: secondaryC,
+      height: 53.h,
+      // border
+      decoration: entryButton,
+
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.account_circle_outlined,
+                color: black,
+                size: 25,
+              ),
+              SizedBox(
+                width: 260.w,
+                child: Text(
+                  "Account name",
+                  style: inputStyle,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              ),
+              const Expanded(child: Text("")),
+              Text(
+                "2022/03/30",
+                style: subTitle,
+              )
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: 120.w,
+                child: Text(
+                  "onion",
+                  style: subTitle,
+                  maxLines: 1,
+                ),
+              ),
+              SizedBox(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "2kg X ",
+                      style: subTitle,
+                    ),
+                    moneyI,
+                    Text(
+                      "200",
+                      style: inputStyle,
+                    )
+                  ],
+                ),
+              ),
+              Text(
+                "=",
+                style: subTitle,
+              ),
+              SizedBox(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    moneyI,
+                    Text(
+                      "",
+                      style: subTitle,
+                    )
+                  ],
+                ),
+              )
+            ],
+          )
+        ],
+      ),
+    );
   }
 }

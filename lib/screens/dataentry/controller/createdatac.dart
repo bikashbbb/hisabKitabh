@@ -27,26 +27,41 @@ class CreateControlls extends GetxController {
 
   /// when clicked on add item
   void onAdditem() async {
-    HiveDatabase datasaver = HiveDatabase(dailyBox, Transaction.toModel());
+    if (checkReqFields()) {
+      HiveDatabase datasaver = HiveDatabase(dailyBox, Transaction.toModel());
+      if (await _checkWifiSignal()) {
+        // save data online
+      } else {
+        // save data on hive database
+
+        bool result = datasaver.saveModel();
+        if (result) {
+          // sucesfull so clear up the item and
+          onclearFields();
+
+          // animate and add
+        } else {
+          // not clear item
+        }
+      }
+    }
 
     // have if else statement hw
-    checkReqFields();
-    if (await _checkWifiSignal()) {
-      // save data online
-    } else {
-      // save data on hive database
-      datasaver.saveModel();
-    }
   }
 
-  void checkReqFields() {
+  void offlineSucess() {}
+
+  bool checkReqFields() {
+    bool allFieldsOk = true;
     for (int p = 0; p <= 1; p++) {
       if (fieldslist[p].text == "") {
+        allFieldsOk = false;
         reqFields[p].value = true;
       } else {
         reqFields[p].value = false;
       }
     }
+    return allFieldsOk;
   }
 
   /// check if user has network returns true else false
@@ -100,16 +115,10 @@ class TextFieldController {
   }
 
   static double parseDouble(String text) {
+    if (text.isEmpty) {
+      return 0.0;
+    }
+
     return double.parse(text);
   }
-
-  /// checks if a textcontroller holds negative value if true then erases it
-  /* static void checkOnNegativeVal(String text) {
-    int len = text.length;
-    if (len > 0) {
-      text = "300000";
-      /* if(text){
-
-      } */
-    } */
 }

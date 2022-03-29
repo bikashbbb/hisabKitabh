@@ -6,3 +6,6 @@ Color iconGreen = Colors.lightGreen;
 Color? textGreen = Colors.green[100];
 Color? red = Colors.red[200];
 Color black = Colors.black54;
+Color darkBlack = Colors.black;
+
+Color? secondaryC = Colors.grey[100];

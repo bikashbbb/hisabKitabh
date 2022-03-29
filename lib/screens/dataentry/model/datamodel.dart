@@ -36,19 +36,18 @@ class Transaction extends HiveObject {
   @HiveType(typeId: 12)
   bool isOnlineStored;
 
-  Transaction({
-    this.accName,
-    this.isSell = true,
-    this.itemname = "",
-    this.totalAmount,
-    this.totalQuantit,
-    this.uniqueId,
-    this.createdDate,
-    this.perQuantity = 0.0,
-    this.perQuantityPrice = 0.0,
-    this.quantityType = "plate",
-    this.isOnlineStored = false
-  });
+  Transaction(
+      {this.accName,
+      this.isSell = true,
+      this.itemname = "",
+      this.totalAmount,
+      this.totalQuantit,
+      this.uniqueId,
+      this.createdDate,
+      this.perQuantity = 0.0,
+      this.perQuantityPrice = 0.0,
+      this.quantityType = "plate",
+      this.isOnlineStored = false});
 
   /// returns transaction by using the variables.
   static Transaction toModel() {

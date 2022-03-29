@@ -3,6 +3,7 @@ import 'package:app/palette/styles/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 Widget addTransactionField(String label,
         {String type = "p",
         bool isnum = false,
@@ -14,9 +15,11 @@ Widget addTransactionField(String label,
       onTap: ontap,
       onChanged: onchanged,
       controller: con,
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
-      ],
+      inputFormatters: isnum
+          ? [
+              FilteringTextInputFormatter.allow(RegExp('[0-9.]')),
+            ]
+          : [],
       keyboardType: isnum
           ? const TextInputType.numberWithOptions(decimal: true)
           : TextInputType.text,

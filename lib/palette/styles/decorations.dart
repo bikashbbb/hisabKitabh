@@ -1,3 +1,4 @@
+import 'package:app/palette/styles/colors.dart';
 import 'package:flutter/material.dart';
 
 var homeDecoration = const BoxDecoration(
@@ -18,8 +19,8 @@ var homeDecoration = const BoxDecoration(
 
 BoxDecoration entryButton = BoxDecoration(
     borderRadius: const BorderRadius.all(Radius.circular(14)),
-    border: Border.all(color: Colors.black),
-    color: Colors.white,
+    border: Border.all(color: Colors.white),
+    color: secondaryC,
     boxShadow: const [
       BoxShadow(
           color: Colors.black12,
@@ -38,5 +39,4 @@ BoxDecoration clearButtonDec = BoxDecoration(
 BoxDecoration circleblackDec = const BoxDecoration(
   shape: BoxShape.circle,
   color: Colors.black,
-  
 );

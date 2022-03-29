@@ -1,3 +1,4 @@
+import 'package:app/palette/commonWidgets/constants/dropdowncons.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,12 +11,16 @@ TextStyle white15 =
     TextStyle(color: Colors.white, fontSize: 20.sp, fontFamily: "customfont");
 
 TextStyle helpTextStyle = TextStyle(
-  color: Colors.black54,
+  color: iconGreen,
   fontWeight: FontWeight.bold,
   fontSize: 22.sp,
 );
 
-TextStyle inputStyle = TextStyle(color: Colors.black, fontSize: 14.sp);
+TextStyle inputStyle = TextStyle(
+  color: Colors.black,
+  fontWeight: FontWeight.bold,
+  fontSize: 14.sp,
+);
 
 TextStyle optionalstyles(Color color) {
   return TextStyle(color: color, fontSize: 15.sp, fontWeight: FontWeight.bold);
@@ -29,3 +34,6 @@ TextStyle addbuttonStyle = const TextStyle(
   color: Colors.white,
   fontWeight: FontWeight.bold,
 );
+
+TextStyle subTitle =
+    TextStyle(color: Colors.black87, fontFamily: fontName, fontSize: 15.sp);

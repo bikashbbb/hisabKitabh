@@ -1,4 +1,3 @@
-
 import 'package:app/palette/commonWidgets/buttons/buttons.dart';
 import 'package:app/palette/commonWidgets/buttons/expandedtile.dart';
 import 'package:app/palette/commonWidgets/constants/dropdowncons.dart';
@@ -9,6 +8,7 @@ import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/controller/createdatac.dart';
+import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -66,7 +66,7 @@ class _CreateEntryState extends State<CreateEntry> {
         //child:
       ),
       //resizeToAvoidBottomInset: true,
-      backgroundColor: Colors.grey[100],
+      backgroundColor: secondaryC,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
@@ -116,7 +116,7 @@ class _CreateEntryState extends State<CreateEntry> {
                 children: [
                   Icon(
                     Icons.summarize,
-                    color: iconGreen,
+                    color: darkBlack,
                   ),
                   Text(
                     "summary".tr,
@@ -346,8 +346,15 @@ class _CreateEntryState extends State<CreateEntry> {
     return Material(
       elevation: 3,
       child: Container(
+        width: MediaQuery.of(context).size.width,
         height: 350.h,
         color: Colors.white,
+        // inside a listview builder
+        child: Column(
+          children: [
+            InfoTile(Transaction()),
+          ],
+        ),
       ),
     );
   }
@@ -361,6 +368,7 @@ class _CreateEntryState extends State<CreateEntry> {
   void dispose() {
     super.dispose();
     Hive.close();
+    RollSwitcherControlls.isSale = false;
     CreateControlls().onclearFields();
   }
 }

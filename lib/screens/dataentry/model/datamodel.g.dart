@@ -2,6 +2,10 @@
 
 part of 'datamodel.dart';
 
+// **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
+
 class TransactionAdapter extends TypeAdapter<Transaction> {
   @override
   final int typeId = 0;
