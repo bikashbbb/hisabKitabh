@@ -34,8 +34,9 @@ class CreateControlls extends GetxController {
 
   /// when clicked on add item
   void onAdditem() async {
+    Transaction item = Transaction.toModel();
     if (checkReqFields()) {
-      HiveDatabase datasaver = HiveDatabase(dailyBox, Transaction.toModel());
+      HiveDatabase datasaver = HiveDatabase(dailyBox, item);
       if (await _checkWifiSignal()) {
         // save data online
       } else {
@@ -45,6 +46,7 @@ class CreateControlls extends GetxController {
         if (result) {
           // sucesfull so clear up the item and
           onclearFields();
+          offlineSucess(item);
 
           // animate and add
         } else {
@@ -56,8 +58,12 @@ class CreateControlls extends GetxController {
     // have if else statement hw
   }
 
-  void offlineSucess() {}
+  /// animates and adds up the item in the builder .
+  void offlineSucess(Transaction o) {}
 
+  void startLoaded() {}
+
+  void stoploder() {}
   bool checkReqFields() {
     bool allFieldsOk = true;
     for (int p = 0; p <= 1; p++) {
