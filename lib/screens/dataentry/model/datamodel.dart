@@ -39,7 +39,7 @@ class Transaction extends HiveObject {
   Transaction(
       {this.accName,
       this.isSell = true,
-      this.itemname = "",
+      this.itemname = "Unown Item",
       this.totalAmount,
       this.totalQuantit,
       this.uniqueId,

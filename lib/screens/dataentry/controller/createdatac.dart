@@ -12,6 +12,13 @@ class CreateControlls extends GetxController {
   static bool isDailyE = true;
   List reqFields = [false.obs, false.obs].obs;
 
+  /// holds items to display but should be in a pagination style my man my man.
+  List<Transaction> infoItems = [];
+
+  get totalItem {
+    return infoItems.length;
+  }
+
   static void checkPerQuantity() {
     if (perQuanity.text == "") {
       perQuanity.text = "1";

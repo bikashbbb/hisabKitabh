@@ -346,16 +346,14 @@ class _CreateEntryState extends State<CreateEntry> {
     return Material(
       elevation: 3,
       child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: 350.h,
-        color: Colors.white,
-        // inside a listview builder
-        child: Column(
-          children: [
-            InfoTile(Transaction()),
-          ],
-        ),
-      ),
+          width: MediaQuery.of(context).size.width,
+          height: 350.h,
+          color: Colors.white,
+          child: ListView.builder(
+              itemCount: obscontroll.totalItem,
+              itemBuilder: (con, index) {
+                return InfoTile(obscontroll.infoItems[index]);
+              })),
     );
   }
 /* 

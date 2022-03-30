@@ -2,6 +2,7 @@ import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
+import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -103,8 +104,12 @@ class _CustomTileState extends State<CustomTile> {
 }
 
 class InfoTile extends StatelessWidget {
-  final Transaction object;
-  InfoTile(this.object, {Key? key}) : super(key: key);
+  final Transaction obj;
+  InfoTile(this.obj, {Key? key}) : super(key: key);
+
+  static String toTString(double input) {
+    return input.toString();
+  }
 
   final Icon moneyI = Icon(
     Icons.monetization_on_outlined,
@@ -114,6 +119,9 @@ class InfoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String tQuantity = toTString(obj.totalQuantit!);
+    String price = toTString(obj.perQuantityPrice);
+    String amnt = toTString(obj.totalAmount!);
     return Container(
       //color: secondaryC,
       height: 53.h,
@@ -134,7 +142,7 @@ class InfoTile extends StatelessWidget {
               SizedBox(
                 width: 260.w,
                 child: Text(
-                  "Account name",
+                  obj.accName!,
                   style: inputStyle,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
@@ -142,7 +150,7 @@ class InfoTile extends StatelessWidget {
               ),
               const Expanded(child: Text("")),
               Text(
-                "2022/03/30",
+                obj.createdDate!,
                 style: subTitle,
               )
             ],
@@ -151,9 +159,9 @@ class InfoTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                width: 120.w,
+                width: 100.w,
                 child: Text(
-                  "onion",
+                  obj.itemname,
                   style: subTitle,
                   maxLines: 1,
                 ),
@@ -163,12 +171,12 @@ class InfoTile extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      "2kg X ",
+                      tQuantity + " " + obj.quantityType + " X ",
                       style: subTitle,
                     ),
                     moneyI,
                     Text(
-                      "200",
+                      price,
                       style: inputStyle,
                     )
                   ],
@@ -184,7 +192,7 @@ class InfoTile extends StatelessWidget {
                   children: [
                     moneyI,
                     Text(
-                      "",
+                      amnt,
                       style: subTitle,
                     )
                   ],
