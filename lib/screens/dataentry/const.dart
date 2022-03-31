@@ -1,5 +1,6 @@
 // i will have all the varibales that i have to use in local db.
 // hive key  items
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 String daily = "daily";
@@ -18,3 +19,7 @@ Box lendBox = Hive.box(lendbox);
 /// this will keep record of the object index
 String objectkoIndex = "I";
 String uptoOnline = "up";
+
+ScrollPhysics scrollPhysics = const ScrollPhysics();
+final GlobalKey<AnimatedListState> listkey = GlobalKey<AnimatedListState>();
+final ScrollController controller = ScrollController();

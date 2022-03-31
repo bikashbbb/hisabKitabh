@@ -25,7 +25,6 @@ class HiveDatabase {
     try {
       // this worked lets check data..
       // lets get its length ...
-      
       setAcc();
       setData();
 
@@ -43,8 +42,8 @@ class HiveDatabase {
     if (boxname.containsKey(acc)) {
       if (getAllaccount.containsKey(accountName.text)) {
         // get its code ...
-        getcode();
-        getTotalLength();
+        getcode;
+        getTotalLength;
       } else {
         // set its code and totallength
         setCode();
@@ -106,7 +105,8 @@ class HiveDatabase {
   }
 
   get getcode {
-    code = getAllaccount[accountName.text];
+    getAllaccount;
+    code = allaccount[accountName.text];
     return code;
   }
 

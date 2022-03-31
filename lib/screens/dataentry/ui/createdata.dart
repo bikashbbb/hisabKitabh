@@ -7,14 +7,13 @@ import 'package:app/palette/commonWidgets/rollswitch.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/styles/textstyles.dart';
+import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/createdatac.dart';
-import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 
 // add Daily entry
 // this is same for two screens,just make the app bar name a variable,and identify if its editing option,
@@ -31,7 +30,6 @@ class CreateEntry extends StatefulWidget {
 class _CreateEntryState extends State<CreateEntry> {
   final DateTime initialDate = DateTime.now();
   var obscontroll = Get.put(CreateControlls());
-
   @override
   void initState() {
     CreateControlls.isDailyE = widget.isDaily;
@@ -45,7 +43,9 @@ class _CreateEntryState extends State<CreateEntry> {
           init: CreateControlls(),
           builder: (context) {
             return InkWell(
-              onTap: obscontroll.onAdditem,
+              onTap: () {
+                obscontroll.onAdditem();
+              },
               child: Container(
                 alignment: Alignment.center,
                 decoration: circleblackDec,
@@ -343,19 +343,29 @@ class _CreateEntryState extends State<CreateEntry> {
   }
 
   Widget formTail() {
-    return Material(
-      elevation: 3,
-      child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: 350.h,
-          color: Colors.white,
-          child: ListView.builder(
-              itemCount: obscontroll.totalItem,
-              itemBuilder: (con, index) {
-                return InfoTile(obscontroll.infoItems[index]);
-              })),
-    );
+    return GetBuilder<CreateControlls>(
+        init: CreateControlls(),
+        builder: (b) {
+          return Material(
+            elevation: 3,
+            child: Container(
+                height: 350.h,
+                color: Colors.white,
+                alignment: Alignment.topCenter,
+                child: AnimatedList(
+                    controller: controller,
+                    key: listkey,
+                    physics: const BouncingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics()),
+                    reverse: true,
+                    shrinkWrap: true,
+                    itemBuilder: (con, index, animate) {
+                      return InfoTile(b.allinfoItems[index], index);
+                    })),
+          );
+        });
   }
+
 /* 
   Widget builderCreator() {
     return GetBuilder<CreateControlls>(
@@ -365,8 +375,8 @@ class _CreateEntryState extends State<CreateEntry> {
   @override
   void dispose() {
     super.dispose();
-    Hive.close();
+
     RollSwitcherControlls.isSale = false;
-    CreateControlls().onclearFields();
+    CreateControlls().onAccNotClear();
   }
 }

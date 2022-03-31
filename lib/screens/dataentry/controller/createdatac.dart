@@ -9,15 +9,12 @@ import 'package:get/get.dart';
 // planning lets create controller
 // have a separate file for controller
 class CreateControlls extends GetxController {
+  bool isClicked = false;
   static bool isDailyE = true;
   List reqFields = [false.obs, false.obs].obs;
 
   /// holds items to display but should be in a pagination style my man my man.
-  List<Transaction> infoItems = [];
-
-  get totalItem {
-    return infoItems.length;
-  }
+  List<Transaction> allinfoItems = [];
 
   static void checkPerQuantity() {
     if (perQuanity.text == "") {
@@ -32,20 +29,25 @@ class CreateControlls extends GetxController {
     }
   }
 
+  void onAccNotClear() {
+    for (int i = 1; i < fieldslist.length; i++) {
+      fieldslist[i].clear();
+    }
+  }
+
   /// when clicked on add item
   void onAdditem() async {
     Transaction item = Transaction.toModel();
     if (checkReqFields()) {
+      startLoaded();
+
       HiveDatabase datasaver = HiveDatabase(dailyBox, item);
       if (await _checkWifiSignal()) {
         // save data online
       } else {
-        // save data on hive database
-
         bool result = datasaver.saveModel();
         if (result) {
-          // sucesfull so clear up the item and
-          onclearFields();
+          onAccNotClear();
           offlineSucess(item);
 
           // animate and add
@@ -59,11 +61,23 @@ class CreateControlls extends GetxController {
   }
 
   /// animates and adds up the item in the builder .
-  void offlineSucess(Transaction o) {}
+  void offlineSucess(Transaction o) {
+    Duration i = const Duration(milliseconds: 600);
+    allinfoItems.add(o);
+    listkey.currentState!.insertItem(0, duration: i);
+    controller.animateTo(
+      controller.position.maxScrollExtent,
+      duration: i,
+      curve: Curves.easeOut,
+    );
+    update();
+  }
 
-  void startLoaded() {}
+  void startLoaded() {
+    isClicked = !isClicked;
+    update();
+  }
 
-  void stoploder() {}
   bool checkReqFields() {
     bool allFieldsOk = true;
     for (int p = 0; p <= 1; p++) {

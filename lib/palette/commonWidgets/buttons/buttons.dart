@@ -295,7 +295,7 @@ class _CalenderState extends State<Calender> {
   }
 }
 
-Widget clearBUtton(String title, var onpressed) {
+Widget clearBUtton(String title,  onpressed) {
   return SizedBox(
     height: 45.h,
     width: 45.w,

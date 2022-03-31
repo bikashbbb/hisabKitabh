@@ -51,10 +51,14 @@ class Transaction extends HiveObject {
 
   /// returns transaction by using the variables.
   static Transaction toModel() {
+    bool issales = !RollSwitcherControlls.isSale;
+    bool isEmpty = itemName.text.isEmpty;
     return Transaction(
-        accName: accountName.text,
-        isSell: RollSwitcherControlls.isSale,
-        itemname: itemName.text,
+        accName: issales
+            ? accountName.text + " (sell)"
+            : accountName.text + " (buy)",
+        isSell: issales,
+        itemname: isEmpty ? " Unnamed Item" : itemName.text,
         totalAmount: TextFieldController.parseDouble(totalAmnt.text),
         totalQuantit: TextFieldController.parseDouble(totalQuantity.text),
         createdDate: nowdate,
