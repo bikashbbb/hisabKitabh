@@ -5,12 +5,12 @@ import 'package:hive/hive.dart';
 
 class HiveDatabase {
   Box boxname;
-  Transaction object;
+  Transaction? object;
   bool isUpdate;
-  HiveDatabase(this.boxname, this.object, {this.isUpdate = false});
+  HiveDatabase(this.boxname, {this.object, this.isUpdate = false});
 
   /// holds all the data of total account
-  late Map allaccount;
+  late Map? allaccount;
 
   /// code of the account name
   late int code;
@@ -60,15 +60,15 @@ class HiveDatabase {
     // key will be code+Totallength
     // if object index is empty then set the first one to 0
     objectindex = getobjectIndex;
-    object.uniqueId = objectindex;
+    object!.uniqueId = objectindex;
 
     upateObject();
     updateObjIndex();
     upadteMapLen();
   }
-
+  /// uses the code + index...
   void upateObject() {
-    boxname.put(code.toString() + objectindex!.toString(), object);
+    boxname.put(code.toString() + objectindex!.toString(), object!);
   }
 
   /// update the index of the transaction object
@@ -81,6 +81,8 @@ class HiveDatabase {
     totalLength += 1;
     updateLength();
   }
+
+  void updateAmount() {}
 
   /// uses the account name as key to set the data..
   Map allAccountstosjon(int uid) {
@@ -100,13 +102,15 @@ class HiveDatabase {
 
   get getAllaccount {
     allaccount = boxname.get(acc);
-
+    if (allaccount == null) {
+      return {};
+    }
     return allaccount;
   }
 
   get getcode {
     getAllaccount;
-    code = allaccount[accountName.text];
+    code = allaccount![accountName.text];
     return code;
   }
 
@@ -130,8 +134,8 @@ class HiveDatabase {
   void setCode() {
     getAllaccount;
     code = giveUniqueNum();
-    allaccount[accountName.text] = code;
-    updateCode;
+    allaccount![accountName.text] = code;
+    updateCode();
   }
 
   void setLength() {
@@ -146,10 +150,6 @@ class HiveDatabase {
 
   void updateLength() {
     boxname.put(code, totalLength);
-  }
-
-  void hClose() {
-    Hive.close();
   }
 
   String getKey(String secKey) {

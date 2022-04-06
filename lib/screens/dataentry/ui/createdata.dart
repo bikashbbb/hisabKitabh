@@ -10,12 +10,12 @@ import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/createdatac.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
+import 'package:app/screens/homescreen/controller/homecontrolls.dart';
+import 'package:app/screens/homescreen/ui/home.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-// add Daily entry
 // this is same for two screens,just make the app bar name a variable,and identify if its editing option,
 class CreateEntry extends StatefulWidget {
   final String appbarTitle;
@@ -70,10 +70,7 @@ class _CreateEntryState extends State<CreateEntry> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Colors.black,
-            statusBarBrightness: Brightness.light,
-            statusBarIconBrightness: Brightness.light),
+        systemOverlayStyle: appStyle,
         title: Text(
           widget.appbarTitle,
           style: appbarStyle,
@@ -85,7 +82,8 @@ class _CreateEntryState extends State<CreateEntry> {
               padding: const EdgeInsets.all(10.0),
               child: InkWell(
                 onTap: () {
-                  Get.back();
+                  //HomeController().changePage(1);
+                  Get.off(() => HisabKitabHome());
                 },
                 child: iconRounder(
                     Icon(
@@ -154,7 +152,8 @@ class _CreateEntryState extends State<CreateEntry> {
                   height: 40.h,
                   child: Obx(() => addTransactionField('acc'.tr,
                       con: fieldslist[0],
-                      isReq: obscontroll.reqFields[0].value)),
+                      isReq: obscontroll.reqFields[0].value,
+                      len: 30)),
                 ),
                 Padding(
                     padding: EdgeInsets.only(left: 5.w),
@@ -366,17 +365,10 @@ class _CreateEntryState extends State<CreateEntry> {
         });
   }
 
-/* 
-  Widget builderCreator() {
-    return GetBuilder<CreateControlls>(
-        init: CreateControlls(), builder: (controlls) {});
-  } */
-
   @override
   void dispose() {
     super.dispose();
-
     RollSwitcherControlls.isSale = false;
-    CreateControlls().onAccNotClear();
+    CreateControlls().onclearFields();
   }
 }

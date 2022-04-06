@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           darkTheme: ThemeData.dark(),
           title: "Hisab Kitab",
-          home: const HisabKitabHome(),
+          home:  HisabKitabHome(),
         );
       },
     );

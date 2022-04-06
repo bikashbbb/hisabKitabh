@@ -22,7 +22,9 @@ TextStyle inputStyle = TextStyle(
   fontSize: 14.sp,
 );
 
-TextStyle optionalstyles(Color color) {
+TextStyle optionalstyles(
+  Color color,
+) {
   return TextStyle(color: color, fontSize: 15.sp, fontWeight: FontWeight.bold);
 }
 
@@ -37,3 +39,5 @@ TextStyle addbuttonStyle = const TextStyle(
 
 TextStyle subTitle =
     TextStyle(color: Colors.black87, fontFamily: fontName, fontSize: 15.sp);
+TextStyle headerS(Color c) =>
+    TextStyle(color: c, fontSize: 20.sp, fontFamily: "customfont");

@@ -14,7 +14,7 @@ class Languages extends Translations {
           "entry2": "Lend Entry",
           "goal2":
               "Here you can store the daily transaction for your business, click on the button below.",
-          "entryb": "Create a new transaction record",
+          "entryb": "Create a new transaction",
           "add": "Add Daily Entry",
           "acc": "Account Name",
           "acctype": "BUY",
@@ -28,13 +28,16 @@ class Languages extends Translations {
           "price": "Price per quantity",
           "option": "*Optional",
           "quantity": "Quantity",
-          "totadd Daily entryal": "Total",
+          "tot": " Total ",
           "amnt": "Amount",
           "per": "Per",
           "A.D": "A.D",
           "B.S": "B.S",
           "details": "Additional Details",
-          "req": "*required"
+          "req": "*required",
+          "tacc": "Total Accounts : ",
+          "s": "Select",
+          "ent": "Entry"
         }
       };
 }

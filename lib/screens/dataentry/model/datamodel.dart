@@ -8,32 +8,32 @@ part 'datamodel.g.dart';
 
 @HiveType(typeId: 0)
 class Transaction extends HiveObject {
-  @HiveType(typeId: 1)
+  @HiveType(typeId: 0)
   String? accName;
-  @HiveType(typeId: 2)
+  @HiveType(typeId: 1)
   bool isSell;
-  @HiveType(typeId: 3)
+  @HiveType(typeId: 2)
   String itemname;
-  @HiveType(typeId: 4)
+  @HiveType(typeId: 3)
   double? totalAmount;
-  @HiveType(typeId: 5)
+  @HiveType(typeId: 4)
   double? totalQuantit;
   //date is required
-  @HiveType(typeId: 6)
+  @HiveType(typeId: 5)
   String quantityType;
-  @HiveType(typeId: 7)
+  @HiveType(typeId: 6)
   double perQuantity;
-  @HiveType(typeId: 8)
+  @HiveType(typeId: 7)
   double perQuantityPrice;
-  @HiveType(typeId: 9)
+  @HiveType(typeId: 8)
 
   /// a unique id that keeps the transactions in order ascending or descending .
   int? uniqueId;
-  @HiveType(typeId: 10)
+  @HiveType(typeId: 9)
   String? createdDate;
-  @HiveType(typeId: 11)
+  @HiveType(typeId: 10)
   String? editedDate;
-  @HiveType(typeId: 12)
+  @HiveType(typeId: 11)
   bool isOnlineStored;
 
   Transaction(
@@ -52,11 +52,14 @@ class Transaction extends HiveObject {
   /// returns transaction by using the variables.
   static Transaction toModel() {
     bool issales = !RollSwitcherControlls.isSale;
+    if (issales) {
+      accountName.text += " (sell)";
+    } else {
+      accountName.text += " (buy)";
+    }
     bool isEmpty = itemName.text.isEmpty;
     return Transaction(
-        accName: issales
-            ? accountName.text + " (sell)"
-            : accountName.text + " (buy)",
+        accName: accountName.text,
         isSell: issales,
         itemname: isEmpty ? " Unnamed Item" : itemName.text,
         totalAmount: TextFieldController.parseDouble(totalAmnt.text),

@@ -4,6 +4,7 @@ import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
+import 'package:app/screens/dataentry/ui/createdata.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -27,7 +28,7 @@ Widget loginButoon(String title, String bName) => Container(
 
 Widget dailyEntryButton() {
   return Container(
-    width: 350.w,
+    width: 200.w,
     height: 60.h,
     decoration: entryButton,
     alignment: Alignment.center,
@@ -295,7 +296,7 @@ class _CalenderState extends State<Calender> {
   }
 }
 
-Widget clearBUtton(String title,  onpressed) {
+Widget clearBUtton(String title, onpressed) {
   return SizedBox(
     height: 45.h,
     width: 45.w,
@@ -310,3 +311,16 @@ Widget clearBUtton(String title,  onpressed) {
     ),
   );
 }
+
+Widget dailyButton = TextButton(
+    style: ButtonStyle(
+      overlayColor: MaterialStateProperty.all(Colors.black12),
+    ),
+    onPressed: () {
+      Get.to(
+        () => CreateEntry(
+          "add".tr,
+        ),
+      );
+    },
+    child: dailyEntryButton());

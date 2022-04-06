@@ -1,6 +1,7 @@
 // i will have all the varibales that i have to use in local db.
 // hive key  items
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 
 String daily = "daily";
@@ -12,6 +13,8 @@ String lendbox = "lenddata";
 String acc = "Accounts";
 String lastUniq = "last unique num";
 
+/// use this to add up with the code to store total amount,
+String tAmount = "t";
 Box dailyBox = Hive.box(userD);
 Box lendBox = Hive.box(lendbox);
 
@@ -23,3 +26,10 @@ String uptoOnline = "up";
 ScrollPhysics scrollPhysics = const ScrollPhysics();
 final GlobalKey<AnimatedListState> listkey = GlobalKey<AnimatedListState>();
 final ScrollController controller = ScrollController();
+final GlobalKey<AnimatedListState> accListKey = GlobalKey<AnimatedListState>();
+
+
+var appStyle = const SystemUiOverlayStyle(
+    statusBarColor: Colors.black,
+    statusBarBrightness: Brightness.light,
+    statusBarIconBrightness: Brightness.light);

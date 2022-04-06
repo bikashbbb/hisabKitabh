@@ -2,7 +2,6 @@ import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
-import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -104,11 +103,14 @@ class _CustomTileState extends State<CustomTile> {
 }
 
 class InfoTile extends StatelessWidget {
-  int index;
+  late int index;
   final Transaction obj;
   InfoTile(this.obj, this.index, {Key? key}) : super(key: key);
 
-  static String toTString(double input) {
+  static String toTString(double? input) {
+    if (input == null) {
+      return 0.0.toString();
+    }
     return input.toString();
   }
 
@@ -121,17 +123,14 @@ class InfoTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     index += 1;
-    String tQuantity = toTString(obj.totalQuantit!);
+    String tQuantity = toTString(obj.totalQuantit);
     String price = toTString(obj.perQuantityPrice);
-    String amnt = toTString(obj.totalAmount!);
+    String amnt = toTString(obj.totalAmount);
     return Padding(
       padding: const EdgeInsets.only(top: 3.0),
       child: Container(
-        //color: secondaryC,
         height: 53.h,
-        // border
         decoration: entryButton,
-
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

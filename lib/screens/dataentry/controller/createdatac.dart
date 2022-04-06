@@ -41,7 +41,7 @@ class CreateControlls extends GetxController {
     if (checkReqFields()) {
       startLoaded();
 
-      HiveDatabase datasaver = HiveDatabase(dailyBox, item);
+      HiveDatabase datasaver = HiveDatabase(dailyBox, object: item);
       if (await _checkWifiSignal()) {
         // save data online
       } else {
