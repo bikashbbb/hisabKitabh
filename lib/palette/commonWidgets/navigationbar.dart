@@ -13,8 +13,8 @@ class BottomNav extends StatefulWidget {
 }
 
 class _BottomNavState extends State<BottomNav> {
-  ValueNotifier activeIndex = ValueNotifier<int>(0);
   var obj = HomeController.to;
+  ValueNotifier activeIndex = ValueNotifier<int>(HomeController.pageIndex - 1);
 
   @override
   Widget build(BuildContext context) {

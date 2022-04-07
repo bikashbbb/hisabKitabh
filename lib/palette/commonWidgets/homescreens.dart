@@ -2,7 +2,6 @@ import 'package:app/palette/commonWidgets/buttons/buttons.dart';
 import 'package:app/palette/commonWidgets/constants/dropdowncons.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/textstyles.dart';
-import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,6 +22,9 @@ class _DataScreenState extends State<DataScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<AnimatedListState> accListKey =
+        GlobalKey<AnimatedListState>();
+
     int tLen = controller.getAccData.length;
     return Scaffold(
       backgroundColor: iconwhite,
@@ -36,12 +38,9 @@ class _DataScreenState extends State<DataScreen> {
                 "tacc".tr,
                 style: headerS(Colors.black54),
               ),
-              Padding(
-                padding: EdgeInsets.only(right: 160.w),
-                child: Text(
-                  tLen.toString(),
-                  style: headerS(Colors.black),
-                ),
+              Text(
+                "9999", //tLen.toString(),
+                style: headerS(Colors.black),
               ),
               handI,
               Padding(

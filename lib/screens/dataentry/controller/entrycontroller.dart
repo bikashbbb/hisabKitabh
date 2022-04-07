@@ -6,18 +6,20 @@ import 'package:app/screens/dataentry/ui/itemcatalog.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
+// fix that bug
 class EntryControlls extends GetxController {
   Box? boxxx;
-  List allAccounts = [];
+  List<String> allAccounts = [];
+
+  bool hasdata = true;
+  late HiveDatabase o;
 
   /// will just hold 15 entries.
+
   List<Transaction> allEntry = [];
   EntryControlls({this.boxxx}) {
     o = HiveDatabase(boxxx!);
   }
-
-  bool hasdata = true;
-  late HiveDatabase o;
 
   get hasDataSaved {
     Map allAccs = o.getAllaccount;
@@ -48,7 +50,6 @@ class EntryControlls extends GetxController {
 
   List<Transaction> getAllEntry(int code) {
     // loop hanna parcha yeha
-    print(boxxx!.get(code.toString() + "900"));
     return allEntry;
   }
 }

@@ -26,7 +26,6 @@ String uptoOnline = "up";
 ScrollPhysics scrollPhysics = const ScrollPhysics();
 final GlobalKey<AnimatedListState> listkey = GlobalKey<AnimatedListState>();
 final ScrollController controller = ScrollController();
-final GlobalKey<AnimatedListState> accListKey = GlobalKey<AnimatedListState>();
 
 
 var appStyle = const SystemUiOverlayStyle(

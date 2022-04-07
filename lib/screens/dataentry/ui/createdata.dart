@@ -10,7 +10,6 @@ import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/createdatac.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
-import 'package:app/screens/homescreen/controller/homecontrolls.dart';
 import 'package:app/screens/homescreen/ui/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -82,8 +81,7 @@ class _CreateEntryState extends State<CreateEntry> {
               padding: const EdgeInsets.all(10.0),
               child: InkWell(
                 onTap: () {
-                  //HomeController().changePage(1);
-                  Get.off(() => HisabKitabHome());
+                  Get.offAll(() => const HisabKitabHome());
                 },
                 child: iconRounder(
                     Icon(
@@ -153,7 +151,7 @@ class _CreateEntryState extends State<CreateEntry> {
                   child: Obx(() => addTransactionField('acc'.tr,
                       con: fieldslist[0],
                       isReq: obscontroll.reqFields[0].value,
-                      len: 30)),
+                      len: 20)),
                 ),
                 Padding(
                     padding: EdgeInsets.only(left: 5.w),

@@ -8,9 +8,10 @@ List<String> itemlist = ["Kg", "gram", "Litre", "Item", "plate"];
 List<String> allfilenames = ["record datas", "personal", ""];
 
 String fontName = "customfont";
-Icon handI = const Icon(
+Icon handI = Icon(
   Icons.pan_tool_outlined,
   size: 20,
+  color: iconGreen,
 );
 Icon contactI = Icon(
   Icons.contact_page,

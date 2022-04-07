@@ -317,7 +317,7 @@ Widget dailyButton = TextButton(
       overlayColor: MaterialStateProperty.all(Colors.black12),
     ),
     onPressed: () {
-      Get.to(
+      Get.off(
         () => CreateEntry(
           "add".tr,
         ),
