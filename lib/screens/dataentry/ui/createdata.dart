@@ -42,23 +42,10 @@ class _CreateEntryState extends State<CreateEntry> {
           init: CreateControlls(),
           builder: (context) {
             return InkWell(
-              onTap: () {
-                obscontroll.onAdditem();
-              },
-              child: Container(
-                alignment: Alignment.center,
-                decoration: circleblackDec,
-                height: 50.h,
-                width: 50.w,
-                child: Text(
-                  "+",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25.sp,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            );
+                onTap: () {
+                  obscontroll.onAdditem();
+                },
+                child: secAddButton());
           }),
       bottomNavigationBar: SizedBox(
         height: 30.h,

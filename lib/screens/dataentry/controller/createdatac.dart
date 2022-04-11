@@ -37,7 +37,7 @@ class CreateControlls extends GetxController {
 
   /// when clicked on add item
   void onAdditem() async {
-    Transaction item = Transaction.toModel();
+    Map item = Transaction.toJson();
     if (checkReqFields()) {
       startLoaded();
 
@@ -48,8 +48,7 @@ class CreateControlls extends GetxController {
         bool result = datasaver.saveModel();
         if (result) {
           onAccNotClear();
-          offlineSucess(item);
-
+          offlineSucess(Transaction.fromJson(item));
           // animate and add
         } else {
           // not clear item

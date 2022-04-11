@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 
 class HiveDatabase {
   Box boxname;
-  Transaction? object;
+  Map? object;
   bool isUpdate;
   HiveDatabase(this.boxname, {this.object, this.isUpdate = false});
 
@@ -43,7 +43,7 @@ class HiveDatabase {
       if (getAllaccount.containsKey(accountName.text)) {
         // get its code ...
         getcode;
-        getTotalLength;
+        getTotalLength(cod: code);
       } else {
         // set its code and totallength
         setCode();
@@ -60,12 +60,13 @@ class HiveDatabase {
     // key will be code+Totallength
     // if object index is empty then set the first one to 0
     objectindex = getobjectIndex;
-    object!.uniqueId = objectindex;
+    object!["uniqueId"] = objectindex;
 
     upateObject();
     updateObjIndex();
     upadteMapLen();
   }
+
   /// uses the code + index...
   void upateObject() {
     boxname.put(code.toString() + objectindex!.toString(), object!);
@@ -114,8 +115,8 @@ class HiveDatabase {
     return code;
   }
 
-  get getTotalLength {
-    totalLength = boxname.get(code);
+  int getTotalLength({int? cod}) {
+    return totalLength = boxname.get(cod!);
   }
 
   get getobjectIndex {
@@ -154,5 +155,9 @@ class HiveDatabase {
 
   String getKey(String secKey) {
     return code.toString() + secKey;
+  }
+
+  Transaction getItems(String key) {
+    return Transaction.fromJson(boxname.get(key));
   }
 }

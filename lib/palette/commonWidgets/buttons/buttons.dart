@@ -28,7 +28,7 @@ Widget loginButoon(String title, String bName) => Container(
 
 Widget dailyEntryButton() {
   return Container(
-    width: 200.w,
+    width: 150.w,
     height: 60.h,
     decoration: entryButton,
     alignment: Alignment.center,
@@ -324,3 +324,21 @@ Widget dailyButton = TextButton(
       );
     },
     child: dailyEntryButton());
+
+Widget selectB = SizedBox(
+  child: Row(children: [handI, select]),
+);
+
+Widget secAddButton() {
+  return Container(
+    alignment: Alignment.center,
+    decoration: circleblackDec,
+    height: 50.h,
+    width: 50.w,
+    child: Text(
+      "+",
+      style: TextStyle(
+          color: Colors.white, fontSize: 25.sp, fontWeight: FontWeight.bold),
+    ),
+  );
+}

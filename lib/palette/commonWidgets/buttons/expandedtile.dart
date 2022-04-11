@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // complete it today and curve container
 class CustomTile extends StatefulWidget {
-  CustomTile(
+const  CustomTile(
       {Key? key,
       this.nonExpandedHeight = 30,
       this.nonExpandedWidth = 200,
@@ -23,34 +23,34 @@ class CustomTile extends StatefulWidget {
       : super(key: key);
 
   /// height when tile is not opened
-  double nonExpandedHeight;
+  final double nonExpandedHeight;
 
   /// width when tile is not opened
-  double nonExpandedWidth;
+  final double nonExpandedWidth;
 
   /// height of the expanded body
-  double expansionHeight;
+  final double expansionHeight;
 
   /// non expanded color, default to green
-  Color? nonExpandedcolor;
+  final Color? nonExpandedcolor;
 
   /// tilte widget to display at the head before expansion
   final Widget? title;
 
   /// state of the tile
-  bool isExpanded;
+  final bool isExpanded;
 
   /// a icon to display after the title
-  IconData trailingicon;
+  final IconData trailingicon;
 
   /// body of the expanded tile , i.e Column
-  Widget? body;
+  final Widget? body;
 
   /// a widget before a title widget
-  Widget? leding;
+  final Widget? leding;
 
   /// title disapper on click
-  bool onclikDisapper;
+  final bool onclikDisapper;
 
   @override
   _CustomTileState createState() => _CustomTileState();

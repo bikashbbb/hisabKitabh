@@ -10,13 +10,15 @@ import 'package:hive/hive.dart';
 class EntryControlls extends GetxController {
   Box? boxxx;
   List<String> allAccounts = [];
+  int intitalI = 15;
+  int cIndex = 0;
 
   bool hasdata = true;
   late HiveDatabase o;
 
   /// will just hold 15 entries.
-
   List<Transaction> allEntry = [];
+
   EntryControlls({this.boxxx}) {
     o = HiveDatabase(boxxx!);
   }
@@ -42,14 +44,26 @@ class EntryControlls extends GetxController {
   // when clicked on the tile
   void onTileTapped(String accName) {
     int code = o.getAllaccount[accName];
-    Get.to(() => AllTransactions(
+    Get.off(() => AllTransactions(
           accCode: code,
           accName: accName,
         ));
   }
 
+  /// only 15 at first and after the 15 is complete next next .
   List<Transaction> getAllEntry(int code) {
     // loop hanna parcha yeha
+    o.getTotalLength(cod: code);
+
+    for (cIndex; cIndex < o.totalLength; cIndex++) {
+      if (cIndex == intitalI) {
+        cIndex++;
+        intitalI += intitalI;
+        break;
+      }
+      allEntry.add( o.getItems(code.toString() + cIndex.toString()));
+    }
+
     return allEntry;
   }
 }
