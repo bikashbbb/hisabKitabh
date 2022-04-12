@@ -52,16 +52,17 @@ class Transaction extends HiveObject {
 
   static Map<String, dynamic> toJson() {
     bool issales = !RollSwitcherControlls.isSale;
+    String aName;
     if (issales) {
-      accountName.text += " (sell)";
+      aName = accountName.text + " (sell)";
     } else {
-      accountName.text += " (buy)";
+      aName = accountName.text += " (buy)";
     }
     bool isEmpty = itemName.text.isEmpty;
     return {
       "uniqueId": 0,
       "isOnlineStored": false,
-      "accName": accountName.text,
+      "accName": aName,
       "isSell": issales,
       "itemname": isEmpty ? " Unnamed Item" : itemName.text,
       "totalAmount": TextFieldController.parseDouble(totalAmnt.text),
