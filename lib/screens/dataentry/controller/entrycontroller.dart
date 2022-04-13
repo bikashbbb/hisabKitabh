@@ -42,11 +42,12 @@ class EntryControlls extends GetxController {
   }
 
   // when clicked on the tile
-  void onTileTapped(String accName) {
+  void onTileTapped(String accName,bool isdaily) {
     int code = o.getAllaccount[accName];
-    Get.off(() => AllTransactions(
+    Get.to(() => AllTransactions(
           accCode: code,
           accName: accName,
+          isdaily: isdaily,
         ));
   }
 
@@ -61,7 +62,7 @@ class EntryControlls extends GetxController {
         intitalI += intitalI;
         break;
       }
-      allEntry.add( o.getItems(code.toString() + cIndex.toString()));
+      allEntry.add(o.getItems(code.toString() + cIndex.toString()));
     }
 
     return allEntry;

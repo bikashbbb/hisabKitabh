@@ -2,9 +2,7 @@ import 'package:app/palette/commonWidgets/buttons/buttons.dart';
 import 'package:app/palette/commonWidgets/constants/dropdowncons.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/textstyles.dart';
-import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
-import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
@@ -28,7 +26,6 @@ class _DataScreenState extends State<DataScreen> {
         GlobalKey<AnimatedListState>();
 
     int tLen = controller.getAccData.length;
-    
 
     return Scaffold(
       floatingActionButton: dailyButton,
@@ -74,7 +71,7 @@ class _DataScreenState extends State<DataScreen> {
     return Card(
       child: ListTile(
         onTap: () {
-          controller.onTileTapped(txt);
+          controller.onTileTapped(txt,widget.isDaily);
         },
         tileColor: secondaryC,
         leading: contactI,

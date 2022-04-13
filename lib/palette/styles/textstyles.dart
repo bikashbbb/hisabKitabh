@@ -38,6 +38,6 @@ TextStyle addbuttonStyle = const TextStyle(
 );
 
 TextStyle subTitle =
-    TextStyle(color: Colors.black87, fontFamily: fontName, fontSize: 15.sp);
+    TextStyle(color: Colors.black54, fontFamily: fontName, fontSize: 15.sp);
 TextStyle headerS(Color c) =>
     TextStyle(color: c, fontSize: 20.sp, fontFamily: "customfont");

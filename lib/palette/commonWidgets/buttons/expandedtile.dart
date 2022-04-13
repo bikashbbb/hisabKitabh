@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // complete it today and curve container
 class CustomTile extends StatefulWidget {
-const  CustomTile(
+  const CustomTile(
       {Key? key,
       this.nonExpandedHeight = 30,
       this.nonExpandedWidth = 200,
@@ -201,7 +201,7 @@ class InfoTile extends StatelessWidget {
                       moneyI,
                       Text(
                         amnt,
-                        style: subTitle,
+                        style: inputStyle,
                       )
                     ],
                   ),

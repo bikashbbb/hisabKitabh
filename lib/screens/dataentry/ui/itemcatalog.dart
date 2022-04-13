@@ -5,30 +5,46 @@ import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
-import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/instance_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive/hive.dart';
 
 // have only 15 items rendered at first ...
 class AllTransactions extends StatelessWidget {
   final int accCode;
   final String accName;
+  final String navName;
+  final bool isdaily;
 
-  AllTransactions({Key? key, required this.accCode, required this.accName})
+ const AllTransactions(
+      {Key? key,
+      required this.accCode,
+      required this.accName,
+      this.navName = "",
+      required this.isdaily})
       : super(key: key);
-
-  final controller = Get.find<EntryControlls>();
 
   @override
   Widget build(BuildContext context) {
+    final controller =
+        Get.put(EntryControlls(boxxx: isdaily ? dailyBox : lendBox));
+
     controller.getAllEntry(accCode);
     return Scaffold(
       floatingActionButton: secAddButton(),
       backgroundColor: iconwhite,
       appBar: AppBar(
         leadingWidth: 30,
+        leading: InkWell(
+          child: Icon(Icons.safety_divider),
+          onTap: () {
+            Get.delete<EntryControlls>();
+            Get.back();
+          },
+        ),
         backgroundColor: secondaryC,
         iconTheme: IconThemeData(color: iconGreen),
         systemOverlayStyle: appStyle,

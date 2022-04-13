@@ -17,6 +17,7 @@ String lastUniq = "last unique num";
 String tAmount = "t";
 Box dailyBox = Hive.box(userD);
 Box lendBox = Hive.box(lendbox);
+bool isDaily = true;
 
 // secret keyword for itemnms
 /// this will keep record of the object index
@@ -26,7 +27,6 @@ String uptoOnline = "up";
 ScrollPhysics scrollPhysics = const ScrollPhysics();
 final GlobalKey<AnimatedListState> listkey = GlobalKey<AnimatedListState>();
 final ScrollController controller = ScrollController();
-
 
 var appStyle = const SystemUiOverlayStyle(
     statusBarColor: Colors.black,

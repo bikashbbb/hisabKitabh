@@ -5,7 +5,6 @@ import 'package:app/palette/commonWidgets/ctextfields.dart';
 import 'package:app/palette/commonWidgets/icon_rounder.dart';
 import 'package:app/palette/commonWidgets/rollswitch.dart';
 import 'package:app/palette/styles/colors.dart';
-import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/createdatac.dart';
@@ -21,6 +20,10 @@ class CreateEntry extends StatefulWidget {
   final bool isDaily;
   const CreateEntry(this.appbarTitle, {Key? key, this.isDaily = true})
       : super(key: key);
+
+  static void onBack() {
+    Get.offAll(() => const HisabKitabHome());
+  }
 
   @override
   State<CreateEntry> createState() => _CreateEntryState();
@@ -67,9 +70,7 @@ class _CreateEntryState extends State<CreateEntry> {
           Padding(
               padding: const EdgeInsets.all(10.0),
               child: InkWell(
-                onTap: () {
-                  Get.offAll(() => const HisabKitabHome());
-                },
+                onTap: CreateEntry.onBack,
                 child: iconRounder(
                     Icon(
                       Icons.close,
