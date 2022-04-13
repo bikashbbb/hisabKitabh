@@ -10,7 +10,6 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/instance_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hive/hive.dart';
 
 // have only 15 items rendered at first ...
 class AllTransactions extends StatelessWidget {
@@ -19,7 +18,7 @@ class AllTransactions extends StatelessWidget {
   final String navName;
   final bool isdaily;
 
- const AllTransactions(
+  const AllTransactions(
       {Key? key,
       required this.accCode,
       required this.accName,
@@ -33,14 +32,14 @@ class AllTransactions extends StatelessWidget {
         Get.put(EntryControlls(boxxx: isdaily ? dailyBox : lendBox));
 
     controller.getAllEntry(accCode);
+    
     return Scaffold(
       floatingActionButton: secAddButton(),
       backgroundColor: iconwhite,
       appBar: AppBar(
         leadingWidth: 30,
-        leading: InkWell(
-          child: Icon(Icons.safety_divider),
-          onTap: () {
+        leading: BackButton(
+          onPressed: () {
             Get.delete<EntryControlls>();
             Get.back();
           },

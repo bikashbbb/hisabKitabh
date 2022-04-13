@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 
 String daily = "daily";
-
+String aName = "";
 // hive box names
 String userD = "User Data";
 String lendbox = "lenddata";

@@ -1,6 +1,7 @@
 // planning: Create some model,with hive
 
 import 'package:app/palette/commonWidgets/constants/dropdowncons.dart';
+import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/createdatac.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:hive/hive.dart';
@@ -52,7 +53,7 @@ class Transaction extends HiveObject {
 
   static Map<String, dynamic> toJson() {
     bool issales = !RollSwitcherControlls.isSale;
-    String aName;
+
     if (issales) {
       aName = accountName.text + " (sell)";
     } else {

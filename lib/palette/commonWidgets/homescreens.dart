@@ -71,7 +71,7 @@ class _DataScreenState extends State<DataScreen> {
     return Card(
       child: ListTile(
         onTap: () {
-          controller.onTileTapped(txt,widget.isDaily);
+          controller.onTileTapped(txt, widget.isDaily);
         },
         tileColor: secondaryC,
         leading: contactI,

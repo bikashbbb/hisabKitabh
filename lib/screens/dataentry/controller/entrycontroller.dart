@@ -1,5 +1,6 @@
 // it  will hold the entry homes datas.
 
+import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/hive/datasaver.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/ui/itemcatalog.dart';
@@ -42,8 +43,9 @@ class EntryControlls extends GetxController {
   }
 
   // when clicked on the tile
-  void onTileTapped(String accName,bool isdaily) {
+  void onTileTapped(String accName, bool isdaily) {
     int code = o.getAllaccount[accName];
+
     Get.to(() => AllTransactions(
           accCode: code,
           accName: accName,

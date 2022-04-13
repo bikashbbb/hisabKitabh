@@ -40,7 +40,7 @@ class HiveDatabase {
 
   void setAcc() {
     if (boxname.containsKey(acc)) {
-      if (getAllaccount.containsKey(accountName.text)) {
+      if (getAllaccount.containsKey(aName)) {
         // get its code ...
         getcode;
         getTotalLength(cod: code);
@@ -87,7 +87,7 @@ class HiveDatabase {
 
   /// uses the account name as key to set the data..
   Map allAccountstosjon(int uid) {
-    return {accountName.text: uid};
+    return {aName: uid};
   }
 
   /// this gives unique number for the total account
@@ -111,7 +111,7 @@ class HiveDatabase {
 
   get getcode {
     getAllaccount;
-    code = allaccount![accountName.text];
+    code = allaccount![aName];
     return code;
   }
 
@@ -135,7 +135,8 @@ class HiveDatabase {
   void setCode() {
     getAllaccount;
     code = giveUniqueNum();
-    allaccount![accountName.text] = code;
+    boxname.put(lastUniq, code);
+    allaccount![aName] = code;
     updateCode();
   }
 
