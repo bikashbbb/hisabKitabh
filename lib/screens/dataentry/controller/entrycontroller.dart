@@ -1,6 +1,5 @@
 // it  will hold the entry homes datas.
-
-import 'package:app/screens/dataentry/const.dart';
+// TODO: FETURE OF SCROOL, REMOVE AN ITEM
 import 'package:app/screens/dataentry/hive/datasaver.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/ui/itemcatalog.dart';
@@ -11,14 +10,14 @@ import 'package:hive/hive.dart';
 class EntryControlls extends GetxController {
   Box? boxxx;
   List<String> allAccounts = [];
-  int intitalI = 15;
+  int intitalI = 14;
   int cIndex = 0;
 
   bool hasdata = true;
   late HiveDatabase o;
 
   /// will just hold 15 entries.
-  List<Transaction> allEntry = [];
+  RxList allEntry = [].obs;
 
   EntryControlls({this.boxxx}) {
     o = HiveDatabase(boxxx!);
@@ -45,7 +44,6 @@ class EntryControlls extends GetxController {
   // when clicked on the tile
   void onTileTapped(String accName, bool isdaily) {
     int code = o.getAllaccount[accName];
-
     Get.to(() => AllTransactions(
           accCode: code,
           accName: accName,
@@ -54,19 +52,17 @@ class EntryControlls extends GetxController {
   }
 
   /// only 15 at first and after the 15 is complete next next .
-  List<Transaction> getAllEntry(int code) {
+  void getAllEntry(int code, {bool isScrolling = false}) {
     // loop hanna parcha yeha
     o.getTotalLength(cod: code);
-
     for (cIndex; cIndex < o.totalLength; cIndex++) {
+      allEntry.add(o.getItems(code.toString() + cIndex.toString()));
       if (cIndex == intitalI) {
         cIndex++;
         intitalI += intitalI;
         break;
       }
-      allEntry.add(o.getItems(code.toString() + cIndex.toString()));
     }
-
-    return allEntry;
+    // allEntry.refresh();
   }
 }

@@ -7,6 +7,7 @@ import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/instance_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,13 +19,14 @@ class AllTransactions extends StatelessWidget {
   final String navName;
   final bool isdaily;
 
-  const AllTransactions(
+  AllTransactions(
       {Key? key,
       required this.accCode,
       required this.accName,
       this.navName = "",
       required this.isdaily})
       : super(key: key);
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class AllTransactions extends StatelessWidget {
         Get.put(EntryControlls(boxxx: isdaily ? dailyBox : lendBox));
 
     controller.getAllEntry(accCode);
-    
+
     return Scaffold(
       floatingActionButton: secAddButton(),
       backgroundColor: iconwhite,
@@ -77,13 +79,25 @@ class AllTransactions extends StatelessWidget {
             height: 15.h,
           ),
           // if its online have a stream builder else,a Listview builder.
-          // have a stream builder here !!
-          Expanded(
-            child: ListView.builder(
-                itemCount: controller.allEntry.length,
-                itemBuilder: (ctx, i) {
-                  return InfoTile(controller.allEntry[i], i);
-                }),
+
+          Obx(
+            () => Expanded(
+              child: NotificationListener<ScrollUpdateNotification>(
+                child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: controller.allEntry.length,
+                    itemBuilder: (ctx, i) {
+                      return InfoTile(controller.allEntry[i], i);
+                    }),
+                onNotification: (not) {
+                  if (_scrollController.position.maxScrollExtent ==
+                      _scrollController.position.pixels) {
+                    controller.getAllEntry(accCode, isScrolling: true);
+                  }
+                  return true;
+                },
+              ),
+            ),
           )
         ],
       ),
