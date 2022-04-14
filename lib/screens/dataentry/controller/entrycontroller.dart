@@ -10,8 +10,9 @@ import 'package:hive/hive.dart';
 class EntryControlls extends GetxController {
   Box? boxxx;
   List<String> allAccounts = [];
-  int intitalI = 14;
+  int _intitalI = 14;
   int cIndex = 0;
+  late int _totalLen;
 
   bool hasdata = true;
   late HiveDatabase o;
@@ -55,18 +56,19 @@ class EntryControlls extends GetxController {
   /// only 15 at first and after the 15 is complete next next .
   void getAllEntry(int code, {bool isScrolling = false}) {
     // loop hanna parcha yeha
-    o.getTotalLength(cod: code);
-    for (cIndex; cIndex < o.totalLength; cIndex++) {
+    _totalLen = o.getTotalLength(cod: code);
+    for (cIndex; cIndex < _totalLen; cIndex++) {
       Transaction? out = o.getItems(code.toString() + cIndex.toString());
       if (out != null) {
         allEntry.add(out);
       } else {
-        intitalI++;
+        _totalLen += 1;
+        _intitalI += 1;
       }
 
-      if (cIndex == intitalI) {
+      if (cIndex == _intitalI) {
         cIndex++;
-        intitalI += intitalI;
+        _intitalI += _intitalI;
         break;
       }
     }
