@@ -105,7 +105,9 @@ class _CustomTileState extends State<CustomTile> {
 class InfoTile extends StatelessWidget {
   late int index;
   final Transaction obj;
-  InfoTile(this.obj, this.index, {Key? key}) : super(key: key);
+  final bool iSselectTap;
+  InfoTile(this.obj, this.index, {Key? key, this.iSselectTap = false})
+      : super(key: key);
 
   static String toTString(double? input) {
     if (input == null) {
@@ -126,88 +128,104 @@ class InfoTile extends StatelessWidget {
     String tQuantity = toTString(obj.totalQuantit);
     String price = toTString(obj.perQuantityPrice);
     String amnt = toTString(obj.totalAmount);
+
     return Padding(
       padding: const EdgeInsets.only(top: 3.0),
-      child: Container(
-        height: 53.h,
-        decoration: entryButton,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      child: AnimatedContainer(
+        duration: const Duration(seconds: 1),
+        child: Row(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  " $index .",
-                  style: subTitle,
+            iSselectTap
+                ? const Icon(
+                    Icons.check_box_outline_blank,
+                    color: Colors.black,
+                  )
+                : const SizedBox(),
+            Expanded(
+              child: Container(
+                height: 53.h,
+                decoration: entryButton,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          " $index .",
+                          style: subTitle,
+                        ),
+                        Icon(
+                          Icons.account_circle_outlined,
+                          color: black,
+                          size: 25,
+                        ),
+                        SizedBox(
+                          width: 260.w,
+                          child: Text(
+                            obj.accName!,
+                            style: inputStyle,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                        ),
+                        const Expanded(child: Text("")),
+                        Text(
+                          obj.createdDate!,
+                          style: subTitle,
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: 100.w,
+                          child: Text(
+                            obj.itemname,
+                            style: subTitle,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        SizedBox(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                tQuantity + " " + obj.quantityType + " X ",
+                                style: subTitle,
+                              ),
+                              moneyI,
+                              Text(
+                                price,
+                                style: inputStyle,
+                              )
+                            ],
+                          ),
+                        ),
+                        Text(
+                          "=",
+                          style: subTitle,
+                        ),
+                        SizedBox(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              moneyI,
+                              Text(
+                                amnt,
+                                style: inputStyle,
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    )
+                  ],
                 ),
-                Icon(
-                  Icons.account_circle_outlined,
-                  color: black,
-                  size: 25,
-                ),
-                SizedBox(
-                  width: 260.w,
-                  child: Text(
-                    obj.accName!,
-                    style: inputStyle,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-                ),
-                const Expanded(child: Text("")),
-                Text(
-                  obj.createdDate!,
-                  style: subTitle,
-                )
-              ],
+              ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 100.w,
-                  child: Text(
-                    obj.itemname,
-                    style: subTitle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                SizedBox(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        tQuantity + " " + obj.quantityType + " X ",
-                        style: subTitle,
-                      ),
-                      moneyI,
-                      Text(
-                        price,
-                        style: inputStyle,
-                      )
-                    ],
-                  ),
-                ),
-                Text(
-                  "=",
-                  style: subTitle,
-                ),
-                SizedBox(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      moneyI,
-                      Text(
-                        amnt,
-                        style: inputStyle,
-                      )
-                    ],
-                  ),
-                )
-              ],
-            )
           ],
         ),
       ),

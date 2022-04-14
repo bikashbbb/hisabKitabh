@@ -158,7 +158,11 @@ class HiveDatabase {
     return code.toString() + secKey;
   }
 
-  Transaction getItems(String key) {
-    return Transaction.fromJson(boxname.get(key));
+  Transaction? getItems(String key) {
+    Map? output = boxname.get(key);
+    if (output == null) {
+      return null;
+    }
+    return Transaction.fromJson(output);
   }
 }

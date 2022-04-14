@@ -15,6 +15,7 @@ class EntryControlls extends GetxController {
 
   bool hasdata = true;
   late HiveDatabase o;
+  bool isSelectTap = false;
 
   /// will just hold 15 entries.
   RxList allEntry = [].obs;
@@ -56,13 +57,27 @@ class EntryControlls extends GetxController {
     // loop hanna parcha yeha
     o.getTotalLength(cod: code);
     for (cIndex; cIndex < o.totalLength; cIndex++) {
-      allEntry.add(o.getItems(code.toString() + cIndex.toString()));
+      Transaction? out = o.getItems(code.toString() + cIndex.toString());
+      if (out != null) {
+        allEntry.add(out);
+      } else {
+        intitalI++;
+      }
+
       if (cIndex == intitalI) {
         cIndex++;
         intitalI += intitalI;
         break;
       }
     }
-    // allEntry.refresh();
+    //allEntry.refresh();
+  }
+
+  /// remmoves an item from the list as well as
+  void removeItemFromDb(int accCode) {}
+// select tapp garesi hamro animated container ko side ma euta checkbox aauxaaaa
+  void onSelectTap() {
+    isSelectTap = !isSelectTap;
+    update();
   }
 }

@@ -8,6 +8,7 @@ import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/instance_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -58,7 +59,7 @@ class AllTransactions extends StatelessWidget {
             ),
           ],
         ),
-        actions: [InkWell(onTap: () {}, child: selectB)],
+        actions: [InkWell(onTap: controller.onSelectTap, child: selectB)],
       ),
       // HAVE A NAVIGATION BAR ALSO
       body: Column(
@@ -87,7 +88,16 @@ class AllTransactions extends StatelessWidget {
                     controller: _scrollController,
                     itemCount: controller.allEntry.length,
                     itemBuilder: (ctx, i) {
-                      return InfoTile(controller.allEntry[i], i);
+                      return GetBuilder<EntryControlls>(
+                        init: controller,
+                        builder: (context) {
+                          return InfoTile(
+                            controller.allEntry[i],
+                            i,
+                            iSselectTap: controller.isSelectTap,
+                          );
+                        }
+                      );
                     }),
                 onNotification: (not) {
                   if (_scrollController.position.maxScrollExtent ==
