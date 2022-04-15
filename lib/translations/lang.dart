@@ -37,7 +37,8 @@ class Languages extends Translations {
           "req": "*required",
           "tacc": "Total Accounts : ",
           "s": "Select ",
-          "ent": "Entry"
+          "ent": "Entry",
+          "u":"Un"
         }
       };
 }

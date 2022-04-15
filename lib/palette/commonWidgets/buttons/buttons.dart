@@ -3,6 +3,7 @@ import 'package:app/palette/commonWidgets/helptext.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/styles/textstyles.dart';
+import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:app/screens/dataentry/ui/createdata.dart';
 import 'package:flutter/material.dart';
@@ -341,4 +342,41 @@ Widget secAddButton() {
           color: Colors.white, fontSize: 25.sp, fontWeight: FontWeight.bold),
     ),
   );
+}
+
+class CustomCheckBox extends StatelessWidget {
+  final bool iSselectTap;
+  final EntryControlls controller;
+  final int index;
+  final int uniqueId;
+
+  const CustomCheckBox(
+      {Key? key,
+      this.iSselectTap = false,
+      required this.controller,
+      required this.index,
+      required this.uniqueId})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<EntryControlls>(
+        init: controller,
+        builder: (context) {
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            width: iSselectTap ? 20 : 0,
+            child: Theme(
+                data: ThemeData(
+                  primarySwatch: Colors.green,
+                  unselectedWidgetColor: Colors.black, // Your color
+                ),
+                child: Checkbox(
+                    value: controller.isItSelected(index),
+                    onChanged: (b) {
+                      controller.onCheckBoxTapped(index, uniqueId);
+                    })),
+          );
+        });
+  }
 }

@@ -1,9 +1,14 @@
+import 'package:app/palette/commonWidgets/buttons/buttons.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/styles/textstyles.dart';
+import 'package:app/screens/dataentry/const.dart';
+import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 // complete it today and curve container
 class CustomTile extends StatefulWidget {
@@ -106,7 +111,9 @@ class InfoTile extends StatelessWidget {
   late int index;
   final Transaction obj;
   final bool iSselectTap;
-  InfoTile(this.obj, this.index, {Key? key, this.iSselectTap = false})
+  final EntryControlls? controller;
+  InfoTile(this.obj, this.index,
+      {Key? key, this.iSselectTap = false, this.controller})
       : super(key: key);
 
   static String toTString(double? input) {
@@ -131,17 +138,24 @@ class InfoTile extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(top: 3.0),
-      child: AnimatedContainer(
-        duration: const Duration(seconds: 1),
-        child: Row(
-          children: [
-            iSselectTap
-                ? const Icon(
-                    Icons.check_box_outline_blank,
-                    color: Colors.black,
-                  )
-                : const SizedBox(),
-            Expanded(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          /* const Icon(
+                  Icons.check_box,
+                  color: Colors.black,
+                ) */
+          CustomCheckBox(
+            controller: controller!,
+            index: index,
+            uniqueId: obj.uniqueId!,
+            iSselectTap: iSselectTap,
+          ),
+          Expanded(
+            child: InkWell(
+              onTap: () {
+                controller!.onCheckBoxTapped(index, obj.uniqueId!);
+              },
               child: Container(
                 height: 53.h,
                 decoration: entryButton,
@@ -149,10 +163,9 @@ class InfoTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          " $index .",
+                          " $index.",
                           style: subTitle,
                         ),
                         Icon(
@@ -161,7 +174,7 @@ class InfoTile extends StatelessWidget {
                           size: 25,
                         ),
                         SizedBox(
-                          width: 260.w,
+                          width: iSselectTap ? 240.w : 260.w,
                           child: Text(
                             obj.accName!,
                             style: inputStyle,
@@ -226,8 +239,8 @@ class InfoTile extends StatelessWidget {
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

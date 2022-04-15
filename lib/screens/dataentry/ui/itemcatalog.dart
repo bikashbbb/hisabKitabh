@@ -53,64 +53,83 @@ class AllTransactions extends StatelessWidget {
         title: Row(
           children: [
             contactI,
-            Text(
-              accName,
-              style: appbarStyle,
+            SizedBox(
+              width: 220.w,
+              child: Text(
+                accName,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: appbarStyle,
+              ),
             ),
           ],
         ),
         actions: [InkWell(onTap: controller.onSelectTap, child: selectB)],
       ),
       // HAVE A NAVIGATION BAR ALSO
-      body: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "tot".tr +
-                    "ent".tr +
-                    " : " +
-                    controller.o.totalLength.toString(),
-                style: subTitle,
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 15.h,
-          ),
-          // if its online have a stream builder else,a Listview builder.
+      body: GetBuilder<EntryControlls>(
+          init: controller,
+          builder: (context) {
+            return Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "tot".tr +
+                          "ent".tr +
+                          " : " +
+                          controller.o.totalLength.toString(),
+                      style: subTitle,
+                    ),
+                    const Expanded(child: Text("data")),
+                    controller.isDeleteOn()
+                        ? const SizedBox()
+                        : InkWell(
+                            onTap: controller.onUnselectTap,
+                            child: Icon(
+                              Icons.cancel_outlined,
+                              color: black,
+                            )),
+                    const Text("     "),
+                    Icon(
+                      Icons.delete_forever_outlined,
+                      color: controller.isDeleteOn() ? null : Colors.red,
+                      size: 33,
+                    )
+                    //AnimatedIcon(icon: icon, progress: progress)
+                  ],
+                ),
 
-          Obx(
-            () => Expanded(
-              child: NotificationListener<ScrollUpdateNotification>(
-                child: ListView.builder(
-                    controller: _scrollController,
-                    itemCount: controller.allEntry.length,
-                    itemBuilder: (ctx, i) {
-                      return GetBuilder<EntryControlls>(
-                        init: controller,
-                        builder: (context) {
-                          return InfoTile(
-                            controller.allEntry[i],
-                            i,
-                            iSselectTap: controller.isSelectTap,
-                          );
+                // if its online have a stream builder else,a Listview builder.
+
+                Obx(
+                  () => Expanded(
+                    child: NotificationListener<ScrollUpdateNotification>(
+                      child: ListView.builder(
+                          controller: _scrollController,
+                          itemCount: controller.allEntry.length,
+                          itemBuilder: (ctx, i) {
+                            return InfoTile(
+                              controller.allEntry[i],
+                              i,
+                              iSselectTap: controller.isSelectTap,
+                              controller: controller,
+                            );
+                          }),
+                      onNotification: (not) {
+                        if (_scrollController.position.maxScrollExtent ==
+                            _scrollController.position.pixels) {
+                          controller.getAllEntry(accCode, isScrolling: true);
                         }
-                      );
-                    }),
-                onNotification: (not) {
-                  if (_scrollController.position.maxScrollExtent ==
-                      _scrollController.position.pixels) {
-                    controller.getAllEntry(accCode, isScrolling: true);
-                  }
-                  return true;
-                },
-              ),
-            ),
-          )
-        ],
-      ),
+                        return true;
+                      },
+                    ),
+                  ),
+                )
+              ],
+            );
+          }),
     );
   }
 }
