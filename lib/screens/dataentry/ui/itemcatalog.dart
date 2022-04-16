@@ -64,12 +64,13 @@ class AllTransactions extends StatelessWidget {
             ),
           ],
         ),
-        actions: [InkWell(onTap: controller.onSelectTap, child: selectB)],
+        actions: [selectButon(controller)],
       ),
       // HAVE A NAVIGATION BAR ALSO
       body: GetBuilder<EntryControlls>(
           init: controller,
-          builder: (context) {
+          builder: (c) {
+            bool val = controller.isDeleteOn(c.selectedItem);
             return Column(
               children: [
                 Row(
@@ -82,22 +83,7 @@ class AllTransactions extends StatelessWidget {
                           controller.o.totalLength.toString(),
                       style: subTitle,
                     ),
-                    const Expanded(child: Text("data")),
-                    controller.isDeleteOn()
-                        ? const SizedBox()
-                        : InkWell(
-                            onTap: controller.onUnselectTap,
-                            child: Icon(
-                              Icons.cancel_outlined,
-                              color: black,
-                            )),
-                    const Text("     "),
-                    Icon(
-                      Icons.delete_forever_outlined,
-                      color: controller.isDeleteOn() ? null : Colors.red,
-                      size: 33,
-                    )
-                    //AnimatedIcon(icon: icon, progress: progress)
+                    DeleteNunSelect(controller.selectedItem,isHome: false,)
                   ],
                 ),
 
@@ -113,6 +99,8 @@ class AllTransactions extends StatelessWidget {
                             return InfoTile(
                               controller.allEntry[i],
                               i,
+                              haveCheckbox: true,
+                              db: controller.selectedItem,
                               iSselectTap: controller.isSelectTap,
                               controller: controller,
                             );

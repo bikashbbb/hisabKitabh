@@ -24,3 +24,4 @@ Widget select = Text(
   style: headerS(Colors.black),
 );
 
+var dura = const Duration(milliseconds: 300);

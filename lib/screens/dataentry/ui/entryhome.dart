@@ -26,12 +26,7 @@ class DailyEntryPage extends StatelessWidget {
           child: GetBuilder<EntryControlls>(
               init: EntryControlls(boxxx: bwx),
               builder: (b) {
-                return b.hasDataSaved
-                    ? const Padding(
-                        padding: EdgeInsets.only(left: 8.0),
-                        child: DataScreen(),
-                      )
-                    : entryFirst();
+                return b.hasDataSaved ? const DataScreen() : entryFirst();
               }),
         ));
   }

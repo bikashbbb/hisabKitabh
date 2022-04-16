@@ -17,11 +17,13 @@ class EntryControlls extends GetxController {
   bool hasdata = true;
   late HiveDatabase o;
   bool isSelectTap = false;
+  bool isSelectTapHome = false;
 
   /// will just hold 15 entries.
   RxList allEntry = [].obs;
 
   Map selectedItem = {};
+  Map selectedItemHOme = {};
 
   EntryControlls({this.boxxx}) {
     o = HiveDatabase(boxxx!);
@@ -85,27 +87,32 @@ class EntryControlls extends GetxController {
     update();
   }
 
-  void onUnselectTap() {
-    selectedItem.clear();
+  void onSelectTapHome() {
+    isSelectTapHome = !isSelectTapHome;
+    update();
+  }
+
+  void onUnselectTap(Map input, bool isHome) {
+    input.clear();
     onSelectTap();
   }
 
   /// adds up the index with unique id in the map , so we can remove both from the list ..... yes yes
-  void onCheckBoxTapped(int i, int uId) {
-    if (isItSelected(i)) {
-      selectedItem.remove(i);
+  void onCheckBoxTapped(int i, dynamic uId, {Map? input}) {
+    if (isItSelected(i, input!)) {
+      input.remove(i);
       update();
     } else {
-      selectedItem[i] = uId;
+      input[i] = uId;
       update();
     }
   }
 
-  bool isItSelected(int i) {
-    return selectedItem.containsKey(i);
+  bool isItSelected(int i, Map m) {
+    return m.containsKey(i);
   }
 
-  bool isDeleteOn() {
-    return selectedItem.isEmpty;
+  bool isDeleteOn(Map input) {
+    return input.isEmpty;
   }
 }

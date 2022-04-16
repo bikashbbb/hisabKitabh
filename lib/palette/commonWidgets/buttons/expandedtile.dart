@@ -112,8 +112,14 @@ class InfoTile extends StatelessWidget {
   final Transaction obj;
   final bool iSselectTap;
   final EntryControlls? controller;
+  final Map? db;
+  final bool haveCheckbox;
   InfoTile(this.obj, this.index,
-      {Key? key, this.iSselectTap = false, this.controller})
+      {Key? key,
+      this.iSselectTap = false,
+      this.controller,
+      this.db,
+      required this.haveCheckbox})
       : super(key: key);
 
   static String toTString(double? input) {
@@ -141,20 +147,21 @@ class InfoTile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          /* const Icon(
-                  Icons.check_box,
-                  color: Colors.black,
-                ) */
-          CustomCheckBox(
-            controller: controller!,
-            index: index,
-            uniqueId: obj.uniqueId!,
-            iSselectTap: iSselectTap,
-          ),
+          haveCheckbox
+              ? CustomCheckBox(
+                  controller: controller!,
+                  index: index,
+                  uniqueId: obj.uniqueId!,
+                  iSselectTap: iSselectTap,
+                )
+              : const SizedBox(),
           Expanded(
             child: InkWell(
               onTap: () {
-                controller!.onCheckBoxTapped(index, obj.uniqueId!);
+                haveCheckbox
+                    ? controller!
+                        .onCheckBoxTapped(index, obj.uniqueId!, input: db)
+                    : null;
               },
               child: Container(
                 height: 53.h,

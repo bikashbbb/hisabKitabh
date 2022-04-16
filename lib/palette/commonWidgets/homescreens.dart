@@ -3,8 +3,10 @@ import 'package:app/palette/commonWidgets/constants/dropdowncons.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
+import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/instance_manager.dart';
 
@@ -18,14 +20,14 @@ class DataScreen extends StatefulWidget {
 }
 
 class _DataScreenState extends State<DataScreen> {
-  var controller = Get.find<EntryControlls>();
+  var c = Get.find<EntryControlls>();
 
   @override
   Widget build(BuildContext context) {
     final GlobalKey<AnimatedListState> accListKey =
         GlobalKey<AnimatedListState>();
 
-    int tLen = controller.getAccData.length;
+    int tLen = c.getAccData.length;
 
     return Scaffold(
       floatingActionButton: dailyButton,
@@ -43,8 +45,11 @@ class _DataScreenState extends State<DataScreen> {
                 tLen.toString(),
                 style: headerS(Colors.black),
               ),
-              const Expanded(child: Text('')),
-              selectB
+              DeleteNunSelect(
+                c.selectedItemHOme,
+              ),
+              const Text("                "),
+              selectButon(c, isHome: true)
             ],
           ),
           Divider(
@@ -54,12 +59,30 @@ class _DataScreenState extends State<DataScreen> {
           ),
           // lets have a list builder
           Expanded(
-              child: AnimatedList(
-                  key: accListKey,
-                  initialItemCount: tLen,
-                  itemBuilder: (ct, i, animate) {
-                    return accCard(controller.getAccData[i]);
-                  })),
+              child: SizedBox(
+            child: AnimatedList(
+                key: accListKey,
+                initialItemCount: tLen,
+                itemBuilder: (ct, i, animate) {
+                  return GetBuilder<EntryControlls>(
+                      init: c,
+                      builder: (c) {
+                        String accname = c.getAccData[i];
+                        return Row(
+                          children: [
+                            CustomCheckBox(
+                              isHome: true,
+                              uniqueId: accname,
+                              controller: c,
+                              index: i,
+                              iSselectTap: c.isSelectTapHome,
+                            ),
+                            Expanded(child: accCard(accname, i)),
+                          ],
+                        );
+                      });
+                }),
+          )),
 
           const Text(""),
         ],
@@ -67,15 +90,18 @@ class _DataScreenState extends State<DataScreen> {
     );
   }
 
-  Widget accCard(String txt) {
+  Widget accCard(String txt, i) {
     return Card(
       child: ListTile(
         onTap: () {
-          controller.onTileTapped(txt, widget.isDaily);
+          c.onTileTapped(txt, widget.isDaily);
         },
         tileColor: secondaryC,
+        minLeadingWidth: 10,
+
         leading: contactI,
         // tileColocr: Colors.red,
+
         title: Text(
           txt,
           style: appbarStyle,

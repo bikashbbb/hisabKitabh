@@ -345,7 +345,11 @@ class _CreateEntryState extends State<CreateEntry> {
                     reverse: true,
                     shrinkWrap: true,
                     itemBuilder: (con, index, animate) {
-                      return InfoTile(b.allinfoItems[index], index);
+                      return InfoTile(
+                        b.allinfoItems[index],
+                        index,
+                        haveCheckbox: false,
+                      );
                     })),
           );
         });

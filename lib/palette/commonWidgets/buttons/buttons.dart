@@ -330,6 +330,9 @@ Widget selectB = SizedBox(
   child: Row(children: [handI, select]),
 );
 
+Widget selectButon(EntryControlls con, {bool isHome = false}) => InkWell(
+    onTap: isHome ? con.onSelectTapHome : con.onSelectTap, child: selectB);
+
 Widget secAddButton() {
   return Container(
     alignment: Alignment.center,
@@ -348,34 +351,83 @@ class CustomCheckBox extends StatelessWidget {
   final bool iSselectTap;
   final EntryControlls controller;
   final int index;
-  final int uniqueId;
+  final dynamic uniqueId;
+  final bool isHome;
 
   const CustomCheckBox(
       {Key? key,
       this.iSselectTap = false,
       required this.controller,
       required this.index,
-      required this.uniqueId})
+      this.uniqueId,
+      this.isHome = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<EntryControlls>(
         init: controller,
-        builder: (context) {
+        builder: (c) {
           return AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            width: iSselectTap ? 20 : 0,
-            child: Theme(
-                data: ThemeData(
-                  primarySwatch: Colors.green,
-                  unselectedWidgetColor: Colors.black, // Your color
-                ),
-                child: Checkbox(
-                    value: controller.isItSelected(index),
-                    onChanged: (b) {
-                      controller.onCheckBoxTapped(index, uniqueId);
-                    })),
+            duration: dura,
+            width: iSselectTap ? 20.w : 0,
+            child: Checkbox(
+                side: const BorderSide(color: Colors.black),
+                checkColor: Colors.white,
+                activeColor: iconGreen,
+                value: controller.isItSelected(
+                    index,
+                    isHome
+                        ? controller.selectedItemHOme
+                        : controller.selectedItem),
+                onChanged: (b) {
+                  controller.onCheckBoxTapped(index, uniqueId!,
+                      input: isHome
+                          ? controller.selectedItemHOme
+                          : controller.selectedItem);
+                }),
+          );
+        });
+  }
+}
+
+class DeleteNunSelect extends StatelessWidget {
+  final Map input;
+  final bool isHome;
+
+  DeleteNunSelect(this.input, {Key? key, this.isHome = true}) : super(key: key);
+  final EntryControlls c = Get.find<EntryControlls>();
+
+  @override
+  Widget build(BuildContext context) {
+    return GetBuilder<EntryControlls>(
+        init: c,
+        builder: (c) {
+          bool bowl = c.isDeleteOn(input);
+          return Expanded(
+            child: Row(
+              children: [
+                const Expanded(child: Text("data")),
+                bowl
+                    ? const SizedBox()
+                    : InkWell(
+                        onTap: () {
+                          c.onUnselectTap(input, isHome);
+                        },
+                        child: Icon(
+                          Icons.cancel_outlined,
+                          color: black,
+                        )),
+                const Text(" "),
+                bowl
+                    ? const SizedBox()
+                    : const Icon(
+                        Icons.delete_forever_outlined,
+                        color: Colors.red,
+                        size: 33,
+                      )
+              ],
+            ),
           );
         });
   }

@@ -1,4 +1,5 @@
 // todo : save the short forms of the quantity types..
+import 'package:app/palette/styles/colors.dart';
 import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/homescreen/ui/home.dart';
 import 'package:app/translations/lang.dart';
@@ -37,7 +38,9 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           translations: Languages(),
           locale: const Locale("en", 'US'),
-          theme: ThemeData(fontFamily: "customfont"),
+          theme: ThemeData(
+            fontFamily: "customfont",
+          ),
           debugShowCheckedModeBanner: false,
           darkTheme: ThemeData.dark(),
           title: "Hisab Kitab",
