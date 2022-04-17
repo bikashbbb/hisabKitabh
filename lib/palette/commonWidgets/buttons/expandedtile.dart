@@ -2,13 +2,10 @@ import 'package:app/palette/commonWidgets/buttons/buttons.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/styles/textstyles.dart';
-import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 // complete it today and curve container
 class CustomTile extends StatefulWidget {

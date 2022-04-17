@@ -407,7 +407,11 @@ class DeleteNunSelect extends StatelessWidget {
           return Expanded(
             child: Row(
               children: [
-                const Expanded(child: Text("data")),
+                const Expanded(
+                    child: Text(
+                  "data",
+                  style: TextStyle(color: Colors.white),
+                )),
                 bowl
                     ? const SizedBox()
                     : InkWell(
@@ -421,10 +425,15 @@ class DeleteNunSelect extends StatelessWidget {
                 const Text(" "),
                 bowl
                     ? const SizedBox()
-                    : const Icon(
-                        Icons.delete_forever_outlined,
-                        color: Colors.red,
-                        size: 33,
+                    : InkWell(
+                        onTap: () {
+                          c.onDeleteCLicked(isHome);
+                        },
+                        child: const Icon(
+                          Icons.delete_forever_outlined,
+                          color: Colors.red,
+                          size: 33,
+                        ),
                       )
               ],
             ),

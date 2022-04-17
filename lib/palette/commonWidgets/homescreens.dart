@@ -3,7 +3,6 @@ import 'package:app/palette/commonWidgets/constants/dropdowncons.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
-import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';

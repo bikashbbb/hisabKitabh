@@ -1,5 +1,5 @@
 // it  will hold the entry homes datas.
-// TODO: FETURE OF SCROOL, REMOVE AN ITEM
+import 'package:app/palette/dialogs/dialogs.dart';
 import 'package:app/screens/dataentry/hive/datasaver.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/ui/itemcatalog.dart';
@@ -115,4 +115,24 @@ class EntryControlls extends GetxController {
   bool isDeleteOn(Map input) {
     return input.isEmpty;
   }
+
+  /// if home its to delete the fucking account ,
+  void onDeleteCLicked(bool ishome) {
+    confirmDialog(deleteAccount, ishome);
+    // have a loop here so that i delete all the account and set the dialog controller..
+    loopNdelete();
+  }
+
+  /// check the islogin shit also...
+  void deleteAccount(bool ishome) {
+    Get.back();
+    Get.dialog(DeleteAccDialog(
+      "delacc".tr,
+      ishome ? selectedItemHOme.length.toString() : "1",
+      "20",
+    ));
+    
+  }
+
+  void loopNdelete() {}
 }

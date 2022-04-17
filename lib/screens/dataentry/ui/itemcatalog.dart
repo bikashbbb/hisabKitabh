@@ -70,7 +70,6 @@ class AllTransactions extends StatelessWidget {
       body: GetBuilder<EntryControlls>(
           init: controller,
           builder: (c) {
-            bool val = controller.isDeleteOn(c.selectedItem);
             return Column(
               children: [
                 Row(
@@ -83,7 +82,10 @@ class AllTransactions extends StatelessWidget {
                           controller.o.totalLength.toString(),
                       style: subTitle,
                     ),
-                    DeleteNunSelect(controller.selectedItem,isHome: false,)
+                    DeleteNunSelect(
+                      controller.selectedItem,
+                      isHome: false,
+                    )
                   ],
                 ),
 

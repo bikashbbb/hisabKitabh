@@ -1,6 +1,5 @@
 import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
-import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:hive/hive.dart';
 
 class HiveDatabase {
@@ -165,4 +164,20 @@ class HiveDatabase {
     }
     return Transaction.fromJson(output);
   }
+
+  
+  /// single 
+  bool deleteRecord(String key) {
+    bool isSucess = true;
+    try {
+      boxname.delete(key);
+      return isSucess;
+    } on Exception {
+      return isSucess = false;
+    }
+  }
+
+  /* bool deleteAcc(String key){
+
+  } */
 }
