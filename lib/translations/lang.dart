@@ -38,12 +38,13 @@ class Languages extends Translations {
           "tacc": "Total Accounts : ",
           "s": "Select ",
           "ent": "Entry",
-          "u":"Un",
-          "y":"Yes",
-          "n":"No",
-          "con":"permanently remove the item?",
-          "delacc":"Removing selected item",
-          "del":"Deleted :"
+          "u": "Un",
+          "y": "Yes",
+          "n": "No",
+          "con": "permanently remove the item?",
+          "delacc": "Removing selected item",
+          "del": "Deleted :",
+          "accounts": "Accounts"
         }
       };
 }

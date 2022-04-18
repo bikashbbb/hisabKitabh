@@ -1,7 +1,9 @@
 import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
+import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:hive/hive.dart';
 
+// tody i have to finish the remove at home and at the other page remove !
 class HiveDatabase {
   Box boxname;
   Map? object;
@@ -41,7 +43,7 @@ class HiveDatabase {
     if (boxname.containsKey(acc)) {
       if (getAllaccount.containsKey(aName)) {
         // get its code ...
-        getcode;
+        getcode(aName);
         getTotalLength(cod: code);
       } else {
         // set its code and totallength
@@ -108,9 +110,9 @@ class HiveDatabase {
     return allaccount;
   }
 
-  get getcode {
+  int getcode(String acName) {
     getAllaccount;
-    code = allaccount![aName];
+    code = allaccount![acName];
     return code;
   }
 
@@ -165,18 +167,33 @@ class HiveDatabase {
     return Transaction.fromJson(output);
   }
 
-  
-  /// single 
-  bool deleteRecord(String key) {
+  /// askes for len of the fcking acc and loop till it ends !!
+  bool deleteRecord(int accCode, int len, Function updater) {
     bool isSucess = true;
     try {
-      boxname.delete(key);
+      for (int i = 0; i < len; i++) {
+        String boxKey = accCode.toString() + i.toString();
+        if (boxname.containsKey(boxKey)) {
+          updater();
+          boxname.delete(boxKey);
+        } else {
+          len += 1;
+        }
+      }
       return isSucess;
     } on Exception {
       return isSucess = false;
     }
   }
 
+  void removeAccount(String aName) {
+    allaccount!.remove(aName);
+    updateCode();
+  }
+
+  void removeLength(int code) {
+    boxname.delete(code);
+  }
   /* bool deleteAcc(String key){
 
   } */

@@ -1,4 +1,6 @@
 // it  will hold the entry homes datas.
+
+import 'package:app/palette/dialogs/con.dart';
 import 'package:app/palette/dialogs/dialogs.dart';
 import 'package:app/screens/dataentry/hive/datasaver.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
@@ -6,7 +8,6 @@ import 'package:app/screens/dataentry/ui/itemcatalog.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
-// fix that bug
 class EntryControlls extends GetxController {
   Box? boxxx;
   List<String> allAccounts = [];
@@ -120,19 +121,36 @@ class EntryControlls extends GetxController {
   void onDeleteCLicked(bool ishome) {
     confirmDialog(deleteAccount, ishome);
     // have a loop here so that i delete all the account and set the dialog controller..
-    loopNdelete();
+
+    //
   }
 
   /// check the islogin shit also...
-  void deleteAccount(bool ishome) {
+  void deleteAccount(bool ishome) async {
     Get.back();
+    // yo void vako vaye thi
     Get.dialog(DeleteAccDialog(
       "delacc".tr,
       ishome ? selectedItemHOme.length.toString() : "1",
       "20",
     ));
-    
+    print("lado");
+    //loopNdelete();
   }
 
-  void loopNdelete() {}
+  // double loop hanna parchaa !!! one loop for the account and other for all entries.
+  void loopNdelete() {
+    for (var accc in selectedItemHOme.values) {
+      // ava yo loop nasakesamma next account jadaina yes yes
+      // ava looping in the
+      int accCod = o.getcode(accc);
+      DialogControlls c = Get.find<DialogControlls>();
+      o.deleteRecord(
+          accCod, o.getTotalLength(cod: accCod), c.updateCurrentIndex);
+      o.removeAccount(accc);
+      o.removeLength(accCod);
+      c.updateCurrentAccIndex();
+    }
+    // ava per account ko lagi tesko length samma loop hanna parcha !
+  }
 }
