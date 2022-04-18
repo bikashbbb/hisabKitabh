@@ -16,9 +16,10 @@ import 'package:percent_indicator/percent_indicator.dart';
 class DeleteAccDialog extends StatelessWidget {
   final String title;
   final String totalAccCount;
-  final String totalCount;
+  final int totalRcordCount;
 
-  DeleteAccDialog(this.title, this.totalAccCount, this.totalCount, {Key? key})
+  DeleteAccDialog(this.title, this.totalAccCount, this.totalRcordCount,
+      {Key? key})
       : super(key: key);
 
   late String deletedCount;
@@ -31,59 +32,53 @@ class DeleteAccDialog extends StatelessWidget {
         builder: (c) {
           currentAcc = c.cureentAccIndex.value.toString();
           deletedCount = c.currentIndex.toString();
-
           return BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
               child: AlertDialog(
+                contentPadding: const EdgeInsets.only(top: 16),
+                actionsPadding: const EdgeInsets.only(bottom: 0, left: 10),
+                content: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      "del".tr + " $deletedCount/" + totalRcordCount.toString(),
+                      style: optionalstyles(Colors.black54),
+                    ),
+                    Text(
+                      "tot".tr + ": $currentAcc/ $totalAccCount",
+                      style: optionalstyles(Colors.black54),
+                    ),
+                  ],
+                ),
                 backgroundColor: Colors.white,
                 titlePadding: const EdgeInsets.only(left: 19),
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          title,
-                          style: appbarStyle,
-                        ),
-                        const Text("  "),
-                        SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: c.isFinished
-                              ? null
-                              : CircularProgressIndicator(
-                                  strokeWidth: 3,
-                                  color: iconGreen,
-                                ),
-                        ),
-                        const Text(" ")
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          "del".tr + " $deletedCount/ $totalCount",
-                          style: optionalstyles(Colors.black54),
-                        ),
-                        Text(
-                          "tot".tr + ": $currentAcc/ $totalAccCount",
-                          style: optionalstyles(Colors.black54),
-                        ),
-                        const Text(" ")
-                      ],
-                    )
-                  ],
+                title: Center(
+                  child: Text(
+                    title,
+                    style: appbarStyle,
+                  ),
                 ),
                 actions: [
                   LinearPercentIndicator(
                     animation: true,
-                    width: 260.w,
+                    width: 280.w,
                     lineHeight: 5.0,
                     percent: c.percentage,
                     backgroundColor: Colors.grey,
                     progressColor: iconGreen,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0, top: 10),
+                    child: SizedBox(
+                      width: 25,
+                      height: 25,
+                      child: c.isFinished
+                          ? null // done button here !!...
+                          : CircularProgressIndicator(
+                              strokeWidth: 3,
+                              color: iconGreen,
+                            ),
+                    ),
                   ),
                 ],
               ));

@@ -120,37 +120,45 @@ class EntryControlls extends GetxController {
   /// if home its to delete the fucking account ,
   void onDeleteCLicked(bool ishome) {
     confirmDialog(deleteAccount, ishome);
-    // have a loop here so that i delete all the account and set the dialog controller..
-
-    //
   }
 
   /// check the islogin shit also...
-  void deleteAccount(bool ishome) async {
+  void deleteAccount(bool ishome) {
     Get.back();
     // yo void vako vaye thi
     Get.dialog(DeleteAccDialog(
       "delacc".tr,
       ishome ? selectedItemHOme.length.toString() : "1",
-      "20",
+      selectedRecordLen(selectedItemHOme),
     ));
-    print("lado");
-    //loopNdelete();
+
+    loopNdelete();
   }
 
   // double loop hanna parchaa !!! one loop for the account and other for all entries.
   void loopNdelete() {
+    DialogControlls c = Get.put(DialogControlls());
     for (var accc in selectedItemHOme.values) {
       // ava yo loop nasakesamma next account jadaina yes yes
       // ava looping in the
       int accCod = o.getcode(accc);
-      DialogControlls c = Get.find<DialogControlls>();
+
       o.deleteRecord(
           accCod, o.getTotalLength(cod: accCod), c.updateCurrentIndex);
       o.removeAccount(accc);
       o.removeLength(accCod);
       c.updateCurrentAccIndex();
     }
+    // update is complete shit !
+    c.updateIsfinish();
     // ava per account ko lagi tesko length samma loop hanna parcha !
+  }
+
+  int selectedRecordLen(Map inpt) {
+    int toDeleteNum = 0;
+    for (var p in inpt.values) {
+      toDeleteNum += o.getTotalLength(cod: o.getcode(p));
+    }
+    return toDeleteNum;
   }
 }

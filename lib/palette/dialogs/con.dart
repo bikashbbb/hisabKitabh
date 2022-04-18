@@ -18,6 +18,11 @@ class DialogControlls extends GetxController {
     return currentIndex.toString();
   }
 
+  void updateIsfinish() {
+    isFinished = !isFinished;
+    update();
+  }
+
   /// updates the cureent index with the range of five
   void updateCurrentIndex() {
     iOne += 1;
