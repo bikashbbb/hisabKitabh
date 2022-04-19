@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:app/palette/dialogs/con.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/textstyles.dart';
+import 'package:app/screens/dataentry/ui/createdata.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -27,62 +28,77 @@ class DeleteAccDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<DialogControlls>(
-        init: DialogControlls(),
-        builder: (c) {
-          currentAcc = c.cureentAccIndex.value.toString();
-          deletedCount = c.currentIndex.toString();
-          return BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-              child: AlertDialog(
-                contentPadding: const EdgeInsets.only(top: 16),
-                actionsPadding: const EdgeInsets.only(bottom: 0, left: 10),
-                content: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      "del".tr + " $deletedCount/" + totalRcordCount.toString(),
-                      style: optionalstyles(Colors.black54),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: GetBuilder<DialogControlls>(
+          init: DialogControlls(),
+          builder: (c) {
+            currentAcc = c.cureentAccIndex.toString();
+            deletedCount = c.currentIndex.toString();
+            return BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                child: AlertDialog(
+                  contentPadding: const EdgeInsets.only(top: 16),
+                  actionsPadding: const EdgeInsets.only(bottom: 0, left: 10),
+                  content: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        "del".tr +
+                            " $deletedCount/" +
+                            totalRcordCount.toString(),
+                        style: optionalstyles(Colors.black54),
+                      ),
+                      Text(
+                        "tot".tr + ": $currentAcc/ $totalAccCount",
+                        style: optionalstyles(Colors.black54),
+                      ),
+                    ],
+                  ),
+                  backgroundColor: Colors.white,
+                  titlePadding: const EdgeInsets.only(left: 19),
+                  title: Center(
+                    child: Text(
+                      title,
+                      style: appbarStyle,
                     ),
-                    Text(
-                      "tot".tr + ": $currentAcc/ $totalAccCount",
-                      style: optionalstyles(Colors.black54),
+                  ),
+                  actions: [
+                    LinearPercentIndicator(
+                      animation: true,
+                      width: 280.w,
+                      lineHeight: 5.0,
+                      percent: c.getPercentage(totalRcordCount),
+                      backgroundColor: Colors.grey,
+                      progressColor: iconGreen,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0, top: 10),
+                      child: SizedBox(
+                        width: c.isFinished ? 50 : 25,
+                        height: 25,
+                        child: c.isFinished
+                            ? InkWell(
+                                onTap: () {
+                                  CreateEntry.onBack();
+                                },
+                                child: Text(
+                                  'Done!',
+                                  style: TextStyle(
+                                      color: iconGreen,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.sp),
+                                )) // done button here !!...
+                            : CircularProgressIndicator(
+                                strokeWidth: 3,
+                                color: iconGreen,
+                              ),
+                      ),
                     ),
                   ],
-                ),
-                backgroundColor: Colors.white,
-                titlePadding: const EdgeInsets.only(left: 19),
-                title: Center(
-                  child: Text(
-                    title,
-                    style: appbarStyle,
-                  ),
-                ),
-                actions: [
-                  LinearPercentIndicator(
-                    animation: true,
-                    width: 280.w,
-                    lineHeight: 5.0,
-                    percent: c.percentage,
-                    backgroundColor: Colors.grey,
-                    progressColor: iconGreen,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0, top: 10),
-                    child: SizedBox(
-                      width: 25,
-                      height: 25,
-                      child: c.isFinished
-                          ? null // done button here !!...
-                          : CircularProgressIndicator(
-                              strokeWidth: 3,
-                              color: iconGreen,
-                            ),
-                    ),
-                  ),
-                ],
-              ));
-        });
+                ));
+          }),
+    );
   }
 }
 

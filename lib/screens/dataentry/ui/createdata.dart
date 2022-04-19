@@ -32,6 +32,7 @@ class CreateEntry extends StatefulWidget {
 class _CreateEntryState extends State<CreateEntry> {
   final DateTime initialDate = DateTime.now();
   var obscontroll = Get.put(CreateControlls());
+
   @override
   void initState() {
     CreateControlls.isDailyE = widget.isDaily;

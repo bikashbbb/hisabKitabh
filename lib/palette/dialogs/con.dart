@@ -2,8 +2,8 @@ import 'package:get/get.dart';
 
 // TODO: DELETE THE ACCOUNT FINISH IT UP..
 class DialogControlls extends GetxController {
-  int currentIndex = 1;
-  Rx<int> cureentAccIndex = 1.obs;
+  int currentIndex = 0;
+  int cureentAccIndex = 0;
   double percentage = 0.0;
   int iOne = 0;
   bool isFinished = false;
@@ -20,6 +20,7 @@ class DialogControlls extends GetxController {
 
   void updateIsfinish() {
     isFinished = !isFinished;
+    percentage = 100;
     update();
   }
 
@@ -34,16 +35,14 @@ class DialogControlls extends GetxController {
   }
 
   void updateCurrentAccIndex() {
-    cureentAccIndex.value += 1;
-  }
-
-  void onSucess() {
-    // give the done button in the ui!
+    cureentAccIndex += 1;
+    update();
   }
 
   /// updates whenever current index is updated .. will become a great programmer fuck yes yes !!! developer with
   double getPercentage(int totalCount) {
     // p = c count * total count /100
-    return percentage = (currentIndex * totalCount) / 100;
+    return percentage = currentIndex / totalCount;
   }
+  // total c = 3, current = 3 3*3
 }
