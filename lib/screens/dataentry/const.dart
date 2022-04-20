@@ -2,21 +2,18 @@
 // hive key  items
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive/hive.dart';
 
 String daily = "daily";
 String aName = "";
 // hive box names
-String userD = "User Data";
-String lendbox = "lenddata";
+String dailyNuserinfo = "User Data";
+String lendbox = "Lend acc";
 // hive keys names
-String acc = "Accounts";
+String dailyacc = "Accounts";
 String lastUniq = "last unique num";
 
 /// use this to add up with the code to store total amount,
 String tAmount = "t";
-Box dailyBox = Hive.box(userD);
-Box lendBox = Hive.box(lendbox);
 bool isDaily = true;
 
 // secret keyword for itemnms

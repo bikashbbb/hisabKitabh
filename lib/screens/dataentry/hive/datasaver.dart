@@ -1,17 +1,36 @@
 import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
-import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:hive/hive.dart';
 
 // tody i have to finish the remove at home and at the other page remove !
 class HiveDatabase {
-  Box boxname;
+  String boxKonaam;
   Map? object;
   bool isUpdate;
-  HiveDatabase(this.boxname, {this.object, this.isUpdate = false});
+  bool isDaily;
+
+  HiveDatabase(
+    this.boxKonaam,
+    this.isDaily, {
+    this.object,
+    this.isUpdate = false,
+  }) {
+    // yeta tira have to close hive
+    if (isDaily) {
+      acc = dailyNuserinfo;
+    } else {
+      acc = lendbox;
+    }
+    accSaverBOx = Hive.box(acc);
+  }
+
+  late String acc;
+  late Box accSaverBOx;
+
+  late Box recordSaverBox;
 
   /// holds all the data of total account
-  late Map? allaccount;
+  late Map<String, dynamic>? allaccount;
 
   /// code of the account name
   late int code;
@@ -23,136 +42,70 @@ class HiveDatabase {
   int? objectindex;
 
   bool saveModel() {
+    // here will check if the box alredy exists or we have to create a new box !
+
     try {
       // this worked lets check data..
       // lets get its length ...
       setAcc();
       setData();
-
+      recordSaverBox.close();
       return true;
     } on Exception {
       return false;
     }
   }
-
-// {"code":{"l":length,"online":upto,"uid":"0"}} - key is the unique code we have settt..
-// ("accounts":"code", "bik":0) - acc
-// {"index+code":model,"00":transaobj} - key name
-
+// shall i close box after each adding up?? i have to
   void setAcc() {
-    if (boxname.containsKey(acc)) {
-      if (getAllaccount.containsKey(aName)) {
-        // get its code ...
-        getcode(aName);
-        getTotalLength(cod: code);
-      } else {
-        // set its code and totallength
-        setCode();
-        setLength();
+    if (accSaverBOx.containsKey(acc)) {
+      if (!getAllaccount.containsKey(aName)) {
+        saveAccount();
       }
     } else {
-      boxname.put(acc, allAccountstosjon(setUniqueNum()));
-      setLength();
+      accSaverBOx.put(acc, allAccountstosjon());
     }
   }
 
   /// set the data also upate the length of the map.
-  void setData() {
-    // key will be code+Totallength
-    // if object index is empty then set the first one to 0
-    objectindex = getobjectIndex;
-    object!["uniqueId"] = objectindex;
-
-    upateObject();
-    updateObjIndex();
-    upadteMapLen();
+  void setData() async {
+    // set the data into the acc., i dont need the
+    recordSaverBox = await Hive.openBox(boxKonaam);
+    saveObject();
   }
 
   /// uses the code + index...
-  void upateObject() {
-    boxname.put(code.toString() + objectindex!.toString(), object!);
-  }
-
-  /// update the index of the transaction object
-  void updateObjIndex() {
-    setObjectIndex(getKey(objectkoIndex), i: objectindex! + 1);
-  }
-
-  /// update the length of the particular account
-  void upadteMapLen() {
-    totalLength += 1;
-    updateLength();
+  void saveObject() {
+    //recordSaverBox.length use this as a key and store in object ;
+    int putKey = recordSaverBox.length;
+    object!["uniqueId"] = putKey;
+    recordSaverBox.put(putKey, object);
   }
 
   void updateAmount() {}
 
   /// uses the account name as key to set the data..
-  Map allAccountstosjon(int uid) {
-    return {aName: uid};
+  Map allAccountstosjon() {
+    return {aName: 0};
   }
 
   /// this gives unique number for the total account
-  int giveUniqueNum() {
-    return boxname.get(lastUniq) + 1;
-  }
-
-  int setUniqueNum() {
-    boxname.put(lastUniq, 0);
-    code = 0;
-    return code;
-  }
 
   get getAllaccount {
-    allaccount = boxname.get(acc);
+    allaccount = accSaverBOx.get(acc);
     if (allaccount == null) {
       return {};
     }
     return allaccount;
   }
 
-  int getcode(String acName) {
+  void saveAccount() {
     getAllaccount;
-    code = allaccount![acName];
-    return code;
-  }
-
-  int getTotalLength({int? cod}) {
-    return totalLength = boxname.get(cod!);
-  }
-
-  get getobjectIndex {
-    String keeey = getKey(objectkoIndex);
-    if (boxname.containsKey(keeey)) {
-      return boxname.get(getKey(objectkoIndex));
-    }
-    setObjectIndex(keeey);
-    return 0;
-  }
-
-  void setObjectIndex(String ke, {int i = 0}) {
-    boxname.put(ke, i);
-  }
-
-  void setCode() {
-    getAllaccount;
-    code = giveUniqueNum();
-    boxname.put(lastUniq, code);
-    allaccount![aName] = code;
+    allaccount![aName] = 0;
     updateCode();
   }
 
-  void setLength() {
-    // getTotalLength;
-    totalLength = 0;
-    updateLength();
-  }
-
   void updateCode() {
-    boxname.put(acc, allaccount);
-  }
-
-  void updateLength() {
-    boxname.put(code, totalLength);
+    accSaverBOx.put(acc, allaccount);
   }
 
   String getKey(String secKey) {
@@ -160,7 +113,9 @@ class HiveDatabase {
   }
 
   Transaction? getItems(String key) {
-    Map? output = boxname.get(key);
+    // iterate all the item !
+    Box _recordBox = Hive.box(key);
+    Map? output = _recordBox.get(key);
     if (output == null) {
       return null;
     }
@@ -168,7 +123,7 @@ class HiveDatabase {
   }
 
   /// askes for len of the fcking acc and loop till it ends !!
-  bool deleteRecord(int accCode, int len, Function updater) {
+  /* bool deleteRecord(int accCode, int len, Function updater) {
     bool isSucess = true;
     try {
       for (int i = 0; i < len; i++) {
@@ -184,17 +139,19 @@ class HiveDatabase {
     } on Exception {
       return isSucess = false;
     }
-  }
+  } */
 
   void removeAccount(String aName) {
+    Hive.deleteBoxFromDisk(aName);
     allaccount!.remove(aName);
     updateCode();
   }
 
-  void removeLength(int code) {
-    boxname.delete(code);
-  }
   /* bool deleteAcc(String key){
 
   } */
+  // this algo is preety good !
+  int getAccLen(String accName) {
+    return recordSaverBox.length;
+  }
 }

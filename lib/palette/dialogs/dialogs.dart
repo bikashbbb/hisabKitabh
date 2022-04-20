@@ -13,14 +13,16 @@ import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
+// how will i fix the amount shit
 /// yo dialog machai hamile k garxam vanda kheri we will get the controller ani controller ko varibale chai change vairakxa from the entry controller !!!
 class DeleteAccDialog extends StatelessWidget {
   final String title;
   final String totalAccCount;
   final int totalRcordCount;
+  final bool ishome;
 
   DeleteAccDialog(this.title, this.totalAccCount, this.totalRcordCount,
-      {Key? key})
+      {Key? key, this.ishome = true})
       : super(key: key);
 
   late String deletedCount;
@@ -80,7 +82,8 @@ class DeleteAccDialog extends StatelessWidget {
                         child: c.isFinished
                             ? InkWell(
                                 onTap: () {
-                                  CreateEntry.onBack();
+                                  ishome ? CreateEntry.onBack() : Get.back();
+                                
                                 },
                                 child: Text(
                                   'Done!',

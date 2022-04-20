@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 
 class HisabKitabHome extends StatelessWidget {
   const HisabKitabHome({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +38,7 @@ class HisabKitabHome extends StatelessWidget {
                     return Padding(
                       padding: EdgeInsets.only(top: 62.h),
                       child: DailyEntryPage(
-                        bwx: dailyBox,
+                        boxname: dailyNuserinfo,
                       ),
                     );
                   }

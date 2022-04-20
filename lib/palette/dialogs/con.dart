@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-// TODO: DELETE THE ACCOUNT FINISH IT UP..
+// TODO: have an algorithm for total amount!
 class DialogControlls extends GetxController {
   int currentIndex = 0;
   int cureentAccIndex = 0;
@@ -20,7 +20,7 @@ class DialogControlls extends GetxController {
 
   void updateIsfinish() {
     isFinished = !isFinished;
-    percentage = 100;
+    percentage = 1;
     update();
   }
 

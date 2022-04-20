@@ -8,12 +8,11 @@ import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 
 // user put in daily entries here ,daily cash entry !!
 class DailyEntryPage extends StatelessWidget {
-  final Box? bwx;
-  const DailyEntryPage({Key? key, required this.bwx}) : super(key: key);
+  final String boxname;
+  const DailyEntryPage({Key? key, required this.boxname}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +23,9 @@ class DailyEntryPage extends StatelessWidget {
           height: 700.h,
           decoration: homeDecoration,
           child: GetBuilder<EntryControlls>(
-              init: EntryControlls(boxxx: bwx),
+              init: EntryControlls(boxName: boxname),
               builder: (b) {
-                return b.hasDataSaved ? const DataScreen() : entryFirst();
+                return /* b.hasDataSaved ? const DataScreen()  */ entryFirst();
               }),
         ));
   }

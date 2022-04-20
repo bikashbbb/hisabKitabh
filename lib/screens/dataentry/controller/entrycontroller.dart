@@ -1,7 +1,8 @@
 // it  will hold the entry homes datas.
-
+// what should i be doing?? opening boxes in the name of each account !
 import 'package:app/palette/dialogs/con.dart';
 import 'package:app/palette/dialogs/dialogs.dart';
+import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/hive/datasaver.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/ui/itemcatalog.dart';
@@ -9,11 +10,11 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
 class EntryControlls extends GetxController {
-  Box? boxxx;
+  String boxName;
   List<String> allAccounts = [];
   int _intitalI = 14;
   int cIndex = 0;
-  late int _totalLen;
+  late int totalLen;
 
   bool hasdata = true;
   late HiveDatabase o;
@@ -25,19 +26,23 @@ class EntryControlls extends GetxController {
 
   Map selectedItem = {};
   Map selectedItemHOme = {};
+  DialogControlls c = Get.put(DialogControlls());
 
-  EntryControlls({this.boxxx}) {
-    o = HiveDatabase(boxxx!);
+  //
+  late int _selectedAccCode;
+
+  EntryControlls({required this.boxName}) {
+    o = HiveDatabase(boxName, isDaily);
   }
 
-  get hasDataSaved {
+  /* get hasDataSaved {
     Map allAccs = o.getAllaccount;
     if (allAccs.isEmpty) {
       return hasdata = false;
     }
 
     return hasdata;
-  }
+  } */
 
   get getAccData {
     Map output = o.getAllaccount;
@@ -59,15 +64,16 @@ class EntryControlls extends GetxController {
   }
 
   /// only 15 at first and after the 15 is complete next next .
-  void getAllEntry(int code, {bool isScrolling = false}) {
+  void getAllEntry(String accName, {bool isScrolling = false}) {
     // loop hanna parcha yeha
-    _totalLen = o.getTotalLength(cod: code);
-    for (cIndex; cIndex < _totalLen; cIndex++) {
-      Transaction? out = o.getItems(code.toString() + cIndex.toString());
+    totalLen = o.getAccLen(accName);
+    for (cIndex; cIndex < totalLen; cIndex++) {
+      Transaction? out =
+          o.getItems(_selectedAccCode.toString() + cIndex.toString());
       if (out != null) {
         allEntry.add(out);
       } else {
-        _totalLen += 1;
+        totalLen += 1;
         _intitalI += 1;
       }
 
@@ -126,39 +132,52 @@ class EntryControlls extends GetxController {
   void deleteAccount(bool ishome) {
     Get.back();
     // yo void vako vaye thi
-    Get.dialog(DeleteAccDialog(
+    /*  Get.dialog(DeleteAccDialog(
       "delacc".tr,
       ishome ? selectedItemHOme.length.toString() : "1",
-      selectedRecordLen(selectedItemHOme),
+      ishome
+          ? selectedRecordLen(selectedItemHOme)
+          : totalLen,
     ));
+    ishome
+        ? loopNdelete()
+        : o.deleteRecord(_selectedAccCode,
+            o.getTotalLength(cod: _selectedAccCode), c.updateCurrentIndex);
+    ishome ? null : onNOtHome();
+  } */
 
-    loopNdelete();
-  }
+    void onNOtHome() {
+      c.updateCurrentAccIndex();
+      c.updateIsfinish();
+    }
 
-  // double loop hanna parchaa !!! one loop for the account and other for all entries.
-  void loopNdelete() {
-    DialogControlls c = Get.put(DialogControlls());
-    for (var accc in selectedItemHOme.values) {
-      // ava yo loop nasakesamma next account jadaina yes yes
-      // ava looping in the
-      int accCod = o.getcode(accc);
+    // double loop hanna parchaa !!! one loop for the account and other for all entries.
+    void loopNdelete() {
+      for (var accc in selectedItemHOme.values) {
+        // ava yo loop nasakesamma next account jadaina yes yes
+        // ava looping in the
+        /*  int accCod = o.getcode(accc);o
 
       o.deleteRecord(
           accCod, o.getTotalLength(cod: accCod), c.updateCurrentIndex);
       o.removeAccount(accc);
-      o.removeLength(accCod);
-      c.updateCurrentAccIndex();
+      c.updateCurrentAccIndex(); */
+      }
+      // update is complete shit !
+      c.updateIsfinish();
+      // ava per account ko lagi tesko length samma loop hanna parcha !
     }
-    // update is complete shit !
-    c.updateIsfinish();
-    // ava per account ko lagi tesko length samma loop hanna parcha !
-  }
 
-  int selectedRecordLen(Map inpt) {
-    int toDeleteNum = 0;
-    for (var p in inpt.values) {
+    int selectedRecordLen(Map inpt) {
+      int toDeleteNum = 0;
+      /* for (var p in inpt.values) {
       toDeleteNum += o.getTotalLength(cod: o.getcode(p));
+    } */
+      return toDeleteNum;
     }
-    return toDeleteNum;
+
+    void removeItemFromList() {
+      // with animation of course
+    }
   }
 }

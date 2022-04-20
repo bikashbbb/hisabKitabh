@@ -32,9 +32,9 @@ class AllTransactions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller =
-        Get.put(EntryControlls(boxxx: isdaily ? dailyBox : lendBox));
+        Get.put(EntryControlls(boxName: isdaily ? dailyNuserinfo : lendbox));
 
-    controller.getAllEntry(accCode);
+    controller.getAllEntry(accName);
 
     return Scaffold(
       floatingActionButton: secAddButton(),
@@ -79,7 +79,7 @@ class AllTransactions extends StatelessWidget {
                       "tot".tr +
                           "ent".tr +
                           " : " +
-                          controller.o.totalLength.toString(),
+                          controller.totalLen.toString(),
                       style: subTitle,
                     ),
                     DeleteNunSelect(
@@ -110,7 +110,7 @@ class AllTransactions extends StatelessWidget {
                       onNotification: (not) {
                         if (_scrollController.position.maxScrollExtent ==
                             _scrollController.position.pixels) {
-                          controller.getAllEntry(accCode, isScrolling: true);
+                          controller.getAllEntry(accName, isScrolling: true);
                         }
                         return true;
                       },

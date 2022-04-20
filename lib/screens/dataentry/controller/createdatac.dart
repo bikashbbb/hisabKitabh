@@ -41,11 +41,11 @@ class CreateControlls extends GetxController {
     if (checkReqFields()) {
       startLoaded();
 
-      HiveDatabase datasaver = HiveDatabase(dailyBox, object: item);
+      HiveDatabase datasaver = HiveDatabase(aName, isDaily, object: item);
       if (await _checkWifiSignal()) {
         // save data online
       } else {
-        bool result = datasaver.saveModel();
+        bool result = await datasaver.saveModel();
         if (result) {
           onAccNotClear();
           offlineSucess(Transaction.fromJson(item));

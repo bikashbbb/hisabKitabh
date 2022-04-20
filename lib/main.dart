@@ -17,8 +17,7 @@ void main() async {
 Future<Box> hiveInitializer() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  await Hive.openBox(lendbox);
-  return await Hive.openBox(userD);
+  return await Hive.openBox(dailyNuserinfo);
 }
 
 void loginValidator(Box box) {
