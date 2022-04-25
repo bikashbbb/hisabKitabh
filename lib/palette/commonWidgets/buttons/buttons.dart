@@ -334,15 +334,17 @@ Widget selectButon(EntryControlls con, {bool isHome = false}) => InkWell(
     onTap: isHome ? con.onSelectTapHome : con.onSelectTap, child: selectB);
 
 Widget secAddButton() {
-  return Container(
-    alignment: Alignment.center,
-    decoration: circleblackDec,
-    height: 50.h,
-    width: 50.w,
-    child: Text(
-      "+",
-      style: TextStyle(
-          color: Colors.white, fontSize: 25.sp, fontWeight: FontWeight.bold),
+  return InkWell(
+    child: Container(
+      alignment: Alignment.center,
+      decoration: circleblackDec,
+      height: 50.h,
+      width: 50.w,
+      child: Text(
+        "+",
+        style: TextStyle(
+            color: Colors.white, fontSize: 25.sp, fontWeight: FontWeight.bold),
+      ),
     ),
   );
 }
@@ -400,44 +402,42 @@ class DeleteNunSelect extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<EntryControlls>(
-        init: c,
-        builder: (c) {
-          bool bowl = c.isDeleteOn(input);
-          return Expanded(
-            child: Row(
-              children: [
-                const Expanded(
-                    child: Text(
-                  "data",
-                  style: TextStyle(color: Colors.white),
-                )),
-                bowl
-                    ? const SizedBox()
-                    : InkWell(
-                        onTap: () {
-                          c.onUnselectTap(input, isHome);
-                        },
-                        child: Icon(
-                          Icons.cancel_outlined,
-                          color: black,
-                        )),
-                const Text(" "),
-                bowl
-                    ? const SizedBox()
-                    : InkWell(
-                        onTap: () {
-                          c.onDeleteCLicked(isHome);
-                        },
-                        child: const Icon(
-                          Icons.delete_forever_outlined,
-                          color: Colors.red,
-                          size: 33,
-                        ),
-                      )
-              ],
-            ),
-          );
-        });
+    return Obx(() {
+      bool bowl = c.isDeleteOn(input);
+      return Expanded(
+        child: Row(
+          children: [
+            const Expanded(
+                child: Text(
+              "data",
+              style: TextStyle(color: Colors.white),
+            )),
+            bowl
+                ? const SizedBox()
+                : InkWell(
+                    onTap: () {
+                      c.onUnselectTap(input, isHome);
+                    },
+                    child: Icon(
+                      Icons.cancel_outlined,
+                      color: black,
+                    )),
+            const Text(" "),
+            bowl
+                ? const SizedBox()
+                : InkWell(
+                    onTap: () {
+                      c.onDeleteCLicked(isHome);
+                    },
+                    child: const Icon(
+                      Icons.delete_forever_outlined,
+                      color: Colors.red,
+                      size: 33,
+                    ),
+                  )
+          ],
+        ),
+      );
+    });
   }
 }

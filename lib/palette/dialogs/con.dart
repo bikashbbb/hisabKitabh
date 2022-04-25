@@ -1,3 +1,4 @@
+import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:get/get.dart';
 
 // TODO: have an algorithm for total amount!
@@ -7,6 +8,7 @@ class DialogControlls extends GetxController {
   double percentage = 0.0;
   int iOne = 0;
   bool isFinished = false;
+  int totalRcordCount = 0;
 
   /// every 10 wota index ma update garne !
   String getCurrentIndex() {
@@ -20,29 +22,41 @@ class DialogControlls extends GetxController {
 
   void updateIsfinish() {
     isFinished = !isFinished;
-    percentage = 1;
+    currentIndex = totalRcordCount;
     update();
   }
 
   /// updates the cureent index with the range of five
-  void updateCurrentIndex() {
+  /* void updateCurrentIndex() {
     iOne += 1;
     currentIndex += 1;
     if (iOne == 5) {
       update();
       iOne = 0;
     }
-  }
+  } */
 
   void updateCurrentAccIndex() {
     cureentAccIndex += 1;
     update();
   }
 
+  void updateTotalRcrdCount(int total) {
+    totalRcordCount = total;
+    update();
+  }
+
   /// updates whenever current index is updated .. will become a great programmer fuck yes yes !!! developer with
-  double getPercentage(int totalCount) {
+  double getPercentage() {
     // p = c count * total count /100
-    return percentage = currentIndex / totalCount;
+    return percentage = currentIndex / totalRcordCount;
   }
   // total c = 3, current = 3 3*3
+
+  void onDoneClicked() async {
+    EntryControlls controlls = Get.find<EntryControlls>();
+    controlls.getAccData;
+    Get.back();
+    await Get.delete<DialogControlls>();
+  }
 }

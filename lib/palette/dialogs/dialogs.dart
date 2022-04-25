@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:app/palette/dialogs/con.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/textstyles.dart';
-import 'package:app/screens/dataentry/ui/createdata.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -18,10 +17,9 @@ import 'package:percent_indicator/percent_indicator.dart';
 class DeleteAccDialog extends StatelessWidget {
   final String title;
   final String totalAccCount;
-  final int totalRcordCount;
   final bool ishome;
 
-  DeleteAccDialog(this.title, this.totalAccCount, this.totalRcordCount,
+  DeleteAccDialog(this.title, this.totalAccCount,
       {Key? key, this.ishome = true})
       : super(key: key);
 
@@ -48,7 +46,7 @@ class DeleteAccDialog extends StatelessWidget {
                       Text(
                         "del".tr +
                             " $deletedCount/" +
-                            totalRcordCount.toString(),
+                            c.totalRcordCount.toString(),
                         style: optionalstyles(Colors.black54),
                       ),
                       Text(
@@ -70,7 +68,7 @@ class DeleteAccDialog extends StatelessWidget {
                       animation: true,
                       width: 280.w,
                       lineHeight: 5.0,
-                      percent: c.getPercentage(totalRcordCount),
+                      percent: c.getPercentage().isNaN ? 0 : c.getPercentage(),
                       backgroundColor: Colors.grey,
                       progressColor: iconGreen,
                     ),
@@ -81,10 +79,7 @@ class DeleteAccDialog extends StatelessWidget {
                         height: 25,
                         child: c.isFinished
                             ? InkWell(
-                                onTap: () {
-                                  ishome ? CreateEntry.onBack() : Get.back();
-                                
-                                },
+                                onTap: c.onDoneClicked,
                                 child: Text(
                                   'Done!',
                                   style: TextStyle(

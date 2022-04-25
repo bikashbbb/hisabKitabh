@@ -7,7 +7,7 @@ String daily = "daily";
 String aName = "";
 // hive box names
 String dailyNuserinfo = "User Data";
-String lendbox = "Lend acc";
+String lendAcc = "Lend acc";
 // hive keys names
 String dailyacc = "Accounts";
 String lastUniq = "last unique num";

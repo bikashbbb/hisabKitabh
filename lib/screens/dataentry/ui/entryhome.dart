@@ -23,9 +23,9 @@ class DailyEntryPage extends StatelessWidget {
           height: 700.h,
           decoration: homeDecoration,
           child: GetBuilder<EntryControlls>(
-              init: EntryControlls(boxName: boxname),
+              init: EntryControlls(boxName: boxname, auto: true),
               builder: (b) {
-                return /* b.hasDataSaved ? const DataScreen()  */ entryFirst();
+                return b.hasDataSaved ? const DataScreen() : entryFirst();
               }),
         ));
   }

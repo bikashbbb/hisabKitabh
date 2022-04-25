@@ -17,20 +17,20 @@ class HiveDatabase {
   }) {
     // yeta tira have to close hive
     if (isDaily) {
-      acc = dailyNuserinfo;
+      acc = dailyacc;
     } else {
-      acc = lendbox;
+      acc = lendAcc;
     }
-    accSaverBOx = Hive.box(acc);
+    accSaverBOx = Hive.box(dailyNuserinfo);
   }
 
   late String acc;
   late Box accSaverBOx;
 
-  late Box recordSaverBox;
+  Box? recordSaverBox;
 
   /// holds all the data of total account
-  late Map<String, dynamic>? allaccount;
+  late Map<dynamic, dynamic>? allaccount;
 
   /// code of the account name
   late int code;
@@ -45,16 +45,15 @@ class HiveDatabase {
     // here will check if the box alredy exists or we have to create a new box !
 
     try {
-      // this worked lets check data..
-      // lets get its length ...
       setAcc();
       setData();
-      recordSaverBox.close();
+
       return true;
     } on Exception {
       return false;
     }
   }
+
 // shall i close box after each adding up?? i have to
   void setAcc() {
     if (accSaverBOx.containsKey(acc)) {
@@ -67,21 +66,22 @@ class HiveDatabase {
   }
 
   /// set the data also upate the length of the map.
-  void setData() async {
+  void setData() {
     // set the data into the acc., i dont need the
-    recordSaverBox = await Hive.openBox(boxKonaam);
     saveObject();
   }
 
-  /// uses the code + index...
-  void saveObject() {
-    //recordSaverBox.length use this as a key and store in object ;
-    int putKey = recordSaverBox.length;
-    object!["uniqueId"] = putKey;
-    recordSaverBox.put(putKey, object);
+  Future<Box> setRecordSaver() async {
+    return recordSaverBox = await Hive.openBox(boxKonaam);
   }
 
-  void updateAmount() {}
+  /// uses the code + index...
+  void saveObject() async {
+    //recordSaverBox.length use this as a key and store in object ;
+    Box putKey = await setRecordSaver();
+    object!["uniqueId"] = putKey.length;
+    recordSaverBox!.put(putKey.length, object);
+  }
 
   /// uses the account name as key to set the data..
   Map allAccountstosjon() {
@@ -108,18 +108,13 @@ class HiveDatabase {
     accSaverBOx.put(acc, allaccount);
   }
 
-  String getKey(String secKey) {
-    return code.toString() + secKey;
-  }
-
-  Transaction? getItems(String key) {
+  Transaction? getItems(int key) {
     // iterate all the item !
-    Box _recordBox = Hive.box(key);
-    Map? output = _recordBox.get(key);
-    if (output == null) {
+    Map? value = recordSaverBox!.get(key);
+    if (value == null) {
       return null;
     }
-    return Transaction.fromJson(output);
+    return Transaction.fromJson(value);
   }
 
   /// askes for len of the fcking acc and loop till it ends !!
@@ -141,17 +136,18 @@ class HiveDatabase {
     }
   } */
 
-  void removeAccount(String aName) {
-    Hive.deleteBoxFromDisk(aName);
+  Future<void> removeAccount(String aName) async {
+    await Hive.deleteBoxFromDisk(aName);
     allaccount!.remove(aName);
     updateCode();
   }
 
-  /* bool deleteAcc(String key){
+  Future<int> getBoxLen(String aName)async {
+    Box b = await Hive.openBox(aName);
+    return b.length;
+  }
 
-  } */
-  // this algo is preety good !
-  int getAccLen(String accName) {
-    return recordSaverBox.length;
+  bool isAccountCreated(bool isDaily) {
+    return accSaverBOx.containsKey(isDaily ? dailyacc : lendAcc);
   }
 }

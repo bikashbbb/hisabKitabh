@@ -5,7 +5,7 @@ import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/instance_manager.dart';
 
@@ -19,37 +19,42 @@ class DataScreen extends StatefulWidget {
 }
 
 class _DataScreenState extends State<DataScreen> {
-  var c = Get.find<EntryControlls>();
+  var c = Get.put(EntryControlls(boxName: ""));
+
+  @override
+  void initState() {
+    super.initState();
+    c.getAccData;
+  }
 
   @override
   Widget build(BuildContext context) {
     final GlobalKey<AnimatedListState> accListKey =
         GlobalKey<AnimatedListState>();
-
-    int tLen = c.getAccData.length;
-
     return Scaffold(
       floatingActionButton: dailyButton,
       backgroundColor: iconwhite,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Text(
-                "tacc".tr,
-                style: headerS(Colors.black54),
-              ),
-              Text(
-                tLen.toString(),
-                style: headerS(Colors.black),
-              ),
-              DeleteNunSelect(
-                c.selectedItemHOme,
-              ),
-              const Text("                "),
-              selectButon(c, isHome: true)
-            ],
+          Obx(
+            () => Row(
+              children: [
+                Text(
+                  "tacc".tr,
+                  style: headerS(Colors.black54),
+                ),
+                Text(
+                  c.allAccounts.length.toString(),
+                  style: headerS(Colors.black),
+                ),
+                DeleteNunSelect(
+                  c.selectedItemHOme,
+                ),
+                const Text("                "),
+                selectButon(c, isHome: true)
+              ],
+            ),
           ),
           Divider(
             color: black,
@@ -57,31 +62,31 @@ class _DataScreenState extends State<DataScreen> {
             height: 20.h,
           ),
           // lets have a list builder
-          Expanded(
-              child: SizedBox(
-            child: AnimatedList(
-                key: accListKey,
-                initialItemCount: tLen,
-                itemBuilder: (ct, i, animate) {
-                  return GetBuilder<EntryControlls>(
-                      init: c,
-                      builder: (c) {
-                        String accname = c.getAccData[i];
-                        return Row(
-                          children: [
-                            CustomCheckBox(
-                              isHome: true,
-                              uniqueId: accname,
-                              controller: c,
-                              index: i,
-                              iSselectTap: c.isSelectTapHome,
-                            ),
-                            Expanded(child: accCard(accname, i)),
-                          ],
-                        );
-                      });
-                }),
-          )),
+          Obx(
+            () => Expanded(
+                child: SizedBox(
+              child: ListView.builder(
+                  key: accListKey,
+                  itemCount: c.allAccounts.length,
+                  itemBuilder: (ct, i) {
+                    String accname = c.allAccounts[i];
+                    return Row(
+                      children: [
+                        Obx(
+                          () => CustomCheckBox(
+                            isHome: true,
+                            uniqueId: accname,
+                            controller: c,
+                            index: i,
+                            iSselectTap: c.isSelectTapHome.value,
+                          ),
+                        ),
+                        Expanded(child: accCard(accname, i)),
+                      ],
+                    );
+                  }),
+            )),
+          ),
 
           const Text(""),
         ],

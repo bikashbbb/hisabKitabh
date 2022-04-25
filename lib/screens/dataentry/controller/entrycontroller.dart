@@ -7,55 +7,63 @@ import 'package:app/screens/dataentry/hive/datasaver.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/ui/itemcatalog.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 
+// offline sav sakenxa aaja ani lend account pani full setup hunxa !
 class EntryControlls extends GetxController {
   String boxName;
-  List<String> allAccounts = [];
+  final RxList allAccounts = [].obs;
   int _intitalI = 14;
-  int cIndex = 0;
-  late int totalLen;
+  int _cIndex = 0;
 
   bool hasdata = true;
   late HiveDatabase o;
-  bool isSelectTap = false;
-  bool isSelectTapHome = false;
+  RxBool isSelectTap = false.obs;
+  RxBool isSelectTapHome = false.obs;
 
   /// will just hold 15 entries.
   RxList allEntry = [].obs;
 
-  Map selectedItem = {};
-  Map selectedItemHOme = {};
-  DialogControlls c = Get.put(DialogControlls());
+  Map selectedItem = {}.obs;
+  Map selectedItemHOme = {}.obs;
+  int builderTotal = 0;
 
   //
-  late int _selectedAccCode;
 
-  EntryControlls({required this.boxName}) {
-    o = HiveDatabase(boxName, isDaily);
+  EntryControlls({required this.boxName, bool auto = false}) {
+    if (auto) {
+      o = HiveDatabase(boxName, isDaily);
+    }
   }
 
-  /* get hasDataSaved {
-    Map allAccs = o.getAllaccount;
-    if (allAccs.isEmpty) {
-      return hasdata = false;
-    }
+  Future<bool> setObjects() async {
+    o = HiveDatabase(boxName, isDaily);
+    await o.setRecordSaver();
+    builderTotal = o.recordSaverBox!.length;
+    return true;
+  }
 
-    return hasdata;
-  } */
+  get hasDataSaved {
+    return o.isAccountCreated(isDaily);
+  }
 
   get getAccData {
+    allAccounts.clear();
     Map output = o.getAllaccount;
     for (String i in output.keys) {
       allAccounts.add(i);
     }
-
     return allAccounts;
+  }
+
+  remove() {
+    allAccounts.removeAt(0);
   }
 
   // when clicked on the tile
   void onTileTapped(String accName, bool isdaily) {
     int code = o.getAllaccount[accName];
+    Get.delete<EntryControlls>();
+
     Get.to(() => AllTransactions(
           accCode: code,
           accName: accName,
@@ -64,44 +72,37 @@ class EntryControlls extends GetxController {
   }
 
   /// only 15 at first and after the 15 is complete next next .
-  void getAllEntry(String accName, {bool isScrolling = false}) {
-    // loop hanna parcha yeha
-    totalLen = o.getAccLen(accName);
-    for (cIndex; cIndex < totalLen; cIndex++) {
-      Transaction? out =
-          o.getItems(_selectedAccCode.toString() + cIndex.toString());
+  void getAllEntry({bool isScrolling = false}) {
+    for (_cIndex; _cIndex < builderTotal; _cIndex++) {
+      Transaction? out = o.getItems(_cIndex);
       if (out != null) {
         allEntry.add(out);
       } else {
-        totalLen += 1;
+        builderTotal += 1;
         _intitalI += 1;
       }
-
-      if (cIndex == _intitalI) {
-        cIndex++;
+      if (_cIndex == _intitalI) {
+        _cIndex++;
         _intitalI += _intitalI;
         break;
       }
     }
-    //allEntry.refresh();
   }
 
   /// remmoves an item from the list as well as
   void removeItemFromDb(int accCode) {}
 // select tapp garesi hamro animated container ko side ma euta checkbox aauxaaaa
   void onSelectTap() {
-    isSelectTap = !isSelectTap;
-    update();
+    isSelectTap.value = !isSelectTap.value;
   }
 
   void onSelectTapHome() {
-    isSelectTapHome = !isSelectTapHome;
-    update();
+    isSelectTapHome.value = !isSelectTapHome.value;
   }
 
-  void onUnselectTap(Map input, bool isHome) {
+  void onUnselectTap(Map input, bool isHOme) {
     input.clear();
-    onSelectTap();
+    isHOme ? onSelectTapHome() : onSelectTap();
   }
 
   /// adds up the index with unique id in the map , so we can remove both from the list ..... yes yes
@@ -125,59 +126,44 @@ class EntryControlls extends GetxController {
 
   /// if home its to delete the fucking account ,
   void onDeleteCLicked(bool ishome) {
-    confirmDialog(deleteAccount, ishome);
+    confirmDialog(_deleteAccount, ishome);
   }
 
+  DialogControlls c = Get.put(DialogControlls());
+
   /// check the islogin shit also...
-  void deleteAccount(bool ishome) {
+  void _deleteAccount(bool ishome) async {
     Get.back();
     // yo void vako vaye thi
-    /*  Get.dialog(DeleteAccDialog(
+    Get.dialog(DeleteAccDialog(
       "delacc".tr,
       ishome ? selectedItemHOme.length.toString() : "1",
-      ishome
-          ? selectedRecordLen(selectedItemHOme)
-          : totalLen,
+      ishome: ishome,
     ));
-    ishome
-        ? loopNdelete()
-        : o.deleteRecord(_selectedAccCode,
-            o.getTotalLength(cod: _selectedAccCode), c.updateCurrentIndex);
-    ishome ? null : onNOtHome();
-  } */
 
-    void onNOtHome() {
+    c.updateTotalRcrdCount(await _loopTotalboxLength(selectedItemHOme));
+    _loopNdelete();
+  }
+
+  Future<int> _loopTotalboxLength(Map inpt) async {
+    int len = 0;
+    for (String aName in inpt.values) {
+      len += await o.getBoxLen(aName);
+    }
+    return len;
+  }
+
+  // double loop hanna parchaa !!! one loop for the account and other for all entries.
+  void _loopNdelete() async {
+    for (var p in selectedItemHOme.values) {
+      await o.removeAccount(p);
       c.updateCurrentAccIndex();
-      c.updateIsfinish();
     }
+    c.updateIsfinish();
+    // ava per account ko lagi tesko length samma loop hanna parcha !
+  }
 
-    // double loop hanna parchaa !!! one loop for the account and other for all entries.
-    void loopNdelete() {
-      for (var accc in selectedItemHOme.values) {
-        // ava yo loop nasakesamma next account jadaina yes yes
-        // ava looping in the
-        /*  int accCod = o.getcode(accc);o
-
-      o.deleteRecord(
-          accCod, o.getTotalLength(cod: accCod), c.updateCurrentIndex);
-      o.removeAccount(accc);
-      c.updateCurrentAccIndex(); */
-      }
-      // update is complete shit !
-      c.updateIsfinish();
-      // ava per account ko lagi tesko length samma loop hanna parcha !
-    }
-
-    int selectedRecordLen(Map inpt) {
-      int toDeleteNum = 0;
-      /* for (var p in inpt.values) {
-      toDeleteNum += o.getTotalLength(cod: o.getcode(p));
-    } */
-      return toDeleteNum;
-    }
-
-    void removeItemFromList() {
-      // with animation of course
-    }
+  void _removeItemFromList() {
+    // with animation of course
   }
 }
