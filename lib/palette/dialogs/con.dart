@@ -1,4 +1,5 @@
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
+import 'package:app/screens/dataentry/ui/createdata.dart';
 import 'package:get/get.dart';
 
 // TODO: have an algorithm for total amount!
@@ -51,12 +52,16 @@ class DialogControlls extends GetxController {
     // p = c count * total count /100
     return percentage = currentIndex / totalRcordCount;
   }
-  // total c = 3, current = 3 3*3
 
-  void onDoneClicked() async {
-    EntryControlls controlls = Get.find<EntryControlls>();
-    controlls.getAccData;
-    Get.back();
+  // total c = 3, current = 3 3*3
+  void onDoneClicked(bool isHOme) async {
+    
+     isHOme ? onDoneClickedHome(isHOme) : Get.back();
+  }
+
+  void onDoneClickedHome(bool ishome) async {
     await Get.delete<DialogControlls>();
+    await Get.delete<EntryControlls>();
+    CreateEntry.onBack();
   }
 }

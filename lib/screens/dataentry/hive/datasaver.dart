@@ -117,37 +117,22 @@ class HiveDatabase {
     return Transaction.fromJson(value);
   }
 
-  /// askes for len of the fcking acc and loop till it ends !!
-  /* bool deleteRecord(int accCode, int len, Function updater) {
-    bool isSucess = true;
-    try {
-      for (int i = 0; i < len; i++) {
-        String boxKey = accCode.toString() + i.toString();
-        if (boxname.containsKey(boxKey)) {
-          updater();
-          boxname.delete(boxKey);
-        } else {
-          len += 1;
-        }
-      }
-      return isSucess;
-    } on Exception {
-      return isSucess = false;
-    }
-  } */
-
   Future<void> removeAccount(String aName) async {
     await Hive.deleteBoxFromDisk(aName);
     allaccount!.remove(aName);
     updateCode();
   }
 
-  Future<int> getBoxLen(String aName)async {
+  Future<int> getBoxLen(String aName) async {
     Box b = await Hive.openBox(aName);
     return b.length;
   }
 
   bool isAccountCreated(bool isDaily) {
     return accSaverBOx.containsKey(isDaily ? dailyacc : lendAcc);
+  }
+
+  Future<void> removeRecord(int key) async{
+    await recordSaverBox!.delete(key);
   }
 }

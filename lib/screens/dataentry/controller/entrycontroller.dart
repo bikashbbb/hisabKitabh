@@ -6,9 +6,10 @@ import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/hive/datasaver.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/ui/itemcatalog.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-// offline sav sakenxa aaja ani lend account pani full setup hunxa !
+// offline sav sakenxa aaja ani lend account pani full setup hunxa!, total amount setup also
 class EntryControlls extends GetxController {
   String boxName;
   final RxList allAccounts = [].obs;
@@ -23,9 +24,11 @@ class EntryControlls extends GetxController {
   /// will just hold 15 entries.
   RxList allEntry = [].obs;
 
+  /// map with <index: Uid>
   Map selectedItem = {}.obs;
   Map selectedItemHOme = {}.obs;
   int builderTotal = 0;
+  int entryTotal = 0;
 
   //
 
@@ -38,7 +41,7 @@ class EntryControlls extends GetxController {
   Future<bool> setObjects() async {
     o = HiveDatabase(boxName, isDaily);
     await o.setRecordSaver();
-    builderTotal = o.recordSaverBox!.length;
+    builderTotal = entryTotal = o.recordSaverBox!.length;
     return true;
   }
 
@@ -63,7 +66,6 @@ class EntryControlls extends GetxController {
   void onTileTapped(String accName, bool isdaily) {
     int code = o.getAllaccount[accName];
     Get.delete<EntryControlls>();
-
     Get.to(() => AllTransactions(
           accCode: code,
           accName: accName,
@@ -101,7 +103,7 @@ class EntryControlls extends GetxController {
   }
 
   void onUnselectTap(Map input, bool isHOme) {
-    input.clear();
+    isHOme ? selectedItemHOme.clear() : selectedItem.clear();
     isHOme ? onSelectTapHome() : onSelectTap();
   }
 
@@ -126,23 +128,51 @@ class EntryControlls extends GetxController {
 
   /// if home its to delete the fucking account ,
   void onDeleteCLicked(bool ishome) {
-    confirmDialog(_deleteAccount, ishome);
+    confirmDialog(ishome ? _deleteAccount : _delRecord, ishome);
   }
 
   DialogControlls c = Get.put(DialogControlls());
 
+  void _delRecord(bool ishome) {
+    // update the controller ..
+    c.totalRcordCount = selectedItem.length;
+    _deleteDialog(ishome);
+    _delRecordFromDb();
+    c.updateIsfinish();
+    entryTotal = entryTotal - selectedItem.length;
+    update();
+    onUnselectTap(selectedItem, false);
+  }
+
+  /// deletes the record from the database also removes it from the all entry list with help of the index,..
+  void _delRecordFromDb() {
+    int removedLen = 0;
+    selectedItem.forEach((index, uid) async {
+      await o.removeRecord(uid);
+      if (index - 1 - removedLen >= 0) {
+        allEntry.removeAt(index - 1 - removedLen);
+      } else {
+        allEntry.removeAt(index - 1);
+      }
+      removedLen++;
+    });
+  }
+
   /// check the islogin shit also...
   void _deleteAccount(bool ishome) async {
     Get.back();
-    // yo void vako vaye thi
+    _deleteDialog(ishome);
+    c.updateTotalRcrdCount(await _loopTotalboxLength(selectedItemHOme));
+    _loopNdelete();
+    c.updateIsfinish();
+  }
+
+  void _deleteDialog(bool ishome) {
     Get.dialog(DeleteAccDialog(
       "delacc".tr,
       ishome ? selectedItemHOme.length.toString() : "1",
       ishome: ishome,
     ));
-
-    c.updateTotalRcrdCount(await _loopTotalboxLength(selectedItemHOme));
-    _loopNdelete();
   }
 
   Future<int> _loopTotalboxLength(Map inpt) async {
@@ -159,11 +189,10 @@ class EntryControlls extends GetxController {
       await o.removeAccount(p);
       c.updateCurrentAccIndex();
     }
-    c.updateIsfinish();
     // ava per account ko lagi tesko length samma loop hanna parcha !
   }
 
-  void _removeItemFromList() {
+  /* void _removeItemFromList() {
     // with animation of course
-  }
+  } */
 }

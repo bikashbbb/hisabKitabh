@@ -105,7 +105,7 @@ class _CustomTileState extends State<CustomTile> {
 }
 
 class InfoTile extends StatelessWidget {
-  late int index;
+  int index;
   final Transaction obj;
   final bool iSselectTap;
   final EntryControlls? controller;
@@ -155,7 +155,7 @@ class InfoTile extends StatelessWidget {
           Expanded(
             child: InkWell(
               onTap: () {
-                haveCheckbox
+                iSselectTap
                     ? controller!
                         .onCheckBoxTapped(index, obj.uniqueId!, input: db)
                     : null;

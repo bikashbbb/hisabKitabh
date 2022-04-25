@@ -107,11 +107,11 @@ class _AllTransactionsState extends State<AllTransactions> {
                                 "tot".tr +
                                     "ent".tr +
                                     " : " +
-                                    c.builderTotal.toString(),
+                                    _controller!.entryTotal.toString(),
                                 style: subTitle,
                               ),
                               DeleteNunSelect(
-                                c.selectedItem,
+                                _controller!.selectedItem,
                                 isHome: false,
                               )
                             ],

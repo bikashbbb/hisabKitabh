@@ -33,10 +33,11 @@ class DeleteAccDialog extends StatelessWidget {
       child: GetBuilder<DialogControlls>(
           init: DialogControlls(),
           builder: (c) {
-            currentAcc = c.cureentAccIndex.toString();
+            currentAcc =
+                c.isFinished ? totalAccCount : c.cureentAccIndex.toString();
             deletedCount = c.currentIndex.toString();
             return BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
                 child: AlertDialog(
                   contentPadding: const EdgeInsets.only(top: 16),
                   actionsPadding: const EdgeInsets.only(bottom: 0, left: 10),
@@ -68,7 +69,8 @@ class DeleteAccDialog extends StatelessWidget {
                       animation: true,
                       width: 280.w,
                       lineHeight: 5.0,
-                      percent: c.getPercentage().isNaN ? 0 : c.getPercentage(),
+                      percent:
+                          1, //c.getPercentage().isNaN ? 0 : c.getPercentage(),
                       backgroundColor: Colors.grey,
                       progressColor: iconGreen,
                     ),
@@ -79,7 +81,9 @@ class DeleteAccDialog extends StatelessWidget {
                         height: 25,
                         child: c.isFinished
                             ? InkWell(
-                                onTap: c.onDoneClicked,
+                                onTap: () {
+                                  c.onDoneClicked(ishome);
+                                },
                                 child: Text(
                                   'Done!',
                                   style: TextStyle(
