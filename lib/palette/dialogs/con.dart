@@ -53,13 +53,7 @@ class DialogControlls extends GetxController {
     return percentage = currentIndex / totalRcordCount;
   }
 
-  // total c = 3, current = 3 3*3
-  void onDoneClicked(bool isHOme) async {
-    
-     isHOme ? onDoneClickedHome(isHOme) : Get.back();
-  }
-
-  void onDoneClickedHome(bool ishome) async {
+  void onDoneClickedHome() async {
     await Get.delete<DialogControlls>();
     await Get.delete<EntryControlls>();
     CreateEntry.onBack();

@@ -6,6 +6,7 @@ import 'package:app/palette/styles/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
@@ -81,9 +82,12 @@ class DeleteAccDialog extends StatelessWidget {
                         height: 25,
                         child: c.isFinished
                             ? InkWell(
-                                onTap: () {
-                                  c.onDoneClicked(ishome);
-                                },
+                                onTap: ishome
+                                    ? c.onDoneClickedHome
+                                    : () async {
+                                        await Get.delete<DialogControlls>();
+                                        Navigator.pop(context);
+                                      },
                                 child: Text(
                                   'Done!',
                                   style: TextStyle(

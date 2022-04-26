@@ -6,7 +6,6 @@ import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/hive/datasaver.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/ui/itemcatalog.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 // offline sav sakenxa aaja ani lend account pani full setup hunxa!, total amount setup also
@@ -30,7 +29,7 @@ class EntryControlls extends GetxController {
   int builderTotal = 0;
   int entryTotal = 0;
 
-  //
+  late DialogControlls c;
 
   EntryControlls({required this.boxName, bool auto = false}) {
     if (auto) {
@@ -56,10 +55,6 @@ class EntryControlls extends GetxController {
       allAccounts.add(i);
     }
     return allAccounts;
-  }
-
-  remove() {
-    allAccounts.removeAt(0);
   }
 
   // when clicked on the tile
@@ -91,8 +86,6 @@ class EntryControlls extends GetxController {
     }
   }
 
-  /// remmoves an item from the list as well as
-  void removeItemFromDb(int accCode) {}
 // select tapp garesi hamro animated container ko side ma euta checkbox aauxaaaa
   void onSelectTap() {
     isSelectTap.value = !isSelectTap.value;
@@ -128,10 +121,13 @@ class EntryControlls extends GetxController {
 
   /// if home its to delete the fucking account ,
   void onDeleteCLicked(bool ishome) {
+    initiAlizeControlls();
     confirmDialog(ishome ? _deleteAccount : _delRecord, ishome);
   }
 
-  DialogControlls c = Get.put(DialogControlls());
+  void initiAlizeControlls() {
+    c = Get.put(DialogControlls());
+  }
 
   void _delRecord(bool ishome) {
     // update the controller ..
@@ -140,8 +136,8 @@ class EntryControlls extends GetxController {
     _delRecordFromDb();
     c.updateIsfinish();
     entryTotal = entryTotal - selectedItem.length;
-    update();
     onUnselectTap(selectedItem, false);
+    update();
   }
 
   /// deletes the record from the database also removes it from the all entry list with help of the index,..
@@ -191,8 +187,4 @@ class EntryControlls extends GetxController {
     }
     // ava per account ko lagi tesko length samma loop hanna parcha !
   }
-
-  /* void _removeItemFromList() {
-    // with animation of course
-  } */
 }
