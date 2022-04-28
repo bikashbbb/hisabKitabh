@@ -156,16 +156,17 @@ class EntryControlls extends GetxController {
   void _delRecordFromDb() {
     // this has a major bug !! fixx it
     selectedItem.forEach((index, uid) async {
-      await o.removeRecord(uid);
       index--;
       deletedItems.add(index);
       selectedItemAmount += allEntry[index].totalAmount;
+
+      await o.removeRecord(uid);
     });
     _updateDeleteItems();
   }
 
   void _updateDeleteItems() {
-    deletedItems.add(000);
+    deletedItems.add(3000000);
     update();
   }
 

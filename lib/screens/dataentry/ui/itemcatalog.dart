@@ -132,7 +132,7 @@ class _AllTransactionsState extends State<AllTransactions> {
                                     return GetBuilder<EntryControlls>(
                                       init: _controller,
                                       builder: (builder) {
-                                        return builder.isItDeleted(i)
+                                        return _controller!.isItDeleted(i)
                                             ? const SizedBox()
                                             : Obx(() => InfoTile(
                                                   _controller!.allEntry[i],
