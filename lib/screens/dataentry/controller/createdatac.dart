@@ -1,4 +1,5 @@
 import 'package:app/screens/dataentry/const.dart';
+import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/hive/datasaver.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
@@ -36,19 +37,22 @@ class CreateControlls extends GetxController {
   }
 
   /// when clicked on add item
-  void onAdditem() async {
+  void onAdditem(bool isPreviousAcc) async {
     Map item = Transaction.toJson();
     if (checkReqFields()) {
       startLoaded();
 
-      HiveDatabase datasaver = HiveDatabase(aName, isDaily, object: item);
+      HiveDatabase datasaver =
+          HiveDatabase(isDaily, object: item, boxKonaam: aName);
       if (await _checkWifiSignal()) {
         // save data online
       } else {
-        bool result = await datasaver.saveModel();
+        bool result = datasaver.saveModel();
         if (result) {
+          Transaction transObject = Transaction.fromJson(item);
           onAccNotClear();
-          offlineSucess(Transaction.fromJson(item));
+          offlineSucess(transObject);
+          isPreviousAcc ? _onAddPreviousAcc(transObject) : null;
           // animate and add
         } else {
           // not clear item
@@ -59,13 +63,26 @@ class CreateControlls extends GetxController {
     // have if else statement hw
   }
 
+  /// adds the data into the list if the list len <14 else just addups in to len
+  void _onAddPreviousAcc(Transaction obj) {
+    EntryControlls con = Get.find<EntryControlls>();
+    if (con.builderTotal < 13) {
+      // add up in the list and,increase len and amount also
+      con.allEntry.add(obj);
+      con.updateEntryTotal();
+      //con.updateAmountWitAnimation();
+    } else {
+      // just increase len, and amomunt with animation// exceptional:and scroll to the top !
+    }
+  }
+
   /// animates and adds up the item in the builder .
   void offlineSucess(Transaction o) {
     Duration i = const Duration(milliseconds: 600);
     allinfoItems.add(o);
     listkey.currentState!.insertItem(0, duration: i);
-    controller.animateTo(
-      controller.position.maxScrollExtent,
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent,
       duration: i,
       curve: Curves.easeOut,
     );

@@ -19,7 +19,7 @@ class Transaction extends HiveObject {
 
   /// a unique id that keeps the transactions in order ascending or descending .
   int? uniqueId;
-  String? createdDate;
+  DateTime createdDate;
   String? editedDate;
   bool isOnlineStored;
 
@@ -55,9 +55,17 @@ class Transaction extends HiveObject {
     bool issales = !RollSwitcherControlls.isSale;
 
     if (issales) {
-      aName = accountName.text + " (sell)";
+      if (!accountName.text.contains("(sell)")) {
+        aName = accountName.text + " (sell)";
+      } else {
+        aName = accountName.text;
+      }
     } else {
-      aName = accountName.text += " (buy)";
+      if (!accountName.text.contains("(buy)")) {
+        aName = accountName.text + " (buy)";
+      } else {
+        aName = accountName.text;
+      }
     }
     bool isEmpty = itemName.text.isEmpty;
     // created date change garna parcha !!! also ad ya bs matra choose garna milchaa!

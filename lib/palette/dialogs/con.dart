@@ -2,7 +2,6 @@ import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/ui/createdata.dart';
 import 'package:get/get.dart';
 
-// TODO: have an algorithm for total amount!
 class DialogControlls extends GetxController {
   int currentIndex = 0;
   int cureentAccIndex = 0;
@@ -27,16 +26,6 @@ class DialogControlls extends GetxController {
     update();
   }
 
-  /// updates the cureent index with the range of five
-  /* void updateCurrentIndex() {
-    iOne += 1;
-    currentIndex += 1;
-    if (iOne == 5) {
-      update();
-      iOne = 0;
-    }
-  } */
-
   void updateCurrentAccIndex() {
     cureentAccIndex += 1;
     update();
@@ -47,9 +36,7 @@ class DialogControlls extends GetxController {
     update();
   }
 
-  /// updates whenever current index is updated .. will become a great programmer fuck yes yes !!! developer with
   double getPercentage() {
-    // p = c count * total count /100
     return percentage = currentIndex / totalRcordCount;
   }
 

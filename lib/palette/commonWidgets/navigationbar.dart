@@ -1,4 +1,7 @@
+import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:app/palette/styles/colors.dart';
+import 'package:app/palette/styles/decorations.dart';
+import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/homescreen/controller/homecontrolls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -104,5 +107,49 @@ class _BottomNavState extends State<BottomNav> {
 
   void icontapped() {
     // gets to another page and also notifies the
+  }
+}
+
+class ItemCatNavbar extends StatelessWidget {
+  final bool iSsale;
+  final double totalAmount;
+  final Widget addButton;
+  final int secs;
+
+  const ItemCatNavbar(this.iSsale,
+      {Key? key,
+      required this.totalAmount,
+      required this.addButton,
+      this.secs = 1})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: entryButton,
+      height: 50,
+      child: Row(
+        children: [
+          Icon(
+            Icons.monetization_on,
+            color: black,
+          ),
+          AnimatedFlipCounter(
+            value: totalAmount,
+            duration: Duration(seconds: secs),
+            textStyle: appbarStyle,
+          ),
+          const SizedBox(width: 2),
+          Icon(
+            iSsale ? Icons.call_made_outlined : Icons.call_received,
+            color: iSsale ? iconGreen : red,
+            size: 35,
+          ),
+          const Expanded(child: SizedBox()),
+          addButton,
+          const Text("   "),
+        ],
+      ),
+    );
   }
 }

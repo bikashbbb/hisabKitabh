@@ -37,7 +37,8 @@ dependencies:
   nepali_date_picker: ^5.2.0
   connectivity_plus: ^2.2.0
   percent_indicator: ^4.0.0
-
+  animated_flip_counter: ^0.2.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

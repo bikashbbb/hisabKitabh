@@ -14,11 +14,11 @@ class EntryControlls extends GetxController {
   final RxList allAccounts = [].obs;
   int _intitalI = 14;
   int _cIndex = 0;
-
   bool hasdata = true;
   late HiveDatabase o;
   RxBool isSelectTap = false.obs;
   RxBool isSelectTapHome = false.obs;
+  double selectedItemAmount = 0.0;
 
   /// will just hold 15 entries.
   RxList allEntry = [].obs;
@@ -29,16 +29,23 @@ class EntryControlls extends GetxController {
   int builderTotal = 0;
   int entryTotal = 0;
 
+  //RxSet deletedItems = <dynamic>{}.obs;
+  Set deletedItems = {};
   late DialogControlls c;
+  // total
+  RxDouble accTotalAmount = 0.0.obs;
 
   EntryControlls({required this.boxName, bool auto = false}) {
     if (auto) {
-      o = HiveDatabase(boxName, isDaily);
+      o = HiveDatabase(isDaily, boxKonaam: boxName);
     }
   }
 
   Future<bool> setObjects() async {
-    o = HiveDatabase(boxName, isDaily);
+    o = HiveDatabase(
+      isDaily,
+      boxKonaam: boxName,
+    );
     await o.setRecordSaver();
     builderTotal = entryTotal = o.recordSaverBox!.length;
     return true;
@@ -59,10 +66,9 @@ class EntryControlls extends GetxController {
 
   // when clicked on the tile
   void onTileTapped(String accName, bool isdaily) {
-    int code = o.getAllaccount[accName];
     Get.delete<EntryControlls>();
     Get.to(() => AllTransactions(
-          accCode: code,
+          checkIsSales(accName),
           accName: accName,
           isdaily: isdaily,
         ));
@@ -137,21 +143,30 @@ class EntryControlls extends GetxController {
     c.updateIsfinish();
     entryTotal = entryTotal - selectedItem.length;
     onUnselectTap(selectedItem, false);
+    decreaseTotalAmnt(selectedItemAmount);
+    update();
+  }
+
+  void updateEntryTotal() {
+    entryTotal++;
     update();
   }
 
   /// deletes the record from the database also removes it from the all entry list with help of the index,..
   void _delRecordFromDb() {
-    int removedLen = 0;
+    // this has a major bug !! fixx it
     selectedItem.forEach((index, uid) async {
       await o.removeRecord(uid);
-      if (index - 1 - removedLen >= 0) {
-        allEntry.removeAt(index - 1 - removedLen);
-      } else {
-        allEntry.removeAt(index - 1);
-      }
-      removedLen++;
+      index--;
+      deletedItems.add(index);
+      selectedItemAmount += allEntry[index].totalAmount;
     });
+    _updateDeleteItems();
+  }
+
+  void _updateDeleteItems() {
+    deletedItems.add(000);
+    update();
   }
 
   /// check the islogin shit also...
@@ -186,5 +201,22 @@ class EntryControlls extends GetxController {
       c.updateCurrentAccIndex();
     }
     // ava per account ko lagi tesko length samma loop hanna parcha !
+  }
+
+  bool checkIsSales(String accName) {
+    return o.allaccount![accName];
+  }
+
+  void getTotalAmount() {
+    accTotalAmount.value = o.getTotalAmount();
+  }
+
+  void decreaseTotalAmnt(double inputAmount) {
+    accTotalAmount.value -= inputAmount;
+    selectedItemAmount = 0;
+  }
+
+  bool isItDeleted(int indd) {
+    return deletedItems.contains(indd);
   }
 }

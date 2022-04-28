@@ -23,7 +23,7 @@ String uptoOnline = "up";
 
 ScrollPhysics scrollPhysics = const ScrollPhysics();
 final GlobalKey<AnimatedListState> listkey = GlobalKey<AnimatedListState>();
-final ScrollController controller = ScrollController();
+final ScrollController scrollController = ScrollController();
 
 var appStyle = const SystemUiOverlayStyle(
     statusBarColor: Colors.black,

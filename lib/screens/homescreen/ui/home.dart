@@ -38,6 +38,7 @@ class HisabKitabHome extends StatelessWidget {
                     return Padding(
                       padding: EdgeInsets.only(top: 62.h),
                       child: DailyEntryPage(
+                        true,
                         boxname: dailyNuserinfo,
                       ),
                     );

@@ -175,7 +175,7 @@ class _CalenderState extends State<Calender> {
   @override
   void initState() {
     super.initState();
-    nowdate = Calender.dateFormatter(initaldate);
+    nowdate = initaldate;
   }
 
   @override
@@ -191,7 +191,7 @@ class _CalenderState extends State<Calender> {
               if (selected != null) {
                 setState(() {
                   initaldate = selected;
-                  nowdate = Calender.dateFormatter(selected);
+                  nowdate = initaldate;
                 });
               }
             },
@@ -202,7 +202,7 @@ class _CalenderState extends State<Calender> {
                 child:
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   Text(
-                    nowdate!,
+                    Calender.dateFormatter(nowdate!),
                     style: optionred,
                   ),
                   Icon(
@@ -288,11 +288,11 @@ class _CalenderState extends State<Calender> {
     isAd = !isAd;
     if (isAd) {
       initaldate = DateTime.now();
-      nowdate = Calender.dateFormatter(initaldate);
     } else {
       initaldate = picker.NepaliDateTime.now();
-      nowdate = Calender.dateFormatter(initaldate);
     }
+    nowdate = initaldate;
+
     setState(() {});
   }
 }

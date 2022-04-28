@@ -19,7 +19,7 @@ class DataScreen extends StatefulWidget {
 }
 
 class _DataScreenState extends State<DataScreen> {
-  var c = Get.put(EntryControlls(boxName: ""));
+  var c = Get.put(EntryControlls(boxName: "", auto: true));
 
   @override
   void initState() {

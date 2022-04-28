@@ -4,7 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
+// add hanne pachi add it up only if the count is less than 14 or wise just add up the amount!,total entry thats it !!
+// amount ra total entry animate garera add garnee !
 class RollSwitcher extends StatefulWidget {
   const RollSwitcher({Key? key}) : super(key: key);
 
@@ -14,7 +15,6 @@ class RollSwitcher extends StatefulWidget {
 
 class _RollSwitcherState extends State<RollSwitcher> {
   final RollSwitcherControlls controlls = Get.find();
-  bool ist = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class _RollSwitcherState extends State<RollSwitcher> {
               child: CupertinoSwitch(
                   activeColor: Colors.red,
                   trackColor: Colors.green,
-                  value: ist,
+                  value: RollSwitcherControlls.isSale,
                   onChanged: onChnaged),
             ), // SizedBox(height: 50.h, width: 100.w, child: rollswitecher()),
             Text("acctype".tr, style: helpTextStyle),
@@ -41,9 +41,8 @@ class _RollSwitcherState extends State<RollSwitcher> {
   }
 
   void onChnaged(bool change) {
-    setState(() {
-      ist = change;
-    });
     controlls.rollSwitched(change);
+
+    setState(() {});
   }
 }

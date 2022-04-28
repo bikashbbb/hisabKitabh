@@ -6,6 +6,7 @@ import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/instance_manager.dart';
 
 // complete it today and curve container
 class CustomTile extends StatefulWidget {
@@ -104,6 +105,7 @@ class _CustomTileState extends State<CustomTile> {
   }
 }
 
+// ignore: must_be_immutable
 class InfoTile extends StatelessWidget {
   int index;
   final Transaction obj;
@@ -139,7 +141,7 @@ class InfoTile extends StatelessWidget {
     String price = toTString(obj.perQuantityPrice);
     String amnt = toTString(obj.totalAmount);
 
-    return Padding(
+    return  Padding(
       padding: const EdgeInsets.only(top: 3.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -188,7 +190,7 @@ class InfoTile extends StatelessWidget {
                         ),
                         const Expanded(child: Text("")),
                         Text(
-                          obj.createdDate!,
+                          Calender.dateFormatter(obj.createdDate),
                           style: subTitle,
                         )
                       ],

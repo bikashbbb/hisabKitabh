@@ -6,7 +6,7 @@ TextEditingController totalAmnt = TextEditingController();
 TextEditingController totalQuantity = TextEditingController();
 TextEditingController perQuanity = TextEditingController();
 TextEditingController priceperQuantity = TextEditingController();
-String? nowdate;
+DateTime? nowdate;
 
 
 List<TextEditingController> fieldslist = [

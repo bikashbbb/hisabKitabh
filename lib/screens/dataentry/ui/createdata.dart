@@ -18,7 +18,9 @@ import 'package:get/get.dart';
 class CreateEntry extends StatefulWidget {
   final String appbarTitle;
   final bool isDaily;
-  const CreateEntry(this.appbarTitle, {Key? key, this.isDaily = true})
+  final bool isPreviousAcc;
+  const CreateEntry(this.appbarTitle,
+      {Key? key, this.isDaily = true, this.isPreviousAcc = false})
       : super(key: key);
 
   static void onBack() {
@@ -47,7 +49,7 @@ class _CreateEntryState extends State<CreateEntry> {
           builder: (context) {
             return InkWell(
                 onTap: () {
-                  obscontroll.onAdditem();
+                  obscontroll.onAdditem(widget.isPreviousAcc);
                 },
                 child: secAddButton());
           }),
@@ -71,7 +73,11 @@ class _CreateEntryState extends State<CreateEntry> {
           Padding(
               padding: const EdgeInsets.all(10.0),
               child: InkWell(
-                onTap: CreateEntry.onBack,
+                onTap: widget.isPreviousAcc
+                    ? () {
+                        Get.back();
+                      }
+                    : CreateEntry.onBack,
                 child: iconRounder(
                     Icon(
                       Icons.close,
@@ -339,7 +345,7 @@ class _CreateEntryState extends State<CreateEntry> {
                 color: Colors.white,
                 alignment: Alignment.topCenter,
                 child: AnimatedList(
-                    controller: controller,
+                    controller: scrollController,
                     key: listkey,
                     physics: const BouncingScrollPhysics(
                         parent: AlwaysScrollableScrollPhysics()),

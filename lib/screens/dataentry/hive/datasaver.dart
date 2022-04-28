@@ -10,8 +10,8 @@ class HiveDatabase {
   bool isDaily;
 
   HiveDatabase(
-    this.boxKonaam,
     this.isDaily, {
+    required this.boxKonaam,
     this.object,
     this.isUpdate = false,
   }) {
@@ -85,7 +85,7 @@ class HiveDatabase {
 
   /// uses the account name as key to set the data..
   Map allAccountstosjon() {
-    return {aName: 0};
+    return {aName: object!["isSell"]};
   }
 
   /// this gives unique number for the total account
@@ -100,7 +100,7 @@ class HiveDatabase {
 
   void saveAccount() {
     getAllaccount;
-    allaccount![aName] = 0;
+    allaccount![aName] = object!["isSell"];
     updateCode();
   }
 
@@ -132,7 +132,15 @@ class HiveDatabase {
     return accSaverBOx.containsKey(isDaily ? dailyacc : lendAcc);
   }
 
-  Future<void> removeRecord(int key) async{
+  Future<void> removeRecord(int key) async {
     await recordSaverBox!.delete(key);
+  }
+
+  double getTotalAmount() {
+    double amnt = 0;
+    for (Map item in recordSaverBox!.values) {
+      amnt += item["totalAmount"];
+    }
+    return amnt;
   }
 }
