@@ -27,6 +27,7 @@ class AllTransactions extends StatefulWidget {
   final String navName;
   final bool isdaily;
   final bool isSalesAcc;
+  static final ScrollController scrollController = ScrollController();
 
   const AllTransactions(this.isSalesAcc,
       {Key? key,
@@ -40,7 +41,6 @@ class AllTransactions extends StatefulWidget {
 }
 
 class _AllTransactionsState extends State<AllTransactions> {
-  final ScrollController _scrollController = ScrollController();
   late Future<bool> _futureList;
   EntryControlls? _controller;
 
@@ -127,7 +127,7 @@ class _AllTransactionsState extends State<AllTransactions> {
                             child:
                                 NotificationListener<ScrollUpdateNotification>(
                               child: ListView.builder(
-                                  controller: _scrollController,
+                                  controller: AllTransactions.scrollController,
                                   itemCount: _controller!.allEntry.length,
                                   itemBuilder: (ctx, i) {
                                     return GetBuilder<EntryControlls>(
@@ -148,9 +148,9 @@ class _AllTransactionsState extends State<AllTransactions> {
                                     );
                                   }),
                               onNotification: (not) {
-                                if (_scrollController
+                                if (AllTransactions.scrollController
                                         .position.maxScrollExtent ==
-                                    _scrollController.position.pixels) {
+                                    AllTransactions.scrollController.position.pixels) {
                                   _controller!.getAllEntry(isScrolling: true);
                                 }
                                 return true;

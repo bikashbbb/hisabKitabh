@@ -3,10 +3,11 @@ import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/hive/datasaver.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
+import 'package:app/screens/dataentry/ui/itemcatalog.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 
 // planning lets create controller
 // have a separate file for controller, homepage ko bug pani fixx it !!
@@ -39,11 +40,10 @@ class CreateControlls extends GetxController {
   }
 
   /// when clicked on add item
-  void onAdditem(bool isPreviousAcc) async {
+  void onAdditem(bool isPrevsAcc) async {
     Map item = Transaction.toJson();
     if (checkReqFields()) {
-      startLoaded();
-// add item ma bug xa lado!
+      _startLoaded();
       datasaver = HiveDatabase(isDaily, object: item, boxKonaam: aName);
 
       if (await _checkWifiSignal()) {
@@ -54,7 +54,7 @@ class CreateControlls extends GetxController {
           Transaction transObject = Transaction.fromJson(item);
           onAccNotClear();
           offlineSucess(transObject);
-          isPreviousAcc ? _onAddPreviousAcc(transObject) : null;
+          isPrevsAcc ? _onAddPreviousAcc(transObject) : null;
           // animate and add
         } else {
           // not clear item
@@ -73,14 +73,10 @@ class CreateControlls extends GetxController {
   void _onAddPreviousAcc(Transaction obj) {
     EntryControlls con = Get.find<EntryControlls>();
     if (con.builderTotal < 13) {
-      // add up in the list and,increase len and amount also
       con.allEntry.add(obj);
-      con.updateEntryTotal();
-      //con.updateAmountWitAnimation();
-    } else {
-      // just increase len, and amomunt with animation//
-      //exceptional:and scroll to the top !
+      con.increaseTotalAmnt(obj.totalAmount!);
     }
+    con.updateEntryTotal();
   }
 
   /// animates and adds up the item in the builder .
@@ -96,7 +92,7 @@ class CreateControlls extends GetxController {
     update();
   }
 
-  void startLoaded() {
+  void _startLoaded() {
     isClicked = !isClicked;
     update();
   }
@@ -123,18 +119,6 @@ class CreateControlls extends GetxController {
     }
     return false;
   }
-
-  /* /// adds data offline and returns true if no error
-  bool saveOffline() {
-    // have a exception catcher
-  }
-
-  /// adds data offline and returns true if no error
-
-  bool saveOnline() {
-
-  } */
-
 }
 
 class RollSwitcherControlls extends GetxController {

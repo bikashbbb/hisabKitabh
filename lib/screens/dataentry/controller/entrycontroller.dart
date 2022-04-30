@@ -218,6 +218,10 @@ class EntryControlls extends GetxController {
     selectedItemAmount = 0;
   }
 
+  void increaseTotalAmnt(double input) {
+    accTotalAmount.value += input;
+  }
+
   bool isItDeleted(int indd) {
     return deletedItems.contains(indd);
   }
