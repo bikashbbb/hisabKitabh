@@ -8,6 +8,7 @@ import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/ui/itemcatalog.dart';
 import 'package:get/get.dart';
 
+// next fix the add account shit, completely ,and the size bug at the tile..
 // offline sav sakenxa aaja ani lend account pani full setup hunxa!, total amount setup also
 class EntryControlls extends GetxController {
   String boxName;
@@ -219,5 +220,11 @@ class EntryControlls extends GetxController {
 
   bool isItDeleted(int indd) {
     return deletedItems.contains(indd);
+  }
+
+  void onDisposeBox() {
+    if (o.recordSaverBox != null) {
+      o.recordSaverBox!.close();
+    }
   }
 }

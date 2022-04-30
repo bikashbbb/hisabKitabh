@@ -13,6 +13,7 @@ import 'package:app/screens/homescreen/ui/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 
 // this is same for two screens,just make the app bar name a variable,and identify if its editing option,
 class CreateEntry extends StatefulWidget {

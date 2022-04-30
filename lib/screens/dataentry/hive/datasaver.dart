@@ -80,7 +80,7 @@ class HiveDatabase {
     //recordSaverBox.length use this as a key and store in object ;
     Box putKey = await setRecordSaver();
     object!["uniqueId"] = putKey.length;
-    recordSaverBox!.put(putKey.length, object);
+    recordSaverBox!.put(putKey.length + 1, object);
   }
 
   /// uses the account name as key to set the data..

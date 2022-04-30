@@ -68,6 +68,7 @@ class _AllTransactionsState extends State<AllTransactions> {
         leadingWidth: 30,
         leading: BackButton(
           onPressed: () {
+            _controller!.onDisposeBox();
             Get.delete<EntryControlls>();
             Get.back();
           },

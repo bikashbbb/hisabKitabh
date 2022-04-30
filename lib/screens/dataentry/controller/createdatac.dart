@@ -6,9 +6,10 @@ import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 
 // planning lets create controller
-// have a separate file for controller
+// have a separate file for controller, homepage ko bug pani fixx it !!
 class CreateControlls extends GetxController {
   bool isClicked = false;
   static bool isDailyE = true;
@@ -17,6 +18,7 @@ class CreateControlls extends GetxController {
   /// holds items to display but should be in a pagination style my man my man.
   List<Transaction> allinfoItems = [];
 
+  HiveDatabase? datasaver;
   static void checkPerQuantity() {
     if (perQuanity.text == "") {
       perQuanity.text = "1";
@@ -41,13 +43,13 @@ class CreateControlls extends GetxController {
     Map item = Transaction.toJson();
     if (checkReqFields()) {
       startLoaded();
+// add item ma bug xa lado!
+      datasaver = HiveDatabase(isDaily, object: item, boxKonaam: aName);
 
-      HiveDatabase datasaver =
-          HiveDatabase(isDaily, object: item, boxKonaam: aName);
       if (await _checkWifiSignal()) {
         // save data online
       } else {
-        bool result = datasaver.saveModel();
+        bool result = datasaver!.saveModel();
         if (result) {
           Transaction transObject = Transaction.fromJson(item);
           onAccNotClear();
@@ -63,6 +65,10 @@ class CreateControlls extends GetxController {
     // have if else statement hw
   }
 
+  void delHiveAcc() {
+    datasaver!.recordSaverBox!.close();
+  }
+
   /// adds the data into the list if the list len <14 else just addups in to len
   void _onAddPreviousAcc(Transaction obj) {
     EntryControlls con = Get.find<EntryControlls>();
@@ -72,7 +78,8 @@ class CreateControlls extends GetxController {
       con.updateEntryTotal();
       //con.updateAmountWitAnimation();
     } else {
-      // just increase len, and amomunt with animation// exceptional:and scroll to the top !
+      // just increase len, and amomunt with animation//
+      //exceptional:and scroll to the top !
     }
   }
 

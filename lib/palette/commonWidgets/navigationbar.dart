@@ -6,7 +6,7 @@ import 'package:app/screens/homescreen/controller/homecontrolls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import "package:get/get.dart";
-
+// yo muji, vayepachi ava, firebase attach garne aaja ani tyo info tile ko bug fix garne 
 // components: three , todays goal, daily khata, Lend khata
 class BottomNav extends StatefulWidget {
   const BottomNav({Key? key}) : super(key: key);
