@@ -6,7 +6,8 @@ import 'package:app/screens/homescreen/controller/homecontrolls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import "package:get/get.dart";
-// yo muji, vayepachi ava, firebase attach garne aaja ani tyo info tile ko bug fix garne 
+
+// yo muji, vayepachi ava, firebase attach garne aaja ani tyo info tile ko bug fix garne
 // components: three , todays goal, daily khata, Lend khata
 class BottomNav extends StatefulWidget {
   const BottomNav({Key? key}) : super(key: key);
@@ -29,16 +30,16 @@ class _BottomNavState extends State<BottomNav> {
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Padding(
+                /* Padding(
                     padding: EdgeInsets.only(left: 10.w),
                     child: InkWell(
                         onTap: () {
                           activeIndex.value = 0;
                           obj.changePage(1);
                         },
-                        child: navbarItems(Icons.attach_money, 'daily'.tr, 0))),
+                        child: navbarItems(Icons.attach_money, 'daily'.tr, 0))), */
                 InkWell(
                     onTap: () {
                       activeIndex.value = 1;

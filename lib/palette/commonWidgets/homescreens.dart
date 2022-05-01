@@ -19,10 +19,11 @@ class DataScreen extends StatefulWidget {
 }
 
 class _DataScreenState extends State<DataScreen> {
-  var c = Get.put(EntryControlls(boxName: "", auto: true));
+  late EntryControlls c;
 
   @override
   void initState() {
+    c = Get.put(EntryControlls(widget.isDaily, boxName: "", auto: true));
     super.initState();
     c.getAccData;
   }
@@ -32,7 +33,7 @@ class _DataScreenState extends State<DataScreen> {
     final GlobalKey<AnimatedListState> accListKey =
         GlobalKey<AnimatedListState>();
     return Scaffold(
-      floatingActionButton: dailyButton,
+      floatingActionButton: dailyButton(widget.isDaily),
       backgroundColor: iconwhite,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

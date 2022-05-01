@@ -3,18 +3,18 @@ import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/hive/datasaver.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
-import 'package:app/screens/dataentry/ui/itemcatalog.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 // planning lets create controller
 // have a separate file for controller, homepage ko bug pani fixx it !!
 class CreateControlls extends GetxController {
   bool isClicked = false;
-  static bool isDailyE = true;
   List reqFields = [false.obs, false.obs].obs;
+
+  bool isDaily;
+  CreateControlls({this.isDaily = true});
 
   /// holds items to display but should be in a pagination style my man my man.
   List<Transaction> allinfoItems = [];

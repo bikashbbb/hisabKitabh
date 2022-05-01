@@ -3,6 +3,7 @@ import 'package:app/palette/commonWidgets/helptext.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/styles/textstyles.dart';
+import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:app/screens/dataentry/ui/createdata.dart';
@@ -313,7 +314,8 @@ Widget clearBUtton(String title, onpressed) {
   );
 }
 
-Widget dailyButton = TextButton(
+Widget dailyButton(bool isDaily) {
+  return TextButton(
     style: ButtonStyle(
       overlayColor: MaterialStateProperty.all(Colors.black12),
     ),
@@ -321,10 +323,12 @@ Widget dailyButton = TextButton(
       Get.off(
         () => CreateEntry(
           "add".tr,
+          isDaily: isDaily,
         ),
       );
     },
     child: dailyEntryButton());
+} 
 
 Widget selectB = SizedBox(
   child: Row(children: [handI, select]),

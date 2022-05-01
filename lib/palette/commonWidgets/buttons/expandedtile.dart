@@ -6,8 +6,7 @@ import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/instance_manager.dart';
-
+// okey f the item name is too long when clicked on it tyo expand hunxa to show the item name !! yes yes 
 // complete it today and curve container
 class CustomTile extends StatefulWidget {
   const CustomTile(

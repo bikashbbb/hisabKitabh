@@ -14,7 +14,6 @@ String lastUniq = "last unique num";
 
 /// use this to add up with the code to store total amount,
 String tAmount = "t";
-bool isDaily = true;
 
 // secret keyword for itemnms
 /// this will keep record of the object index

@@ -3,6 +3,7 @@
 import 'package:app/palette/dialogs/con.dart';
 import 'package:app/palette/dialogs/dialogs.dart';
 import 'package:app/screens/dataentry/const.dart';
+import 'package:app/screens/dataentry/controller/createdatac.dart';
 import 'package:app/screens/dataentry/hive/datasaver.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/ui/itemcatalog.dart';
@@ -35,8 +36,9 @@ class EntryControlls extends GetxController {
   late DialogControlls c;
   // total
   RxDouble accTotalAmount = 0.0.obs;
+  final bool isDaily;
 
-  EntryControlls({required this.boxName, bool auto = false}) {
+  EntryControlls(this.isDaily, {required this.boxName, bool auto = false}) {
     if (auto) {
       o = HiveDatabase(isDaily, boxKonaam: boxName);
     }

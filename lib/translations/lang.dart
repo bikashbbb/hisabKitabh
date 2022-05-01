@@ -44,7 +44,13 @@ class Languages extends Translations {
           "con": "permanently remove the item?",
           "delacc": "Removing selected item",
           "del": "Deleted :",
-          "accounts": "Accounts"
+          "accounts": "Accounts",
+          "goal3":
+              "Here you can store the Credit transaction of your business or self.",
+          "acc3": "Given",
+          "acc4": "Taken",
+          "t":'to',
+          "eg2":"eg. James acc"
         }
       };
 }

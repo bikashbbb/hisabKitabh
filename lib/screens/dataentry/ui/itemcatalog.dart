@@ -47,7 +47,8 @@ class _AllTransactionsState extends State<AllTransactions> {
   /// initstate is an initializer function its called before build therefore we dont see any , null error in this case
   @override
   void initState() {
-    _controller = Get.put(EntryControlls(boxName: widget.accName));
+    _controller =
+        Get.put(EntryControlls(widget.isdaily, boxName: widget.accName));
     _futureList = _controller!.setObjects();
     super.initState();
   }
@@ -148,9 +149,10 @@ class _AllTransactionsState extends State<AllTransactions> {
                                     );
                                   }),
                               onNotification: (not) {
-                                if (AllTransactions.scrollController
-                                        .position.maxScrollExtent ==
-                                    AllTransactions.scrollController.position.pixels) {
+                                if (AllTransactions.scrollController.position
+                                        .maxScrollExtent ==
+                                    AllTransactions
+                                        .scrollController.position.pixels) {
                                   _controller!.getAllEntry(isScrolling: true);
                                 }
                                 return true;

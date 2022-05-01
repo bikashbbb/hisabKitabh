@@ -13,7 +13,6 @@ import 'package:app/screens/homescreen/ui/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 
 // this is same for two screens,just make the app bar name a variable,and identify if its editing option,
 class CreateEntry extends StatefulWidget {
@@ -34,11 +33,11 @@ class CreateEntry extends StatefulWidget {
 
 class _CreateEntryState extends State<CreateEntry> {
   final DateTime initialDate = DateTime.now();
-  var obscontroll = Get.put(CreateControlls());
+  late CreateControlls obscontroll;
 
   @override
   void initState() {
-    CreateControlls.isDailyE = widget.isDaily;
+    obscontroll = Get.put(CreateControlls(isDaily: widget.isDaily));
     super.initState();
   }
 
@@ -125,6 +124,15 @@ class _CreateEntryState extends State<CreateEntry> {
   }
 
   Widget formheader() {
+    String exp = widget.isDaily ? "eg1".tr : "eg2".tr;
+    /* String accName = "";
+    GetBuilder<RollSwitcherControlls>(
+      init: RollSwitcherControlls(),
+      builder: (con) {
+        accName = RollSwitcherControlls.isSale ? 'acc3'.tr + "t".tr : "acc4".tr;
+        return const SizedBox();
+      },
+    ); */
     return Material(
       elevation: 3,
       borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -144,7 +152,7 @@ class _CreateEntryState extends State<CreateEntry> {
                 SizedBox(
                   width: 170.w,
                   height: 40.h,
-                  child: Obx(() => addTransactionField('acc'.tr,
+                  child: Obx(() => addTransactionField("acc".tr,
                       con: fieldslist[0],
                       isReq: obscontroll.reqFields[0].value,
                       len: 20)),
@@ -154,11 +162,11 @@ class _CreateEntryState extends State<CreateEntry> {
                     child: Obx(
                       () => obscontroll.reqFields[0].value
                           ? Text(
-                              "req".tr,
+                              "req",
                               style: optionred,
                             )
                           : Text(
-                              "eg1".tr,
+                              exp,
                               style: optionblack,
                             ),
                     ))
@@ -171,7 +179,9 @@ class _CreateEntryState extends State<CreateEntry> {
                     // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const RollSwitcher(),
+                      widget.isDaily
+                          ? RollSwitcher("acctype2".tr, "acctype".tr)
+                          : RollSwitcher("acc3".tr, "acc4".tr),
                       Padding(
                           padding: EdgeInsets.only(left: 31.0.w),
                           child: Text(
