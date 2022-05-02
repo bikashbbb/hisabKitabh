@@ -41,7 +41,7 @@ class CreateControlls extends GetxController {
 
   /// when clicked on add item
   void onAdditem(bool isPrevsAcc) async {
-    Map item = Transaction.toJson();
+    Map item = Transaction.toJson(isDaily);
     if (checkReqFields()) {
       _startLoaded();
       datasaver = HiveDatabase(isDaily, object: item, boxKonaam: aName);

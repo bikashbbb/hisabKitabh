@@ -1,5 +1,6 @@
 import 'package:app/palette/commonWidgets/buttons/buttons.dart';
 import 'package:app/palette/commonWidgets/constants/dropdowncons.dart';
+import 'package:app/palette/commonWidgets/navigationbar.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
@@ -82,7 +83,9 @@ class _DataScreenState extends State<DataScreen> {
                             iSselectTap: c.isSelectTapHome.value,
                           ),
                         ),
-                        Expanded(child: accCard(accname, i)),
+                        Expanded(
+                            child:
+                                _accCard(accname, i, c.checkIsSales(accname))),
                       ],
                     );
                   }),
@@ -95,7 +98,7 @@ class _DataScreenState extends State<DataScreen> {
     );
   }
 
-  Widget accCard(String txt, i) {
+  Widget _accCard(String txt, i, bool isSales) {
     return Card(
       child: ListTile(
         onTap: () {
@@ -103,19 +106,23 @@ class _DataScreenState extends State<DataScreen> {
         },
         tileColor: secondaryC,
         minLeadingWidth: 10,
-
         leading: contactI,
-        // tileColocr: Colors.red,
-
-        title: Text(
-          txt,
-          style: appbarStyle,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+        title: Row(
+          children: [
+            Expanded(
+              child: Text(
+                txt,
+                style: appbarStyle,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            salesIcon(isSales)
+          ],
         ),
         trailing: Icon(
           Icons.arrow_right,
-          color: iconGreen,
+          color: black,
         ),
       ),
     );

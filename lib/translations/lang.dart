@@ -50,7 +50,9 @@ class Languages extends Translations {
           "acc3": "Given",
           "acc4": "Taken",
           "t":'to',
-          "eg2":"eg. James acc"
+          "eg2":"eg. James acc",
+          "Gvn":"Given",
+          "Rceved":"Received"
         }
       };
 }

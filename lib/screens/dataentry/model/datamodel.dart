@@ -51,18 +51,20 @@ class Transaction extends HiveObject {
         perQuantity: i["perQuantity"]);
   }
 
-  static Map<String, dynamic> toJson() {
+  static Map<String, dynamic> toJson(bool isDaily) {
     bool issales = !RollSwitcherControlls.isSale;
+    String addup1 = isDaily ? " (sell)" : " (Given)";
+    String addup2 = isDaily ? " (buy)" : " (Received)";
 
     if (issales) {
-      if (!accountName.text.contains("(sell)")) {
-        aName = accountName.text + " (sell)";
+      if (!accountName.text.contains(addup1)) {
+        aName = accountName.text + addup1;
       } else {
         aName = accountName.text;
       }
     } else {
-      if (!accountName.text.contains("(buy)")) {
-        aName = accountName.text + " (buy)";
+      if (!accountName.text.contains(addup2)) {
+        aName = accountName.text + addup2;
       } else {
         aName = accountName.text;
       }

@@ -141,11 +141,7 @@ class ItemCatNavbar extends StatelessWidget {
             textStyle: appbarStyle,
           ),
           const SizedBox(width: 2),
-          Icon(
-            iSsale ? Icons.call_made_outlined : Icons.call_received,
-            color: iSsale ? iconGreen : red,
-            size: 35,
-          ),
+          salesIcon(iSsale),
           const Expanded(child: SizedBox()),
           addButton,
           const Text("   "),
@@ -153,4 +149,12 @@ class ItemCatNavbar extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget salesIcon(bool iSsale) {
+  return Icon(
+    iSsale ? Icons.call_made_outlined : Icons.call_received,
+    color: iSsale ? iconGreen : red,
+    size: 35,
+  );
 }

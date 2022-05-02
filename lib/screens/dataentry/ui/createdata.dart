@@ -201,6 +201,8 @@ class _CreateEntryState extends State<CreateEntry> {
 
 // add per quantity,price per quanity and SI unit in More Details Expansion tile,also bs/ad option in date
   Widget formbody(BuildContext context) {
+    String textLabel1 = widget.isDaily ? "buy".tr : "Rceved".tr;
+    String textLabel2 = widget.isDaily ? "sold".tr : "Gvn".tr;
     var optional = GetBuilder<RollSwitcherControlls>(
         init: RollSwitcherControlls(),
         builder: (controlls) {
@@ -233,11 +235,12 @@ class _CreateEntryState extends State<CreateEntry> {
                         return SizedBox(
                             height: 40.h,
                             width: 190.w,
-                            child: RollSwitcherControlls.isSale
-                                ? addTransactionField("item".tr,
-                                    type: "buy".tr, con: fieldslist[2])
-                                : addTransactionField("item".tr,
-                                    type: "sold".tr, con: fieldslist[2]));
+                            // yeha ani model ma update garne tw honi .
+                            child: addTransactionField("item".tr,
+                                type: RollSwitcherControlls.isSale
+                                    ? textLabel1
+                                    : textLabel2,
+                                con: fieldslist[2]));
                       }),
                   SizedBox(
                       height: 40.h,
