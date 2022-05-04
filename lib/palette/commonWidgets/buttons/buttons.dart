@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:app/palette/commonWidgets/appbar.dart';
 import 'package:app/palette/commonWidgets/helptext.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/decorations.dart';
@@ -315,19 +316,19 @@ Widget clearBUtton(String title, onpressed) {
 
 Widget dailyButton(bool isDaily) {
   return TextButton(
-    style: ButtonStyle(
-      overlayColor: MaterialStateProperty.all(Colors.black12),
-    ),
-    onPressed: () {
-      Get.off(
-        () => CreateEntry(
-          "add".tr,
-          isDaily: isDaily,
-        ),
-      );
-    },
-    child: dailyEntryButton());
-} 
+      style: ButtonStyle(
+        overlayColor: MaterialStateProperty.all(Colors.black12),
+      ),
+      onPressed: () {
+        Get.off(
+          () => CreateEntry(
+            "add".tr,
+            isDaily: isDaily,
+          ),
+        );
+      },
+      child: dailyEntryButton());
+}
 
 Widget selectB = SizedBox(
   child: Row(children: [handI, select]),
@@ -336,18 +337,22 @@ Widget selectB = SizedBox(
 Widget selectButon(EntryControlls con, {bool isHome = false}) => InkWell(
     onTap: isHome ? con.onSelectTapHome : con.onSelectTap, child: selectB);
 
-Widget secAddButton() {
+Widget secAddButton({bool isClicked = false}) {
   return InkWell(
     child: Container(
       alignment: Alignment.center,
       decoration: circleblackDec,
       height: 50.h,
       width: 50.w,
-      child: Text(
-        "+",
-        style: TextStyle(
-            color: Colors.white, fontSize: 25.sp, fontWeight: FontWeight.bold),
-      ),
+      child: isClicked
+          ? customIndicator()
+          : Text(
+              "+",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25.sp,
+                  fontWeight: FontWeight.bold),
+            ),
     ),
   );
 }

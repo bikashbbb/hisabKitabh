@@ -44,3 +44,9 @@ class CustomAppBar extends StatelessWidget {
     );
   }
 }
+
+Widget customIndicator() =>
+  CircularProgressIndicator(
+    color: iconGreen,
+  );
+

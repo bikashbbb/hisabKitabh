@@ -51,7 +51,7 @@ class _CreateEntryState extends State<CreateEntry> {
                 onTap: () {
                   obscontroll.onAdditem(widget.isPreviousAcc);
                 },
-                child: secAddButton());
+                child: secAddButton(isClicked: context.isClicked));
           }),
       bottomNavigationBar: SizedBox(
         height: 30.h,

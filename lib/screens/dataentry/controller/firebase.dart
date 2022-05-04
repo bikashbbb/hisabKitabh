@@ -10,15 +10,28 @@ class FireHomePage {
 
 }
 
-class FireItemCat {}
+//class FireItemCat {}
 
 class FireCreateEntry {
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final bool isDaily;
+  Map<String,dynamic> object;
+
+  FireCreateEntry(this.isDaily,this.object);
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String uid = "aG3zl2xbGIM932F74kVbnRrdRj02";
-  Future createEntry() async {
-    // check if doc exists
-   // _firestore.collection(Userdata.getCurrnetUsser()).doc().collection(collectionPath);
-  
+
+  Future<dynamic> onAdditem() async {
+    try {
+      await _firestore
+          .collection(uid)
+          .doc(isDaily ? daily : lendAcc)
+          .collection("data")
+          .add(object);
+      return true;
+    } catch (e) {
+      return e;
+    }
   }
 
   //void _check

@@ -1,3 +1,4 @@
+import 'package:app/palette/dialogs/dialogs.dart';
 import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/controller/firebase.dart';
@@ -43,27 +44,35 @@ class CreateControlls extends GetxController {
 
   /// when clicked on add item
   void onAdditem(bool isPrevsAcc) async {
-    Map item = Transaction.toJson(isDaily);
+    Map<String, dynamic> item = Transaction.toJson(isDaily);
+    Transaction transObject = Transaction.fromJson(item);
+
     if (checkReqFields()) {
       _startLoaded();
 
       if (await _checkWifiSignal()) {
-        //FireCreateEntry().
-
+        if (await FireCreateEntry(isDaily, item).onAdditem() != true) {
+          showIndicatorDialog(true);
+        }
+        _onEntrysaveSucess(transObject, isPrevsAcc);
       } else {
         datasaver = HiveDatabase(isDaily, object: item, boxKonaam: aName);
         bool result = datasaver!.saveModel();
         if (result) {
-          Transaction transObject = Transaction.fromJson(item);
-          onAccNotClear();
-          offlineSucess(transObject);
-          isPrevsAcc ? _onAddPreviousAcc(transObject) : null;
+          _onEntrysaveSucess(transObject, isPrevsAcc);
           // animate and add
         }
       }
+      _startLoaded();
     }
 
     // have if else statement hw
+  }
+
+  void _onEntrysaveSucess(Transaction transObject, bool isPrevsAcc) {
+    onAccNotClear();
+    offlineSucess(transObject);
+    isPrevsAcc ? _onAddPreviousAcc(transObject) : null;
   }
 
   void delHiveAcc() {
