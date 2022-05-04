@@ -4,12 +4,15 @@ import 'package:app/palette/commonWidgets/navigationbar.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
+import 'package:app/screens/dataentry/ui/createdata.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/instance_manager.dart';
-
+// i should be addidng up the firebase stream here ... 
 class DataScreen extends StatefulWidget {
   final bool isDaily;
 
@@ -34,66 +37,80 @@ class _DataScreenState extends State<DataScreen> {
     final GlobalKey<AnimatedListState> accListKey =
         GlobalKey<AnimatedListState>();
     return Scaffold(
-      floatingActionButton: dailyButton(widget.isDaily),
+      floatingActionButton: InkWell(
+          onTap: () {
+            Get.off(
+              () => CreateEntry(
+                "add".tr,
+                isDaily: widget.isDaily,
+              ),
+            );
+          },
+          child: secAddButton()),
       backgroundColor: iconwhite,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Obx(
-            () => Row(
-              children: [
-                Text(
-                  "tacc".tr,
-                  style: headerS(Colors.black54),
+      body: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Obx(
+                () => Row(
+                  children: [
+                    Text(
+                      "tacc".tr,
+                      style: headerS(Colors.black54),
+                    ),
+                    Text(
+                      c.allAccounts.length.toString(),
+                      style: headerS(Colors.black),
+                    ),
+                    DeleteNunSelect(
+                      c.selectedItemHOme,
+                    ),
+                    const Text("                "),
+                    selectButon(c, isHome: true)
+                  ],
                 ),
-                Text(
-                  c.allAccounts.length.toString(),
-                  style: headerS(Colors.black),
-                ),
-                DeleteNunSelect(
-                  c.selectedItemHOme,
-                ),
-                const Text("                "),
-                selectButon(c, isHome: true)
-              ],
-            ),
-          ),
-          Divider(
-            color: black,
-            thickness: 1,
-            height: 20.h,
-          ),
-          // lets have a list builder
-          Obx(
-            () => Expanded(
-                child: SizedBox(
-              child: ListView.builder(
-                  key: accListKey,
-                  itemCount: c.allAccounts.length,
-                  itemBuilder: (ct, i) {
-                    String accname = c.allAccounts[i];
-                    return Row(
-                      children: [
-                        Obx(
-                          () => CustomCheckBox(
-                            isHome: true,
-                            uniqueId: accname,
-                            controller: c,
-                            index: i,
-                            iSselectTap: c.isSelectTapHome.value,
-                          ),
-                        ),
-                        Expanded(
-                            child:
-                                _accCard(accname, i, c.checkIsSales(accname))),
-                      ],
-                    );
-                  }),
-            )),
-          ),
-
-          const Text(""),
-        ],
+              ),
+              Divider(
+                color: black,
+                thickness: 1,
+                height: 20.h,
+              ),
+              // lets have a list builder
+              Obx(
+                () => Expanded(
+                    child: SizedBox(
+                  child: ListView.builder(
+                      key: accListKey,
+                      itemCount: c.allAccounts.length,
+                      itemBuilder: (ct, i) {
+                        String accname = c.allAccounts[i];
+                        return Row(
+                          children: [
+                            Obx(
+                              () => CustomCheckBox(
+                                isHome: true,
+                                uniqueId: accname,
+                                controller: c,
+                                index: i,
+                                iSselectTap: c.isSelectTapHome.value,
+                              ),
+                            ),
+                            Expanded(
+                                child:
+                                    _accCard(accname, i, c.checkIsSales(accname))),
+                          ],
+                        );
+                      }),
+                )),
+              ),
+      
+              const Text(""),
+            ],
+          );
+        }
       ),
     );
   }
@@ -127,4 +144,8 @@ class _DataScreenState extends State<DataScreen> {
       ),
     );
   }
+
+  /* widget _onlineData(){
+
+  } */
 }

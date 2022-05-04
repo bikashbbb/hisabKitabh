@@ -87,3 +87,10 @@ class Transaction extends HiveObject {
     };
   }
 }
+
+// how will i diffrenciate settlement from transaction ??!
+class SettleMent{
+  // contains the settlement format 
+
+
+}

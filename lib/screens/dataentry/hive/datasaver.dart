@@ -30,7 +30,7 @@ class HiveDatabase {
   Box? recordSaverBox;
 
   /// holds all the data of total account
-  late Map<dynamic, dynamic>? allaccount;
+  Map<dynamic, dynamic>? allaccount;
 
   /// code of the account name
   late int code;

@@ -139,6 +139,8 @@ class _AllTransactionsState extends State<AllTransactions> {
                                             : Obx(() => InfoTile(
                                                   _controller!.allEntry[i],
                                                   i,
+                                                  isSales: c.checkIsSales(
+                                                      widget.accName),
                                                   haveCheckbox: true,
                                                   db: _controller!.selectedItem,
                                                   iSselectTap: _controller!

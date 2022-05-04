@@ -1,4 +1,3 @@
-import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/hive/datasaver.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
@@ -11,6 +10,11 @@ class HomeControllerInterface extends GetxController {
   }
 
   bool doesAccExists() {
-    return _obj.isAccountCreated(isDaily);
+    /// first check for wifi and login info ! if both meets go for online else offline !
+    if (_obj.isAccountCreated(isDaily) && true) {
+      // true ko thau ma firebase checker of has data yedi dubai ma data xaina vane false;
+      return true;
+    }
+    return false;
   }
 }

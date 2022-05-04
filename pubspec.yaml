@@ -38,6 +38,11 @@ dependencies:
   connectivity_plus: ^2.2.0
   percent_indicator: ^4.0.0
   animated_flip_counter: ^0.2.0
+  firebase_auth: 2.0.0
+  google_sign_in: any
+  firebase_core: any
+  cloud_firestore: ^3.1.0
+
   
 dev_dependencies:
   flutter_test:
@@ -70,6 +75,7 @@ flutter:
        - assets/images/noun-curved-arrow-3067940-2.png
        - assets/images/bookwriting.png
        - assets/images/borrow.png
+       - assets/images/google ing.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -3,7 +3,6 @@ import 'package:app/palette/commonWidgets/helptext.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/styles/textstyles.dart';
-import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:app/screens/dataentry/ui/createdata.dart';

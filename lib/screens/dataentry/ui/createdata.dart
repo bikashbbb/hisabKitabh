@@ -370,6 +370,7 @@ class _CreateEntryState extends State<CreateEntry> {
                         b.allinfoItems[index],
                         index,
                         haveCheckbox: false,
+                        isSales: b.allinfoItems[index].isSell,
                       );
                     })),
           );

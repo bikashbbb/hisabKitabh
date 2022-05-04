@@ -6,7 +6,6 @@ class Languages extends Translations {
         "en_US": {
           "title": "Hisab Kitab",
           "log": "LOGIN",
-          "join": "JOIN",
           "goal":
               "Set Todays Sales Goal here so, that you can track your sales target at the end of the day.",
           "daily": "Daily Goals",
@@ -49,10 +48,16 @@ class Languages extends Translations {
               "Here you can store the Credit transaction of your business or self.",
           "acc3": "Given",
           "acc4": "Taken",
-          "t":'to',
-          "eg2":"eg. James acc",
-          "Gvn":"Given",
-          "Rceved":"Received"
+          "t": 'to',
+          "eg2": "eg. James acc",
+          "Gvn": "Given",
+          "Rceved": "Received",
+          "wb": "Welcome Back To Hisabh",
+          "lga": "Login with google Account",
+          "msg":
+              "By logging-in to Hisabh with your google account you accept",
+              "msg2":"our terms and conditions.",
+              "failed":"Account Login failed !"
         }
       };
 }

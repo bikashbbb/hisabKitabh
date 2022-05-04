@@ -1,4 +1,5 @@
 import 'package:app/palette/commonWidgets/buttons/buttons.dart';
+import 'package:app/palette/commonWidgets/navigationbar.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/styles/textstyles.dart';
@@ -6,7 +7,8 @@ import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-// okey f the item name is too long when clicked on it tyo expand hunxa to show the item name !! yes yes 
+
+// okey f the item name is too long when clicked on it tyo expand hunxa to show the item name !! yes yes
 // complete it today and curve container
 class CustomTile extends StatefulWidget {
   const CustomTile(
@@ -112,13 +114,18 @@ class InfoTile extends StatelessWidget {
   final EntryControlls? controller;
   final Map? db;
   final bool haveCheckbox;
-  InfoTile(this.obj, this.index,
-      {Key? key,
-      this.iSselectTap = false,
-      this.controller,
-      this.db,
-      required this.haveCheckbox})
-      : super(key: key);
+  final bool isSales;
+  InfoTile(
+    this.obj,
+    this.index,
+     {
+    Key? key,
+    this.iSselectTap = false,
+    this.controller,
+    required this.isSales,
+    this.db,
+    required this.haveCheckbox,
+  }) : super(key: key);
 
   static String toTString(double? input) {
     if (input == null) {
@@ -140,7 +147,7 @@ class InfoTile extends StatelessWidget {
     String price = toTString(obj.perQuantityPrice);
     String amnt = toTString(obj.totalAmount);
 
-    return  Padding(
+    return Padding(
       padding: const EdgeInsets.only(top: 3.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -178,6 +185,7 @@ class InfoTile extends StatelessWidget {
                           color: black,
                           size: 25,
                         ),
+                        salesIcon(isSales, size: 20),
                         SizedBox(
                           width: iSselectTap ? 240.w : 260.w,
                           child: Text(

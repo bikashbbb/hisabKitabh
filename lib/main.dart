@@ -2,17 +2,19 @@
 import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/homescreen/ui/home.dart';
 import 'package:app/translations/lang.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
 // todays worl:
 //1) setup lend entry page
 // 2) setup settlement
-// 3) setup firebase and boom i am done with the first version ! 
+// 3) setup firebase and boom i am done with the first version !
 
 // have a settle button in the all transaction page..
-// have change the create order page , some extend !!. and 
+// have change the create order page , some extend !!. and
 // lets shape the lend entry also , have some minor changes in lend entry thats all...!! and after that i will have the firebase connected with my app and boom done !
 void main() async {
   Box obj = await hiveInitializer();
@@ -21,6 +23,7 @@ void main() async {
 
 Future<Box> hiveInitializer() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await Hive.initFlutter();
   return await Hive.openBox(dailyNuserinfo);
 }

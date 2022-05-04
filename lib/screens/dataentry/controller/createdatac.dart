@@ -1,8 +1,10 @@
 import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
+import 'package:app/screens/dataentry/controller/firebase.dart';
 import 'package:app/screens/dataentry/hive/datasaver.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
+import 'package:app/screens/login/logincontrolls.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -44,11 +46,12 @@ class CreateControlls extends GetxController {
     Map item = Transaction.toJson(isDaily);
     if (checkReqFields()) {
       _startLoaded();
-      datasaver = HiveDatabase(isDaily, object: item, boxKonaam: aName);
 
       if (await _checkWifiSignal()) {
-        // save data online
+        //FireCreateEntry().
+
       } else {
+        datasaver = HiveDatabase(isDaily, object: item, boxKonaam: aName);
         bool result = datasaver!.saveModel();
         if (result) {
           Transaction transObject = Transaction.fromJson(item);
@@ -56,8 +59,6 @@ class CreateControlls extends GetxController {
           offlineSucess(transObject);
           isPrevsAcc ? _onAddPreviousAcc(transObject) : null;
           // animate and add
-        } else {
-          // not clear item
         }
       }
     }
@@ -114,7 +115,8 @@ class CreateControlls extends GetxController {
   Future<bool> _checkWifiSignal() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile ||
-        connectivityResult == ConnectivityResult.wifi) {
+        connectivityResult == ConnectivityResult.wifi ||
+        !LoginControlls.isUserLoggedin()) {
       return true;
     }
     return false;

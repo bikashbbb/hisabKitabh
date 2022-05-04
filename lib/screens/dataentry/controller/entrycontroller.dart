@@ -2,8 +2,6 @@
 // what should i be doing?? opening boxes in the name of each account !
 import 'package:app/palette/dialogs/con.dart';
 import 'package:app/palette/dialogs/dialogs.dart';
-import 'package:app/screens/dataentry/const.dart';
-import 'package:app/screens/dataentry/controller/createdatac.dart';
 import 'package:app/screens/dataentry/hive/datasaver.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/ui/itemcatalog.dart';
@@ -208,6 +206,9 @@ class EntryControlls extends GetxController {
   }
 
   bool checkIsSales(String accName) {
+    if (o.allaccount == null) {
+      o.getAllaccount;
+    }
     return o.allaccount![accName];
   }
 

@@ -151,10 +151,10 @@ class ItemCatNavbar extends StatelessWidget {
   }
 }
 
-Widget salesIcon(bool iSsale) {
+Widget salesIcon(bool iSsale,{double size = 35}) {
   return Icon(
     iSsale ? Icons.call_made_outlined : Icons.call_received,
     color: iSsale ? iconGreen : red,
-    size: 35,
+    size: size,
   );
 }

@@ -164,3 +164,19 @@ void confirmDialog(Function(bool) onYes, bool isHome) {
     ),
   ));
 }
+
+void showIndicatorDialog(bool isSucess) {
+  Get.dialog(AlertDialog(
+    backgroundColor: Colors.white,
+    title: Center(
+      child: isSucess
+          ? Text(
+              "failed".tr,
+              style: subTitle,
+            )
+          : CircularProgressIndicator(
+              color: iconGreen,
+            ),
+    ),
+  ));
+}

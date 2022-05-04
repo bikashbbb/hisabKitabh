@@ -1,7 +1,6 @@
 import 'package:app/palette/commonWidgets/appbar.dart';
 import 'package:app/palette/commonWidgets/navigationbar.dart';
 import 'package:app/palette/styles/decorations.dart';
-import 'package:app/screens/dailygoals/ui/dailyhome.dart';
 import 'package:app/screens/dataentry/ui/entryhome.dart';
 import 'package:app/screens/homescreen/controller/homecontrolls.dart';
 import 'package:app/screens/lendAcc/ui/lendhome.dart';
@@ -14,12 +13,9 @@ class HisabKitabHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // have a stream builder here to check on login logout !!
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        toolbarHeight: 0,
-        backgroundColor: Colors.black,
-      ),
+      appBar: CustomAppBar.secAppbar,
       bottomNavigationBar: Container(
           decoration: entryButton, height: 80.h, child: const BottomNav()),
       body: Stack(
