@@ -6,6 +6,7 @@ import 'package:app/screens/homescreen/controller/homecontrolls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import "package:get/get.dart";
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 
 // yo muji, vayepachi ava, firebase attach garne aaja ani tyo info tile ko bug fix garne
 // components: three , todays goal, daily khata, Lend khata
@@ -151,10 +152,53 @@ class ItemCatNavbar extends StatelessWidget {
   }
 }
 
-Widget salesIcon(bool iSsale,{double size = 35}) {
+Widget salesIcon(bool iSsale, {double size = 35}) {
   return Icon(
     iSsale ? Icons.call_made_outlined : Icons.call_received,
     color: iSsale ? iconGreen : red,
     size: size,
   );
+}
+
+class UpperNavigationBar extends StatelessWidget {
+  const UpperNavigationBar({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavyBar(
+      onItemSelected: (index) {
+        print(index);
+      },
+      selectedIndex: 0,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      iconSize: 10,
+      backgroundColor: Colors.lightGreen[200], // <-- This works for fixed
+      items: [
+        BottomNavyBarItem(
+            activeColor: Colors.black,
+            title: Text("on".tr, style: _white15),
+            icon: const Icon(
+              Icons.compass_calibration_outlined,
+              color: Colors.white,
+            )),
+        BottomNavyBarItem(
+            activeColor: Colors.black,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text("off".tr, style: _white15),
+                Icon(
+                  Icons.do_disturb_on_sharp,
+                  color: red,
+                  size: 10,
+                )
+              ],
+            ),
+            icon: const SizedBox()),
+      ],
+    );
+  }
+
+  final TextStyle _white15 = const TextStyle(
+      color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold);
 }

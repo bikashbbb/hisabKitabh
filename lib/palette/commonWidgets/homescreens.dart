@@ -52,9 +52,11 @@ class _DataScreenState extends State<DataScreen> {
           child: secAddButton()),
       backgroundColor: iconwhite,
       body: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // this is offline
+          const SizedBox(height: 33, child: UpperNavigationBar()),
           Obx(
             () => Row(
               children: [
@@ -74,14 +76,17 @@ class _DataScreenState extends State<DataScreen> {
               ],
             ),
           ),
+
           Divider(
             color: black,
             thickness: 1,
             height: 20.h,
           ),
+
           // lets have a offline column first
           // Expanded(child: SizedBox()),
-          //
+          // offline
+          _offlineColumn(),
           //online Data
           /* StreamBuilder(
               stream: FireHomePage(widget.isDaily).getAccountQuery(null),
@@ -99,35 +104,11 @@ class _DataScreenState extends State<DataScreen> {
               }),
            */ // offline data
           //Container(height: 200, width: 300, child: _offlineColumn()),
-          Obx(
-            () => SizedBox(
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  key: _accListKey,
-                  itemCount: c.allAccounts.length,
-                  itemBuilder: (ct, i) {
-                    String accname = c.allAccounts[i];
-                    return Row(
-                      children: [
-                        Obx(
-                          () => CustomCheckBox(
-                            isHome: true,
-                            uniqueId: accname,
-                            controller: c,
-                            index: i,
-                            iSselectTap: c.isSelectTapHome.value,
-                          ),
-                        ),
-                        Expanded(
-                            child: _accCard(accname, c.checkIsSales(accname))),
-                      ],
-                    );
-                  }),
-            ),
-          ),
           // online
+          // lets have a iffline section and online section !
           Expanded(
             child: FirestoreListView(
+              shrinkWrap: true,
               query: FireHomePage(widget.isDaily).getAccountQuery(),
               itemBuilder: (ctx, snapshot) {
                 //Map v = snapshot.data();
@@ -179,7 +160,31 @@ class _DataScreenState extends State<DataScreen> {
 
   } */
 
-  /* Widget _offlineColumn() {
-   
-  } */
+  Widget _offlineColumn() {
+    return Obx(
+      () => SizedBox(
+        child: ListView.builder(
+            shrinkWrap: true,
+            key: _accListKey,
+            itemCount: c.allAccounts.length,
+            itemBuilder: (ct, i) {
+              String accname = c.allAccounts[i];
+              return Row(
+                children: [
+                  Obx(
+                    () => CustomCheckBox(
+                      isHome: true,
+                      uniqueId: accname,
+                      controller: c,
+                      index: i,
+                      iSselectTap: c.isSelectTapHome.value,
+                    ),
+                  ),
+                  Expanded(child: _accCard(accname, c.checkIsSales(accname))),
+                ],
+              );
+            }),
+      ),
+    );
+  }
 }

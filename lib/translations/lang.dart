@@ -57,7 +57,9 @@ class Languages extends Translations {
           "msg":
               "By logging-in to Hisabh with your google account you accept",
               "msg2":"our terms and conditions.",
-              "failed":"Account Login failed !"
+              "failed":"Account Login failed !",
+              "on":"ONLINE",
+              "off":"OFFLINE  "
         }
       };
 }
