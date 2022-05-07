@@ -1,5 +1,7 @@
 import 'package:app/screens/dataentry/const.dart';
+import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
+import 'package:get/instance_manager.dart';
 import 'package:hive/hive.dart';
 
 // tody i have to finish the remove at home and at the other page remove !
@@ -41,11 +43,11 @@ class HiveDatabase {
   /// index of the object that we current are adding upp.
   int? objectindex;
 
-  bool saveModel() {
+  Future<bool> saveModel() async {
     // here will check if the box alredy exists or we have to create a new box !
 
     try {
-      setAcc();
+      await setAcc();
       setData();
 
       return true;
@@ -55,13 +57,14 @@ class HiveDatabase {
   }
 
 // shall i close box after each adding up?? i have to
-  void setAcc() {
+  Future<void> setAcc() async {
     if (accSaverBOx.containsKey(acc)) {
       if (!getAllaccount.containsKey(aName)) {
         saveAccount();
+        updateEntryControlls();
       }
     } else {
-      accSaverBOx.put(acc, allAccountstosjon());
+      await accSaverBOx.put(acc, allAccountstosjon());
     }
   }
 
@@ -102,6 +105,11 @@ class HiveDatabase {
     getAllaccount;
     allaccount![aName] = object!["isSell"];
     updateCode();
+  }
+
+  void updateEntryControlls() {
+    EntryControlls controlls = Get.find<EntryControlls>();
+    controlls.allAccounts.add(aName);
   }
 
   void updateCode() {

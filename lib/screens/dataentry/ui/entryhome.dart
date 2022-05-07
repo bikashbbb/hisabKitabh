@@ -24,8 +24,8 @@ class _DailyEntryPageState extends State<DailyEntryPage> {
 
   @override
   void initState() {
-    Get.delete<HomeControllerInterface>();
-    Get.delete<EntryControlls>();
+    /* Get.delete<HomeControllerInterface>();
+    Get.delete<EntryControlls>(); */
     _controlls = HomeControllerInterface(widget.isdaily);
     super.initState();
   }

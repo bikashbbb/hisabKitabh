@@ -38,10 +38,11 @@ dependencies:
   connectivity_plus: ^2.2.0
   percent_indicator: ^4.0.0
   animated_flip_counter: ^0.2.0
-  firebase_auth: 2.0.0
-  google_sign_in: any
-  firebase_core: any
-  cloud_firestore: ^3.1.0
+  firebase_auth: ^3.3.17
+  google_sign_in: ^5.3.0
+  firebase_core: ^1.16.0
+  cloud_firestore: ^3.1.14
+  flutterfire_ui: ^0.4.0+5
 
   
 dev_dependencies:

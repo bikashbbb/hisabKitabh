@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:app/palette/dialogs/dialogs.dart';
 import 'package:app/screens/dataentry/ui/createdata.dart';
 import 'package:app/screens/login/navigator.dart';
@@ -48,12 +46,13 @@ class LoginControlls extends GetxController {
   }
 
   static void logout() async {
-     await FirebaseAuth.instance.signOut();
+    await FirebaseAuth.instance.signOut();
   }
 }
 
 class Userdata {
   static String getCurrnetUsser() {
-    return FirebaseAuth.instance.currentUser!.uid;
+    return "aG3zl2xbGIM932F74kVbnRrdRj0222";
+    //return FirebaseAuth.instance.currentUser!.uid;
   }
 }

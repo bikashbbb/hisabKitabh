@@ -50,6 +50,10 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
+        ndk { 
+        abiFilters 'x86', 'x86_64', 'armeabi', 'armeabi-v7a', 'mips', 'mips64', 'arm64-v8a' 
+    }
+
     }
 
     buildTypes {
@@ -68,5 +72,6 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
        // implementation "com.google.firebase:firebase-analytics"
+           implementation("com.android.support:multidex:1.0.3") // for multi-dex
 }
 

@@ -73,11 +73,10 @@ class _CreateEntryState extends State<CreateEntry> {
           Padding(
               padding: const EdgeInsets.all(10.0),
               child: InkWell(
-                onTap: widget.isPreviousAcc
-                    ? () {
-                        Get.back();
-                      }
-                    : CreateEntry.onBack,
+                onTap: 
+                    () {
+                  Get.back();
+                },
                 child: iconRounder(
                     Icon(
                       Icons.close,
