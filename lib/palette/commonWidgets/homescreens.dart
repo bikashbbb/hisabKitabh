@@ -18,6 +18,9 @@ import 'package:get/instance_manager.dart';
 // i should be addidng up the firebase stream here ...
 class DataScreen extends StatefulWidget {
   final bool isDaily;
+  static PageController pageController = PageController();
+  static final ScrollController sControllerOn = ScrollController();
+  static final ScrollController sControllerOff = ScrollController();
 
   const DataScreen({Key? key, this.isDaily = true}) : super(key: key);
 
@@ -30,16 +33,19 @@ class _DataScreenState extends State<DataScreen> {
 
   @override
   void initState() {
+    Get.delete<EntryControlls>();
     c = Get.put(EntryControlls(widget.isDaily, boxName: "", auto: true));
     super.initState();
     c.getAccData;
   }
 
-  final GlobalKey<AnimatedListState> _accListKey =
-      GlobalKey<AnimatedListState>();
+  /* final GlobalKey<AnimatedListState> _accListKey =
+      GlobalKey<AnimatedListState>(); */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar:
+          const SizedBox(height: 33, child: UpperNavigationBar()),
       floatingActionButton: InkWell(
           onTap: () {
             Get.to(
@@ -51,74 +57,10 @@ class _DataScreenState extends State<DataScreen> {
           },
           child: secAddButton()),
       backgroundColor: iconwhite,
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // this is offline
-          const SizedBox(height: 33, child: UpperNavigationBar()),
-          Obx(
-            () => Row(
-              children: [
-                Text(
-                  "tacc".tr,
-                  style: headerS(Colors.black54),
-                ),
-                Text(
-                  c.allAccounts.length.toString(),
-                  style: headerS(Colors.black),
-                ),
-                DeleteNunSelect(
-                  c.selectedItemHOme,
-                ),
-                const Text("                "),
-                selectButon(c, isHome: true)
-              ],
-            ),
-          ),
-
-          Divider(
-            color: black,
-            thickness: 1,
-            height: 20.h,
-          ),
-
-          // lets have a offline column first
-          // Expanded(child: SizedBox()),
-          // offline
-          _offlineColumn(),
-          //online Data
-          /* StreamBuilder(
-              stream: FireHomePage(widget.isDaily).getAccountQuery(null),
-              builder: (ctx, snapshot) {
-                if (snapshot.hasData) {
-                  
-                  return Container(
-                    width: 200,
-                    height: 200,
-                    color: iconGreen,
-                  );
-                } else {
-                  return Center(child: customIndicator());
-                }
-              }),
-           */ // offline data
-          //Container(height: 200, width: 300, child: _offlineColumn()),
-          // online
-          // lets have a iffline section and online section !
-          Expanded(
-            child: FirestoreListView(
-              shrinkWrap: true,
-              query: FireHomePage(widget.isDaily).getAccountQuery(),
-              itemBuilder: (ctx, snapshot) {
-                //Map v = snapshot.data();
-                //return SizedBox();
-                return _accCard(snapshot.id, snapshot.get("isSell"));
-              },
-            ),
-          ),
-        ],
-      ),
+      body: PageView(
+          controller: DataScreen.pageController,
+          onPageChanged: UpperNavigationBar.changePage,
+          children: [_pageViewWidgets(false), _pageViewWidgets(true)]),
     );
   }
 
@@ -128,7 +70,7 @@ class _DataScreenState extends State<DataScreen> {
       child: Card(
         child: ListTile(
           onTap: () {
-            c.onTileTapped(txt, widget.isDaily);
+            c.onTileTapped(txt, widget.isDaily, isSales);
           },
           tileColor: secondaryC,
           minLeadingWidth: 10,
@@ -155,17 +97,55 @@ class _DataScreenState extends State<DataScreen> {
     );
   }
 
-  /* widget _onlineData(){
+  Widget _pageViewWidgets(bool isOffline) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // this is offline
+        _offlineTotals(),
+        Divider(
+          color: black,
+          thickness: 1,
+          height: 5.h,
+        ),
+        isOffline ? _offlineColumn() : _onlineColumn(),
+      ],
+    );
+  }
 
-
-  } */
+  Widget _offlineTotals() {
+    return Row(
+      children: [
+        Text(
+          "tacc".tr,
+          style: headerS(Colors.black54),
+        ),
+        /* Text(
+          c.allAccounts.length.toString(),
+          style: headerS(Colors.black),
+        ), */
+        Icon(
+          Icons.swipe_down_alt_rounded,
+          color: red,
+        ),
+        DeleteNunSelect(
+          c.selectedItemHOme,
+        ),
+        const Text("                "),
+        selectButon(c, isHome: true)
+      ],
+    );
+  }
 
   Widget _offlineColumn() {
     return Obx(
       () => SizedBox(
         child: ListView.builder(
+            key: const PageStorageKey(1),
+            controller: DataScreen.sControllerOff,
             shrinkWrap: true,
-            key: _accListKey,
+            //key: _accListKey,
             itemCount: c.allAccounts.length,
             itemBuilder: (ct, i) {
               String accname = c.allAccounts[i];
@@ -180,10 +160,26 @@ class _DataScreenState extends State<DataScreen> {
                       iSselectTap: c.isSelectTapHome.value,
                     ),
                   ),
-                  Expanded(child: _accCard(accname, c.checkIsSales(accname))),
+                  Expanded(child: _accCard(accname, c.checkIsSales(accname)!)),
                 ],
               );
             }),
+      ),
+    );
+  }
+
+  Widget _onlineColumn() {
+    return Expanded(
+      child: FirestoreListView(
+        controller: DataScreen.sControllerOn,
+        shrinkWrap: true,
+        key: const PageStorageKey(0),
+        query: FireHomePage(widget.isDaily).getAccountQuery(),
+        itemBuilder: (ctx, snapshot) {
+          //Map v = snapshot.data();
+          //return SizedBox();
+          return _accCard(snapshot.id, snapshot.get("isSell"));
+        },
       ),
     );
   }

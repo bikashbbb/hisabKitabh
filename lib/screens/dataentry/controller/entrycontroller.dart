@@ -1,5 +1,6 @@
 // it  will hold the entry homes datas.
 // what should i be doing?? opening boxes in the name of each account !
+import 'package:app/palette/commonWidgets/navigationbar.dart';
 import 'package:app/palette/dialogs/con.dart';
 import 'package:app/palette/dialogs/dialogs.dart';
 import 'package:app/screens/dataentry/hive/datasaver.dart';
@@ -66,12 +67,13 @@ class EntryControlls extends GetxController {
   }
 
   // when clicked on the tile
-  void onTileTapped(String accName, bool isdaily) {
+  void onTileTapped(String accName, bool isdaily,bool isSales) {
     Get.delete<EntryControlls>();
     Get.to(() => AllTransactions(
-          checkIsSales(accName),
+          isSales,
           accName: accName,
           isdaily: isdaily,
+          isOffline: UpperNavigationBar.iSoffline()
         ));
   }
 
@@ -205,7 +207,7 @@ class EntryControlls extends GetxController {
     // ava per account ko lagi tesko length samma loop hanna parcha !
   }
 
-  bool checkIsSales(String accName) {
+  bool? checkIsSales(String accName) {
     if (o.allaccount == null) {
       o.getAllaccount;
     }

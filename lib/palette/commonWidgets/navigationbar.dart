@@ -1,4 +1,6 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
+import 'package:app/palette/commonWidgets/constants/dropdowncons.dart';
+import 'package:app/palette/commonWidgets/homescreens.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/styles/textstyles.dart';
@@ -160,43 +162,75 @@ Widget salesIcon(bool iSsale, {double size = 35}) {
   );
 }
 
-class UpperNavigationBar extends StatelessWidget {
+class UpperNavigationBar extends StatefulWidget {
   const UpperNavigationBar({Key? key}) : super(key: key);
 
+  static ValueNotifier<int> selectedIndex = ValueNotifier(0);
+
+  static void changePage(int index) {
+    selectedIndex.value = index;
+  }
+
+  static void setToZero() {
+    selectedIndex.value = 0;
+  }
+
+  static void animatePage(int index) {
+    DataScreen.pageController
+        .animateToPage(index, duration: dura, curve: Curves.ease);
+  }
+
+  static bool iSoffline() {
+    if (selectedIndex.value == 0) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  State<UpperNavigationBar> createState() => _UpperNavigationBarState();
+}
+
+class _UpperNavigationBarState extends State<UpperNavigationBar> {
   @override
   Widget build(BuildContext context) {
-    return BottomNavyBar(
-      onItemSelected: (index) {
-        print(index);
-      },
-      selectedIndex: 0,
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      iconSize: 10,
-      backgroundColor: Colors.lightGreen[200], // <-- This works for fixed
-      items: [
-        BottomNavyBarItem(
-            activeColor: Colors.black,
-            title: Text("on".tr, style: _white15),
-            icon: const Icon(
-              Icons.compass_calibration_outlined,
-              color: Colors.white,
-            )),
-        BottomNavyBarItem(
-            activeColor: Colors.black,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text("off".tr, style: _white15),
-                Icon(
-                  Icons.do_disturb_on_sharp,
-                  color: red,
-                  size: 10,
-                )
-              ],
-            ),
-            icon: const SizedBox()),
-      ],
-    );
+    return ValueListenableBuilder(
+        valueListenable: UpperNavigationBar.selectedIndex,
+        builder: (ctx, int value, child) {
+          return BottomNavyBar(
+            onItemSelected: (index) {
+              UpperNavigationBar.changePage(index);
+              UpperNavigationBar.animatePage(index);
+            },
+            selectedIndex: value,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            iconSize: 10,
+            backgroundColor: Colors.lightGreen[200], // <-- This works for fixed
+            items: [
+              BottomNavyBarItem(
+                  activeColor: Colors.black,
+                  title: Text("on".tr, style: _white15),
+                  icon: const Icon(
+                    Icons.compass_calibration_outlined,
+                    color: Colors.white,
+                  )),
+              BottomNavyBarItem(
+                  activeColor: Colors.black,
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text("off".tr, style: _white15),
+                      Icon(
+                        Icons.do_disturb_on_sharp,
+                        color: red,
+                        size: 10,
+                      )
+                    ],
+                  ),
+                  icon: const SizedBox()),
+            ],
+          );
+        });
   }
 
   final TextStyle _white15 = const TextStyle(

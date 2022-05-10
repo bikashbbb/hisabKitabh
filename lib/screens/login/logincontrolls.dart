@@ -52,7 +52,7 @@ class LoginControlls extends GetxController {
 
 class Userdata {
   static String getCurrnetUsser() {
-    return "aG3zl2xbGIM932F74kVbnRrdRj0222";
+    return "aG3zl2xbGIM932F74kVbnRrdRj02226";
     //return FirebaseAuth.instance.currentUser!.uid;
   }
 }

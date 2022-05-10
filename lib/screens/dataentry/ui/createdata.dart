@@ -9,7 +9,6 @@ import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/createdatac.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
-import 'package:app/screens/homescreen/ui/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -24,7 +23,7 @@ class CreateEntry extends StatefulWidget {
       : super(key: key);
 
   static void onBack() {
-    Get.offAll(() => const HisabKitabHome());
+    Get.back();
   }
 
   @override
@@ -73,8 +72,7 @@ class _CreateEntryState extends State<CreateEntry> {
           Padding(
               padding: const EdgeInsets.all(10.0),
               child: InkWell(
-                onTap: 
-                    () {
+                onTap: () {
                   Get.back();
                 },
                 child: iconRounder(

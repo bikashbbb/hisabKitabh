@@ -34,7 +34,7 @@ class Languages extends Translations {
           "B.S": "B.S",
           "details": "Additional Details",
           "req": "*required",
-          "tacc": "Total Accounts : ",
+          "tacc": "All Accounts",
           "s": "Select ",
           "ent": "Entry",
           "u": "Un",

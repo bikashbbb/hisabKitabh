@@ -9,9 +9,12 @@ import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/createdatac.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
+import 'package:app/screens/dataentry/controller/firebase.dart';
+import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:app/screens/dataentry/ui/createdata.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
@@ -24,16 +27,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 // update pani lets doo it !!
 class AllTransactions extends StatefulWidget {
   final String accName;
-  final String navName;
   final bool isdaily;
-  final bool isSalesAcc;
+  final bool? isSalesAcc;
+  bool isOffline;
   static final ScrollController scrollController = ScrollController();
 
-  const AllTransactions(this.isSalesAcc,
+  AllTransactions(this.isSalesAcc,
       {Key? key,
       required this.accName,
-      this.navName = "",
-      required this.isdaily})
+      required this.isdaily,
+      required this.isOffline})
       : super(key: key);
 
   @override
@@ -47,9 +50,14 @@ class _AllTransactionsState extends State<AllTransactions> {
   /// initstate is an initializer function its called before build therefore we dont see any , null error in this case
   @override
   void initState() {
-    _controller =
-        Get.put(EntryControlls(widget.isdaily, boxName: widget.accName));
-    _futureList = _controller!.setObjects();
+    widget.isOffline = false;
+
+    if (widget.isOffline) {
+      _controller =
+          Get.put(EntryControlls(widget.isdaily, boxName: widget.accName));
+      _futureList = _controller!.setObjects();
+    }
+
     super.initState();
   }
 
@@ -60,118 +68,143 @@ class _AllTransactionsState extends State<AllTransactions> {
 
   @override
   Widget build(BuildContext context) {
+    FireItemCat obj = FireItemCat(widget.accName);
     return Scaffold(
       backgroundColor: iconwhite,
-      bottomNavigationBar: Obx(() => ItemCatNavbar(widget.isSalesAcc,
-          totalAmount: _controller!.accTotalAmount.value,
-          addButton: _addButton())),
+      bottomNavigationBar: widget.isOffline
+          ? Obx(() => ItemCatNavbar(widget.isSalesAcc!,
+              totalAmount: _controller!.accTotalAmount.value,
+              addButton: _addButton()))
+          : ItemCatNavbar(widget.isSalesAcc!,
+              totalAmount: 0.0, addButton: _addButton()),
       appBar: AppBar(
-        leadingWidth: 30,
-        leading: BackButton(
-          onPressed: () {
-            _controller!.onDisposeBox();
-            Get.delete<EntryControlls>();
-            Get.back();
-          },
-        ),
-        backgroundColor: secondaryC,
-        iconTheme: IconThemeData(color: iconGreen),
-        systemOverlayStyle: appStyle,
-        title: Row(
-          children: [
-            contactI,
-            SizedBox(
-              width: 220.w,
-              child: Text(
-                widget.accName,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                style: appbarStyle,
+          leadingWidth: 30,
+          leading: BackButton(
+            onPressed: () {
+              // _controller!.onDisposeBox();
+              //Get.delete<EntryControlls>();
+              Get.back();
+            },
+          ),
+          backgroundColor: secondaryC,
+          iconTheme: IconThemeData(color: iconGreen),
+          systemOverlayStyle: appStyle,
+          title: Row(
+            children: [
+              contactI,
+              SizedBox(
+                width: 220.w,
+                child: Text(
+                  widget.accName,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: appbarStyle,
+                ),
               ),
-            ),
-          ],
-        ),
-        actions: [selectButon(_controller!)],
-      ),
+            ],
+          ),
+          actions: [
+            FutureBuilder(
+                future: obj.getEntryTotal(),
+                builder: (ctx, snaps) {
+                  return Text(
+                    snaps.data.toString(),
+                    style: subTitle,
+                  );
+                })
+          ] //selectButon(_controller!)],
+          ),
       // HAVE A NAVIGATION BAR ALSO
-      body: FutureBuilder(
-          future: _futureList,
-          builder: (context, snapshot) {
-            if (snapshot.data == true) {
-              //  then loop hanne yeha
-              _amountBuilder();
-              _controller!.getAllEntry();
-              return GetBuilder<EntryControlls>(
-                  init: _controller,
-                  builder: (c) {
-                    return Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      // yeha euta stream builder chainxaa !!
+      body: widget.isOffline
+          ? FutureBuilder(
+              future: _futureList,
+              builder: (context, snapshot) {
+                if (snapshot.data == true) {
+                  //  then loop hanne yeha
+                  _amountBuilder();
+                  _controller!.getAllEntry();
+                  return GetBuilder<EntryControlls>(
+                      init: _controller,
+                      builder: (c) {
+                        return Column(
                           children: [
-                            Text(
-                              "tot".tr +
-                                  "ent".tr +
-                                  " : " +
-                                  _controller!.entryTotal.toString(),
-                              style: subTitle,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "tot".tr +
+                                      "ent".tr +
+                                      " : " +
+                                      _controller!.entryTotal.toString(),
+                                  style: subTitle,
+                                ),
+                                DeleteNunSelect(
+                                  _controller!.selectedItem,
+                                  isHome: false,
+                                )
+                              ],
                             ),
-                            DeleteNunSelect(
-                              _controller!.selectedItem,
-                              isHome: false,
+                            // if its online have a stream builder else,a Listview builder.
+                            Obx(
+                              () => Expanded(
+                                child: NotificationListener<
+                                    ScrollUpdateNotification>(
+                                  child: ListView.builder(
+                                      controller:
+                                          AllTransactions.scrollController,
+                                      itemCount: _controller!.allEntry.length,
+                                      itemBuilder: (ctx, i) {
+                                        return GetBuilder<EntryControlls>(
+                                          init: _controller,
+                                          builder: (builder) {
+                                            return _controller!.isItDeleted(i)
+                                                ? const SizedBox()
+                                                : Obx(() => InfoTile(
+                                                      _controller!.allEntry[i],
+                                                      i,
+                                                      isSales: c.checkIsSales(
+                                                          widget.accName)!,
+                                                      haveCheckbox: true,
+                                                      db: _controller!
+                                                          .selectedItem,
+                                                      iSselectTap: _controller!
+                                                          .isSelectTap.value,
+                                                      controller: _controller,
+                                                    ));
+                                          },
+                                        );
+                                      }),
+                                  onNotification: (not) {
+                                    if (AllTransactions.scrollController
+                                            .position.maxScrollExtent ==
+                                        AllTransactions
+                                            .scrollController.position.pixels) {
+                                      _controller!
+                                          .getAllEntry(isScrolling: true);
+                                    }
+                                    return true;
+                                  },
+                                ),
+                              ),
                             )
                           ],
-                        ),
-                        // if its online have a stream builder else,a Listview builder.
-                        Obx(
-                          () => Expanded(
-                            child:
-                                NotificationListener<ScrollUpdateNotification>(
-                              child: ListView.builder(
-                                  controller: AllTransactions.scrollController,
-                                  itemCount: _controller!.allEntry.length,
-                                  itemBuilder: (ctx, i) {
-                                    return GetBuilder<EntryControlls>(
-                                      init: _controller,
-                                      builder: (builder) {
-                                        return _controller!.isItDeleted(i)
-                                            ? const SizedBox()
-                                            : Obx(() => InfoTile(
-                                                  _controller!.allEntry[i],
-                                                  i,
-                                                  isSales: c.checkIsSales(
-                                                      widget.accName),
-                                                  haveCheckbox: true,
-                                                  db: _controller!.selectedItem,
-                                                  iSselectTap: _controller!
-                                                      .isSelectTap.value,
-                                                  controller: _controller,
-                                                ));
-                                      },
-                                    );
-                                  }),
-                              onNotification: (not) {
-                                if (AllTransactions.scrollController.position
-                                        .maxScrollExtent ==
-                                    AllTransactions
-                                        .scrollController.position.pixels) {
-                                  _controller!.getAllEntry(isScrolling: true);
-                                }
-                                return true;
-                              },
-                            ),
-                          ),
-                        )
-                      ],
-                    );
-                  });
-            } else {
-              // loader run garne until !!
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          }),
+                        );
+                      });
+                } else {
+                  // loader run garne until !!
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              })
+          : FirestoreListView(
+              query: obj.getEntryQuery(),
+              itemBuilder: (ctx, snaps) {
+                snaps.data();
+                return InfoTile(Transaction.fromJson(snaps, isSnaps: true), 0,
+                    isSales: widget.isSalesAcc!, haveCheckbox: false);
+              }),
     );
   }
 
@@ -179,7 +212,7 @@ class _AllTransactionsState extends State<AllTransactions> {
     return InkWell(
         onTap: () {
           accountName.text = widget.accName;
-          RollSwitcherControlls.isSale = !widget.isSalesAcc;
+          RollSwitcherControlls.isSale = !widget.isSalesAcc!;
           Get.to(
             () => CreateEntry(
               "add".tr,

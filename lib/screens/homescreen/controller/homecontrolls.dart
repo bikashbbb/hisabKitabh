@@ -1,3 +1,4 @@
+import 'package:app/palette/commonWidgets/navigationbar.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
@@ -7,6 +8,7 @@ class HomeController extends GetxController {
 
   void changePage(int index) {
     pageIndex = index;
+    UpperNavigationBar.setToZero();
     update();
   }
 }

@@ -36,7 +36,7 @@ class Transaction extends HiveObject {
       required this.quantityType,
       required this.isOnlineStored});
 
-  factory Transaction.fromJson(Map i) {
+  factory Transaction.fromJson(dynamic i, {bool isSnaps = false}) {
     return Transaction(
         uniqueId: i["uniqueId"],
         isOnlineStored: i["isOnlineStored"],
@@ -45,7 +45,7 @@ class Transaction extends HiveObject {
         itemname: i["itemname"],
         totalAmount: i["totalAmount"],
         totalQuantit: i["totalQuantit"],
-        createdDate: i["createdDate"],
+        createdDate: isSnaps ? i["createdDate"].toDate() : i["createdDate"],
         perQuantityPrice: i["perQuantityPrice"],
         quantityType: i["quantityType"],
         perQuantity: i["perQuantity"]);
@@ -89,8 +89,7 @@ class Transaction extends HiveObject {
 }
 
 // how will i diffrenciate settlement from transaction ??!
-class SettleMent{
-  // contains the settlement format 
-
+class SettleMent {
+  // contains the settlement format
 
 }

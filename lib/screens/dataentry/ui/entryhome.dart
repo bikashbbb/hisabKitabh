@@ -4,7 +4,6 @@ import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/commonWidgets/helptext.dart';
 import 'package:app/palette/commonWidgets/iconboard.dart';
 import 'package:app/palette/styles/colors.dart';
-import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/controller/homescreenc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -42,7 +41,7 @@ class _DailyEntryPageState extends State<DailyEntryPage> {
               init: _controlls,
               builder: (b) {
                 // here also have a fucking stream ! and a good condition...
-                return b.doesAccExists()
+                return !b.doesAccExists()
                     ? DataScreen(
                         isDaily: widget.isdaily,
                       )
