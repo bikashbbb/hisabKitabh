@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:app/palette/commonWidgets/buttons/buttons.dart';
 import 'package:app/palette/commonWidgets/buttons/expandedtile.dart';
 import 'package:app/palette/commonWidgets/constants/dropdowncons.dart';
@@ -21,6 +20,7 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/instance_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 // aja k k vaune?? finish , total amount,update pani
 // have only 15 items rendered at first ...
@@ -29,15 +29,26 @@ class AllTransactions extends StatefulWidget {
   final String accName;
   final bool isdaily;
   final bool? isSalesAcc;
+  double? amount;
   bool isOffline;
+  int? totalEntries;
+
   static final ScrollController scrollController = ScrollController();
+
+  static late ValueNotifier<double> _amount;
+
+  static void upateAmount() {}
 
   AllTransactions(this.isSalesAcc,
       {Key? key,
       required this.accName,
       required this.isdaily,
-      required this.isOffline})
-      : super(key: key);
+      required this.isOffline,
+      this.amount,
+      this.totalEntries})
+      : super(key: key) {
+    _amount = ValueNotifier(amount!);
+  }
 
   @override
   State<AllTransactions> createState() => _AllTransactionsState();
@@ -46,7 +57,8 @@ class AllTransactions extends StatefulWidget {
 class _AllTransactionsState extends State<AllTransactions> {
   late Future<bool> _futureList;
   EntryControlls? _controller;
-
+  Map _idIndex = {};
+  //ScrollController _scrollController = ScrollController();
   /// initstate is an initializer function its called before build therefore we dont see any , null error in this case
   @override
   void initState() {
@@ -57,7 +69,6 @@ class _AllTransactionsState extends State<AllTransactions> {
           Get.put(EntryControlls(widget.isdaily, boxName: widget.accName));
       _futureList = _controller!.setObjects();
     }
-
     super.initState();
   }
 
@@ -65,6 +76,8 @@ class _AllTransactionsState extends State<AllTransactions> {
     WidgetsBinding.instance!
         .addPostFrameCallback((_) => _controller!.getTotalAmount());
   }
+
+  GlobalKey _key = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -75,45 +88,42 @@ class _AllTransactionsState extends State<AllTransactions> {
           ? Obx(() => ItemCatNavbar(widget.isSalesAcc!,
               totalAmount: _controller!.accTotalAmount.value,
               addButton: _addButton()))
-          : ItemCatNavbar(widget.isSalesAcc!,
-              totalAmount: 0.0, addButton: _addButton()),
+          : ValueListenableBuilder<double>(
+              valueListenable: AllTransactions._amount,
+              builder: (context, value, child) {
+                return ItemCatNavbar(widget.isSalesAcc!,
+                    totalAmount: value, addButton: _addButton());
+              }),
       appBar: AppBar(
-          leadingWidth: 30,
-          leading: BackButton(
-            onPressed: () {
-              // _controller!.onDisposeBox();
-              //Get.delete<EntryControlls>();
-              Get.back();
-            },
-          ),
-          backgroundColor: secondaryC,
-          iconTheme: IconThemeData(color: iconGreen),
-          systemOverlayStyle: appStyle,
-          title: Row(
-            children: [
-              contactI,
-              SizedBox(
-                width: 220.w,
-                child: Text(
-                  widget.accName,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: appbarStyle,
-                ),
+        leadingWidth: 30,
+        leading: BackButton(
+          onPressed: () {
+            // _controller!.onDisposeBox();
+            //Get.delete<EntryControlls>();
+            Get.back();
+          },
+        ),
+        backgroundColor: secondaryC,
+        iconTheme: IconThemeData(color: iconGreen),
+        systemOverlayStyle: appStyle,
+        title: Row(
+          children: [
+            contactI,
+            SizedBox(
+              width: 220.w,
+              child: Text(
+                widget.accName,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: appbarStyle,
               ),
-            ],
-          ),
-          actions: [
-            FutureBuilder(
-                future: obj.getEntryTotal(),
-                builder: (ctx, snaps) {
-                  return Text(
-                    snaps.data.toString(),
-                    style: subTitle,
-                  );
-                })
-          ] //selectButon(_controller!)],
-          ),
+            ),
+          ],
+        ),
+        /* actions: [
+            
+            selectButon(_controller!)], */
+      ),
       // HAVE A NAVIGATION BAR ALSO
       // yeha euta stream builder chainxaa !!
       body: widget.isOffline
@@ -198,14 +208,35 @@ class _AllTransactionsState extends State<AllTransactions> {
                   );
                 }
               })
-          : FirestoreListView(
-              query: obj.getEntryQuery(),
-              itemBuilder: (ctx, snaps) {
-                snaps.data();
-                return InfoTile(Transaction.fromJson(snaps, isSnaps: true), 0,
-                    isSales: widget.isSalesAcc!, haveCheckbox: false);
-              }),
+          : Column(
+              children: [
+                _online(),
+                Expanded(
+                  // 10
+                  child: FirestoreListView(
+                      pageSize: 15,
+                      query: obj.getEntryQuery(),
+                      itemBuilder: (ctx, snaps) {
+                        String id = snaps.id;
+                        _idValidator(id);
+                        // the index ladow !/snaps.data();
+                        // how do i fucking give the index ladow !
+                        return InfoTile(
+                            Transaction.fromJson(snaps, isSnaps: true),
+                            _idIndex[id],
+                            isSales: widget.isSalesAcc!,
+                            haveCheckbox: false);
+                      }),
+                ),
+              ],
+            ),
     );
+  }
+
+  void _idValidator(String id) {
+    if (!_idIndex.containsKey(id)) {
+      _idIndex[id] = _idIndex.length;
+    }
   }
 
   Widget _addButton() {
@@ -222,4 +253,18 @@ class _AllTransactionsState extends State<AllTransactions> {
         },
         child: secAddButton());
   }
+
+  Widget _online() => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "tot".tr + "ent".tr + " : " + widget.totalEntries.toString(),
+            style: subTitle,
+          ),
+          /* DeleteNunSelect(
+            _controller!.selectedItem,
+            isHome: false,
+          ) */
+        ],
+      );
 }

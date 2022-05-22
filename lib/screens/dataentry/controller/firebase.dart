@@ -1,7 +1,6 @@
 import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/login/logincontrolls.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 
 class FireHomePage {
   bool isDaily;
@@ -14,10 +13,22 @@ class FireHomePage {
   /// checks for any online data on the db ... if yes returns true
   Query getAccountQuery() {
     _queryoutput = _firestore
-        .collection("aG3zl2xbGIM932F74kVbnRrdRj0222")
+        .collection(Userdata.getCurrnetUsser())
         .doc("data")
         .collection(isDaily ? daily : lendAcc);
     return _queryoutput;
+  }
+
+  static Future<bool> onDeleteItem(bool isdaily,dynamic docId) async {
+    try {
+      await _firestore
+          .collection(Userdata.getCurrnetUsser())
+          .doc("data").collection(isdaily? daily:lendAcc).doc(docId)
+          .delete();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
 
@@ -31,7 +42,7 @@ class FireItemCat {
     return FireHomePage._queryoutput.doc(accountName).collection("data");
   }
 
-  Future getEntryTotal() async {
+  /* Future getEntryTotal() async {
     double counter = 0;
 /*    await FireHomePage._queryoutput
         .doc(accountName)
@@ -51,7 +62,7 @@ class FireItemCat {
         .listen((data) =>
             data.docs.forEach((doc) => counter += (doc["totalAmount"])));
     return counter;
-  }
+  } */
 }
 
 class FireCreateEntry {
@@ -73,21 +84,19 @@ class FireCreateEntry {
         .doc(accountNam);
 
     DocumentReference dataRef = accountRef.collection("data").doc();
-    // batches update both
+    // batches update both simultaeneously
     final batch = _firestore.batch();
-    FieldValue p = FieldValue.increment(object["totalAmount"]);
+    FieldValue totalAmnt = FieldValue.increment(object["totalAmount"]);
 
     batch.set(
         accountRef,
         {
-          "totalAmount": p,
+          "totalAmount": totalAmnt,
           _fieldKey: object[_fieldKey],
+          "total_entry": FieldValue.increment(1)
         },
         SetOptions(merge: true));
     batch.set(dataRef, object);
-    // field value
-    // update account refrence
-
     await batch.commit();
 
     return true;

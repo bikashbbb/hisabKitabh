@@ -4,9 +4,11 @@ import 'package:app/palette/commonWidgets/constants/dropdowncons.dart';
 import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/createdatac.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
 
 class Transaction extends HiveObject {
+
   String? accName;
   bool isSell;
   String itemname;
@@ -92,4 +94,21 @@ class Transaction extends HiveObject {
 class SettleMent {
   // contains the settlement format
 
+}
+
+class AccountInfos {
+  double? totalAmnt;
+  bool? isSale;
+  int? totalEntry;
+  String? accName;
+
+  AccountInfos({this.isSale, this.totalAmnt, this.totalEntry, this.accName});
+
+  static fromJson(QueryDocumentSnapshot i) {
+    return AccountInfos(
+        totalAmnt: i['totalAmount'],
+        isSale: i['isSell'],
+        accName: i.id,
+        totalEntry: i['total_entry']);
+  }
 }

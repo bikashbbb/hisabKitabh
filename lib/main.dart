@@ -9,9 +9,8 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 // todays worl:
-//1) stream the data into, our daily and lend box
-//2. fix the routes of the application to make it fast ! as fuck.. fix stream and controllers 
-//10) add the settelement feature !
+//1) add the delete button
+// 2) lend ko settlement finish it ! on/ offline
 
 // have a settle button in the all transaction page..
 // have change the create order page , some extend !!. and

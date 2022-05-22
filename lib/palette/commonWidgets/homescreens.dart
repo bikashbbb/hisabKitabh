@@ -1,4 +1,3 @@
-import 'package:app/palette/commonWidgets/appbar.dart';
 import 'package:app/palette/commonWidgets/buttons/buttons.dart';
 import 'package:app/palette/commonWidgets/constants/dropdowncons.dart';
 import 'package:app/palette/commonWidgets/navigationbar.dart';
@@ -6,6 +5,7 @@ import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/controller/firebase.dart';
+import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/ui/createdata.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,6 +34,7 @@ class _DataScreenState extends State<DataScreen> {
   @override
   void initState() {
     Get.delete<EntryControlls>();
+
     c = Get.put(EntryControlls(widget.isDaily, boxName: "", auto: true));
     super.initState();
     c.getAccData;
@@ -65,12 +66,14 @@ class _DataScreenState extends State<DataScreen> {
   }
 
   // have a field for total amount
-  Widget _accCard(String txt, bool isSales) {
+  Widget _accCard(AccountInfos obj) {
     return SizedBox(
+      height: 69,
       child: Card(
         child: ListTile(
           onTap: () {
-            c.onTileTapped(txt, widget.isDaily, isSales);
+            c.onTileTapped(obj.accName!, widget.isDaily, obj.isSale!,
+                obj.totalAmnt!, obj.totalEntry!);
           },
           tileColor: secondaryC,
           minLeadingWidth: 10,
@@ -79,15 +82,21 @@ class _DataScreenState extends State<DataScreen> {
             children: [
               Expanded(
                 child: Text(
-                  txt,
+                  obj.accName!,
                   style: appbarStyle,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              salesIcon(isSales)
+              salesIcon(obj.isSale!)
             ],
           ),
+          subtitle: (obj.totalAmnt != null)
+              ? Text(
+                  obj.totalAmnt.toString(),
+                  style: subTitle,
+                )
+              : null,
           trailing: Icon(
             Icons.arrow_right,
             color: black,
@@ -160,7 +169,11 @@ class _DataScreenState extends State<DataScreen> {
                       iSselectTap: c.isSelectTapHome.value,
                     ),
                   ),
-                  Expanded(child: _accCard(accname, c.checkIsSales(accname)!)),
+                  //
+                  //
+                  Expanded(
+                      child: _accCard(AccountInfos(
+                          isSale: c.checkIsSales(accname)!, accName: accname))),
                 ],
               );
             }),
@@ -169,6 +182,7 @@ class _DataScreenState extends State<DataScreen> {
   }
 
   Widget _onlineColumn() {
+    int i = 0;
     return Expanded(
       child: FirestoreListView(
         controller: DataScreen.sControllerOn,
@@ -178,7 +192,20 @@ class _DataScreenState extends State<DataScreen> {
         itemBuilder: (ctx, snapshot) {
           //Map v = snapshot.data();
           //return SizedBox();
-          return _accCard(snapshot.id, snapshot.get("isSell"));
+          // just add up the delete
+
+          return Row(
+            children: [
+              Obx(() => CustomCheckBox(
+                    isHome: true,
+                    controller: c,
+                    index: i++,
+                    iSselectTap: c.isSelectTapHome.value,
+                    uniqueId: snapshot.id,
+                  )),
+              Expanded(child: _accCard(AccountInfos.fromJson(snapshot))),
+            ],
+          );
         },
       ),
     );

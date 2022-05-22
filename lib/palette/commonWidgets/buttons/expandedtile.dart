@@ -115,10 +115,10 @@ class InfoTile extends StatelessWidget {
   final Map? db;
   final bool haveCheckbox;
   final bool isSales;
+  // afnai tile ho yo muji kati wota render vayo ma track rakhxu muji
   InfoTile(
     this.obj,
-    this.index,
-     {
+    this.index, {
     Key? key,
     this.iSselectTap = false,
     this.controller,

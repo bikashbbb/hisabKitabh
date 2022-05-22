@@ -3,6 +3,7 @@
 import 'package:app/palette/commonWidgets/navigationbar.dart';
 import 'package:app/palette/dialogs/con.dart';
 import 'package:app/palette/dialogs/dialogs.dart';
+import 'package:app/screens/dataentry/controller/firebase.dart';
 import 'package:app/screens/dataentry/hive/datasaver.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/ui/itemcatalog.dart';
@@ -67,13 +68,16 @@ class EntryControlls extends GetxController {
   }
 
   // when clicked on the tile
-  void onTileTapped(String accName, bool isdaily,bool isSales) {
+  void onTileTapped(String accName, bool isdaily, bool isSales, double amount,
+      int totalEntries) {
     Get.delete<EntryControlls>();
     Get.to(() => AllTransactions(
           isSales,
           accName: accName,
           isdaily: isdaily,
-          isOffline: UpperNavigationBar.iSoffline()
+          isOffline: UpperNavigationBar.iSoffline(),
+          amount: amount,
+          totalEntries: totalEntries,
         ));
   }
 
@@ -129,10 +133,30 @@ class EntryControlls extends GetxController {
   }
 
   /// if home its to delete the fucking account ,
-  void onDeleteCLicked(bool ishome) {
+  void onDeleteCLicked(bool ishome, {bool isOnline = false}) {
     initiAlizeControlls();
-    confirmDialog(ishome ? _deleteAccount : _delRecord, ishome);
+    if (isOnline) {
+      confirmDialog(ishome ? _deleteAccount : _delRecord, ishome);
+    } else {
+      confirmDialog(ishome ? _deleteAccOnline : _deleterecOn, ishome);
+    }
   }
+
+  void _deleteAccOnline(bool ishome) {
+    _deleteDialog(ishome);
+    c.totalRcordCount = selectedItemHOme.length;
+    
+    selectedItemHOme.forEach((key, value) async {
+      if (await FireHomePage.onDeleteItem(isDaily, value)) {
+        c.updateTotalRcrdCount(selectedItemHOme.length);
+        c.updateCurrentAccIndex();
+        // dialog controller lai update garam yeha bata
+      } else {}
+    });
+    c.updateIsfinish();
+  }
+
+  void _deleterecOn(bool ishome) {}
 
   void initiAlizeControlls() {
     c = Get.put(DialogControlls());
