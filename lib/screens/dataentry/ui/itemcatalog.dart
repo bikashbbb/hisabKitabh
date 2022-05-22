@@ -20,7 +20,6 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 import 'package:get/instance_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 // aja k k vaune?? finish , total amount,update pani
 // have only 15 items rendered at first ...
@@ -28,7 +27,7 @@ import 'package:visibility_detector/visibility_detector.dart';
 class AllTransactions extends StatefulWidget {
   final String accName;
   final bool isdaily;
-  final bool? isSalesAcc;
+  final bool isSalesAcc;
   double? amount;
   bool isOffline;
   int? totalEntries;
@@ -47,7 +46,7 @@ class AllTransactions extends StatefulWidget {
       this.amount,
       this.totalEntries})
       : super(key: key) {
-    _amount = ValueNotifier(amount!);
+    if (!isOffline) _amount = ValueNotifier(amount!);
   }
 
   @override
@@ -62,13 +61,13 @@ class _AllTransactionsState extends State<AllTransactions> {
   /// initstate is an initializer function its called before build therefore we dont see any , null error in this case
   @override
   void initState() {
-    widget.isOffline = false;
-
+    //if (widget.isOffline) {
+    _controller =
+        Get.put(EntryControlls(widget.isdaily, boxName: widget.accName));
     if (widget.isOffline) {
-      _controller =
-          Get.put(EntryControlls(widget.isdaily, boxName: widget.accName));
       _futureList = _controller!.setObjects();
     }
+    //}
     super.initState();
   }
 
@@ -77,21 +76,19 @@ class _AllTransactionsState extends State<AllTransactions> {
         .addPostFrameCallback((_) => _controller!.getTotalAmount());
   }
 
-  GlobalKey _key = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     FireItemCat obj = FireItemCat(widget.accName);
     return Scaffold(
       backgroundColor: iconwhite,
       bottomNavigationBar: widget.isOffline
-          ? Obx(() => ItemCatNavbar(widget.isSalesAcc!,
+          ? Obx(() => ItemCatNavbar(widget.isSalesAcc,
               totalAmount: _controller!.accTotalAmount.value,
               addButton: _addButton()))
           : ValueListenableBuilder<double>(
               valueListenable: AllTransactions._amount,
               builder: (context, value, child) {
-                return ItemCatNavbar(widget.isSalesAcc!,
+                return ItemCatNavbar(widget.isSalesAcc,
                     totalAmount: value, addButton: _addButton());
               }),
       appBar: AppBar(
@@ -120,9 +117,7 @@ class _AllTransactionsState extends State<AllTransactions> {
             ),
           ],
         ),
-        /* actions: [
-            
-            selectButon(_controller!)], */
+        actions: [selectButon(_controller!)],
       ),
       // HAVE A NAVIGATION BAR ALSO
       // yeha euta stream builder chainxaa !!
@@ -151,7 +146,7 @@ class _AllTransactionsState extends State<AllTransactions> {
                                 ),
                                 DeleteNunSelect(
                                   _controller!.selectedItem,
-                                  isHome: false,
+                                  _controller!,
                                 )
                               ],
                             ),
@@ -173,8 +168,8 @@ class _AllTransactionsState extends State<AllTransactions> {
                                                 : Obx(() => InfoTile(
                                                       _controller!.allEntry[i],
                                                       i,
-                                                      isSales: c.checkIsSales(
-                                                          widget.accName)!,
+                                                      isSales:
+                                                          widget.isSalesAcc,
                                                       haveCheckbox: true,
                                                       db: _controller!
                                                           .selectedItem,
@@ -221,11 +216,14 @@ class _AllTransactionsState extends State<AllTransactions> {
                         _idValidator(id);
                         // the index ladow !/snaps.data();
                         // how do i fucking give the index ladow !
-                        return InfoTile(
+                        return Obx((() => InfoTile(
                             Transaction.fromJson(snaps, isSnaps: true),
                             _idIndex[id],
-                            isSales: widget.isSalesAcc!,
-                            haveCheckbox: false);
+                            iSselectTap: _controller!.isSelectTap.value,
+                            controller: _controller,
+                            isSales: widget.isSalesAcc,
+                            db: _controller!.selectedItem,
+                            haveCheckbox: true)));
                       }),
                 ),
               ],
@@ -243,7 +241,7 @@ class _AllTransactionsState extends State<AllTransactions> {
     return InkWell(
         onTap: () {
           accountName.text = widget.accName;
-          RollSwitcherControlls.isSale = !widget.isSalesAcc!;
+          RollSwitcherControlls.isSale = !widget.isSalesAcc;
           Get.to(
             () => CreateEntry(
               "add".tr,
@@ -261,10 +259,11 @@ class _AllTransactionsState extends State<AllTransactions> {
             "tot".tr + "ent".tr + " : " + widget.totalEntries.toString(),
             style: subTitle,
           ),
-          /* DeleteNunSelect(
+          DeleteNunSelect(
             _controller!.selectedItem,
+            _controller!,
             isHome: false,
-          ) */
+          )
         ],
       );
 }

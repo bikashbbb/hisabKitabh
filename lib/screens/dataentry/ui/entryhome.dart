@@ -41,7 +41,7 @@ class _DailyEntryPageState extends State<DailyEntryPage> {
               init: _controlls,
               builder: (b) {
                 // here also have a fucking stream ! and a good condition...
-                return !b.doesAccExists()
+                return b.doesAccExists()
                     ? DataScreen(
                         isDaily: widget.isdaily,
                       )

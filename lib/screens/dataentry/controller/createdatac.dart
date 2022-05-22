@@ -51,13 +51,15 @@ class CreateControlls extends GetxController {
       _startLoaded();
 
       if (await _checkWifiSignal()) {
-        if (await FireCreateEntry(isDaily, item, item["accName"]).onAdditem() !=
+        print("lado");
+        /* if (await FireCreateEntry(isDaily, item, item["accName"]).onAdditem() !=
             true) {
           showIndicatorDialog(true);
         }
-        _onEntrysaveSucess(transObject, isPrevsAcc);
+        _onEntrysaveSucess(transObject, isPrevsAcc); */
       } else {
         // offline !!
+        print("wtf");
         datasaver = HiveDatabase(isDaily, object: item, boxKonaam: aName);
         bool result = await datasaver!.saveModel();
         if (result) {
@@ -126,10 +128,10 @@ class CreateControlls extends GetxController {
   Future<bool> _checkWifiSignal() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile ||
-        connectivityResult == ConnectivityResult.wifi ||
-        !LoginControlls.isUserLoggedin()) {
+        connectivityResult == ConnectivityResult.wifi) {
       return true;
     }
+
     return false;
   }
 }

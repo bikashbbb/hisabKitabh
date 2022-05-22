@@ -404,9 +404,10 @@ class CustomCheckBox extends StatelessWidget {
 class DeleteNunSelect extends StatelessWidget {
   final Map input;
   final bool isHome;
+  final EntryControlls c;
 
-  DeleteNunSelect(this.input, {Key? key, this.isHome = true}) : super(key: key);
-  final EntryControlls c = Get.find<EntryControlls>();
+  const DeleteNunSelect(this.input, this.c, {Key? key, this.isHome = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -424,6 +425,7 @@ class DeleteNunSelect extends StatelessWidget {
                 ? const SizedBox()
                 : InkWell(
                     onTap: () {
+                     
                       c.onUnselectTap(input, isHome);
                     },
                     child: Icon(

@@ -160,7 +160,7 @@ class InfoTile extends StatelessWidget {
                   iSselectTap: iSselectTap,
                 )
               : const SizedBox(),
-          Expanded(
+          Flexible(
             child: InkWell(
               onTap: () {
                 iSselectTap

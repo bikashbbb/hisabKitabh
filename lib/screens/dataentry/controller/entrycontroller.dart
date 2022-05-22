@@ -68,8 +68,8 @@ class EntryControlls extends GetxController {
   }
 
   // when clicked on the tile
-  void onTileTapped(String accName, bool isdaily, bool isSales, double amount,
-      int totalEntries) {
+  void onTileTapped(String accName, bool isdaily, bool isSales, double? amount,
+      int? totalEntries) {
     Get.delete<EntryControlls>();
     Get.to(() => AllTransactions(
           isSales,
@@ -145,7 +145,7 @@ class EntryControlls extends GetxController {
   void _deleteAccOnline(bool ishome) {
     _deleteDialog(ishome);
     c.totalRcordCount = selectedItemHOme.length;
-    
+
     selectedItemHOme.forEach((key, value) async {
       if (await FireHomePage.onDeleteItem(isDaily, value)) {
         c.updateTotalRcrdCount(selectedItemHOme.length);

@@ -50,7 +50,7 @@ class _DataScreenState extends State<DataScreen> {
       floatingActionButton: InkWell(
           onTap: () {
             Get.to(
-              () => CreateEntry(
+              CreateEntry(
                 "add".tr,
                 isDaily: widget.isDaily,
               ),
@@ -73,7 +73,7 @@ class _DataScreenState extends State<DataScreen> {
         child: ListTile(
           onTap: () {
             c.onTileTapped(obj.accName!, widget.isDaily, obj.isSale!,
-                obj.totalAmnt!, obj.totalEntry!);
+                obj.totalAmnt, obj.totalEntry);
           },
           tileColor: secondaryC,
           minLeadingWidth: 10,
@@ -140,6 +140,7 @@ class _DataScreenState extends State<DataScreen> {
         ),
         DeleteNunSelect(
           c.selectedItemHOme,
+          c,
         ),
         const Text("                "),
         selectButon(c, isHome: true)
