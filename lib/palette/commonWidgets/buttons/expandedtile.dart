@@ -160,7 +160,7 @@ class InfoTile extends StatelessWidget {
                   iSselectTap: iSselectTap,
                 )
               : const SizedBox(),
-          Flexible(
+          Expanded(
             child: InkWell(
               onTap: () {
                 iSselectTap
@@ -187,7 +187,7 @@ class InfoTile extends StatelessWidget {
                         ),
                         salesIcon(isSales, size: 20),
                         SizedBox(
-                          width: iSselectTap ? 240.w : 260.w,
+                          width: iSselectTap ? 240.w : 249.w,
                           child: Text(
                             obj.accName!,
                             style: inputStyle,
