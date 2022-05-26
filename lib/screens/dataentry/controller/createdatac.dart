@@ -51,15 +51,13 @@ class CreateControlls extends GetxController {
       _startLoaded();
 
       if (await _checkWifiSignal()) {
-        print("lado");
-        /* if (await FireCreateEntry(isDaily, item, item["accName"]).onAdditem() !=
+        if (await FireCreateEntry(isDaily, item, item["accName"]).onAdditem() !=
             true) {
           showIndicatorDialog(true);
         }
-        _onEntrysaveSucess(transObject, isPrevsAcc); */
+        _onEntrysaveSucess(transObject, isPrevsAcc);
       } else {
         // offline !!
-        print("wtf");
         datasaver = HiveDatabase(isDaily, object: item, boxKonaam: aName);
         bool result = await datasaver!.saveModel();
         if (result) {

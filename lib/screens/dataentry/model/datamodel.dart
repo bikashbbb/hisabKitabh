@@ -5,10 +5,10 @@ import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/createdatac.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 
 class Transaction extends HiveObject {
-
   String? accName;
   bool isSell;
   String itemname;
@@ -93,7 +93,25 @@ class Transaction extends HiveObject {
 // how will i diffrenciate settlement from transaction ??!
 class SettleMent {
   // contains the settlement format
+  double totalAmount;
+  bool isSale;
+  DateTime createdDate;
+  bool isEdited;
+  SettleMent(this.totalAmount, this.isSale, this.createdDate, this.isEdited);
 
+  static tojson(SettleMent obj) {
+    return {
+      "totalAmount": obj.totalAmount,
+      "isSell": obj.isSale,
+      'createdDate': obj.createdDate,
+      'isEdited': false
+    };
+  }
+
+  factory SettleMent.fromJson(obj) {
+    return SettleMent(obj['totalAmount'], obj['isSell'],
+        obj['createdDate'].toDate(), obj['isEdited']);
+  }
 }
 
 class AccountInfos {

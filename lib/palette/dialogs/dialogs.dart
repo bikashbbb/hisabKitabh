@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:app/palette/commonWidgets/ctextfields.dart';
+import 'package:app/palette/commonWidgets/navigationbar.dart';
 import 'package:app/palette/dialogs/con.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/textstyles.dart';
@@ -180,3 +182,25 @@ void showIndicatorDialog(bool isSucess) {
     ),
   ));
 }
+
+void settleDialog(TextEditingController tCon, bool issale, Function onTap) {
+  Get.dialog(AlertDialog(
+    actionsPadding: EdgeInsets.zero,
+    backgroundColor: Colors.white,
+    titlePadding: const EdgeInsets.only(left: 24, bottom: 10),
+    contentPadding: const EdgeInsets.only(right: 24, left: 24),
+    title: Text(
+      'Settlement',
+      style: appbarStyle,
+    ),
+    content: addTransactionField("Amount", con: tCon),
+    actions: [
+      TextButton(
+          onPressed: () {
+            onTap();
+          },
+          child: salesIcon(issale))
+    ],
+  ));
+}
+

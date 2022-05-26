@@ -19,11 +19,13 @@ class FireHomePage {
     return _queryoutput;
   }
 
-  static Future<bool> onDeleteItem(bool isdaily,dynamic docId) async {
+  static Future<bool> onDeleteItem(bool isdaily, dynamic docId) async {
     try {
       await _firestore
           .collection(Userdata.getCurrnetUsser())
-          .doc("data").collection(isdaily? daily:lendAcc).doc(docId)
+          .doc("data")
+          .collection(isdaily ? daily : lendAcc)
+          .doc(docId)
           .delete();
       return true;
     } catch (e) {
@@ -39,7 +41,10 @@ class FireItemCat {
   FireItemCat(this.accountName);
 
   Query getEntryQuery() {
-    return FireHomePage._queryoutput.doc(accountName).collection("data");
+    return FireHomePage._queryoutput
+        .doc(accountName)
+        .collection("data")
+        .orderBy("createdDate");
   }
 
   /* Future getEntryTotal() async {

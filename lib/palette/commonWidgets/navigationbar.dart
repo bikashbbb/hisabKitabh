@@ -1,17 +1,31 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
+import 'package:app/palette/commonWidgets/buttons/buttons.dart';
 import 'package:app/palette/commonWidgets/constants/dropdowncons.dart';
 import 'package:app/palette/commonWidgets/homescreens.dart';
+import 'package:app/palette/dialogs/dialogs.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/styles/textstyles.dart';
+import 'package:app/screens/dataentry/controller/createdatac.dart';
+import 'package:app/screens/dataentry/controller/firebase.dart';
+import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/homescreen/controller/homecontrolls.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import "package:get/get.dart";
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+// aaja ko kaam
+/*
+1) settlement finish 
+2) delete pani finish
+3) view cart and update pani finish
+*/
 
-// yo muji, vayepachi ava, firebase attach garne aaja ani tyo info tile ko bug fix garne
-// components: three , todays goal, daily khata, Lend khata
+/*
+next one backup algo lekhna xa ani.. full app check and all bug fixing plus
+add up small features ...
+ */
 class BottomNav extends StatefulWidget {
   const BottomNav({Key? key}) : super(key: key);
 
@@ -115,20 +129,26 @@ class _BottomNavState extends State<BottomNav> {
 }
 
 class ItemCatNavbar extends StatelessWidget {
-  final bool iSsale;
   final double totalAmount;
   final Widget addButton;
   final int secs;
+  final String accName;
+  final bool isdaily, isOffline, iSsale;
+  final TextEditingController _amountC = TextEditingController();
 
-  const ItemCatNavbar(this.iSsale,
+  ItemCatNavbar(this.iSsale,
       {Key? key,
       required this.totalAmount,
       required this.addButton,
-      this.secs = 1})
+      this.secs = 1,
+      this.isdaily = true,
+      this.isOffline = true,
+      this.accName = ""})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // print(isdaily);
     return Container(
       decoration: entryButton,
       height: 50,
@@ -146,11 +166,42 @@ class ItemCatNavbar extends StatelessWidget {
           const SizedBox(width: 2),
           salesIcon(iSsale),
           const Expanded(child: SizedBox()),
+          if (!isdaily)
+            TextButton(
+                onPressed: _onSettleTapped, child: secAddButton(name: '_/')),
           addButton,
           const Text("   "),
         ],
       ),
     );
+  }
+
+  void _onSettleTapped() {
+    settleDialog(
+        _amountC, !iSsale, isOffline ? _iconTappedOffline : _iconTappedOnline);
+  }
+
+  void _iconTappedOffline() {
+    CreateControlls c = Get.put(CreateControlls());
+    c.onAdditem(true);
+  }
+
+  void _iconTappedOnline() {
+    if (_amountC.text != '') {
+      _backAnLoad();
+    }
+  }
+
+  void _backAnLoad() async {
+    Get.back();
+    Get.dialog(const Center(child: CircularProgressIndicator()));
+    await FireCreateEntry(
+            isdaily,
+            SettleMent.tojson(SettleMent(
+                -double.parse(_amountC.text), iSsale, DateTime.now(), false)),
+            accName)
+        .onAdditem();
+    Get.back();
   }
 }
 

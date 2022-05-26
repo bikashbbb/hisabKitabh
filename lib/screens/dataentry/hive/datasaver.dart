@@ -116,13 +116,17 @@ class HiveDatabase {
     accSaverBOx.put(acc, allaccount);
   }
 
-  Transaction? getItems(int key) {
+  dynamic getItems(int key) {
     // iterate all the item !
     Map? value = recordSaverBox!.get(key);
     if (value == null) {
       return null;
     }
-    return Transaction.fromJson(value);
+    if (value.containsKey('isSment')) {
+      return SettleMent.fromJson(value);
+    } else {
+      return Transaction.fromJson(value);
+    }
   }
 
   Future<void> removeAccount(String aName) async {

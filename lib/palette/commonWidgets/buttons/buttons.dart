@@ -337,7 +337,7 @@ Widget selectB = SizedBox(
 Widget selectButon(EntryControlls con, {bool isHome = false}) => InkWell(
     onTap: isHome ? con.onSelectTapHome : con.onSelectTap, child: selectB);
 
-Widget secAddButton({bool isClicked = false}) {
+Widget secAddButton({bool isClicked = false, String name = "+"}) {
   return InkWell(
     child: Container(
       alignment: Alignment.center,
@@ -347,7 +347,7 @@ Widget secAddButton({bool isClicked = false}) {
       child: isClicked
           ? customIndicator()
           : Text(
-              "+",
+              name,
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 25.sp,
@@ -425,7 +425,6 @@ class DeleteNunSelect extends StatelessWidget {
                 ? const SizedBox()
                 : InkWell(
                     onTap: () {
-                     
                       c.onUnselectTap(input, isHome);
                     },
                     child: Icon(

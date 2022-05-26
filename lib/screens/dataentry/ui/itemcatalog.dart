@@ -56,7 +56,7 @@ class AllTransactions extends StatefulWidget {
 class _AllTransactionsState extends State<AllTransactions> {
   late Future<bool> _futureList;
   EntryControlls? _controller;
-  Map _idIndex = {};
+  final Map _idIndex = {};
   //ScrollController _scrollController = ScrollController();
   /// initstate is an initializer function its called before build therefore we dont see any , null error in this case
   @override
@@ -84,12 +84,21 @@ class _AllTransactionsState extends State<AllTransactions> {
       bottomNavigationBar: widget.isOffline
           ? Obx(() => ItemCatNavbar(widget.isSalesAcc,
               totalAmount: _controller!.accTotalAmount.value,
+              isdaily: widget.isdaily,
+              isOffline: widget.isOffline,
+              accName: widget.accName,
               addButton: _addButton()))
           : ValueListenableBuilder<double>(
               valueListenable: AllTransactions._amount,
               builder: (context, value, child) {
-                return ItemCatNavbar(widget.isSalesAcc,
-                    totalAmount: value, addButton: _addButton());
+                return ItemCatNavbar(
+                  widget.isSalesAcc,
+                  totalAmount: value,
+                  addButton: _addButton(),
+                  isdaily: widget.isdaily,
+                  isOffline: widget.isOffline,
+                  accName: widget.accName,
+                );
               }),
       appBar: AppBar(
         leadingWidth: 30,
@@ -212,6 +221,10 @@ class _AllTransactionsState extends State<AllTransactions> {
                       pageSize: 15,
                       query: obj.getEntryQuery(),
                       itemBuilder: (ctx, snaps) {
+                        // yeha nahi diff hanna parchaw
+                        if (snaps.get("totalAmount") < 0) {
+                          return SettleCard(SettleMent.fromJson(snaps));
+                        }
                         String id = snaps.id;
                         _idValidator(id);
                         // the index ladow !/snaps.data();

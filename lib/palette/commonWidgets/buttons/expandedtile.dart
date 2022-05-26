@@ -7,6 +7,7 @@ import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 // okey f the item name is too long when clicked on it tyo expand hunxa to show the item name !! yes yes
 // complete it today and curve container
@@ -134,11 +135,11 @@ class InfoTile extends StatelessWidget {
     return input.toString();
   }
 
-  final Icon moneyI = Icon(
-    Icons.monetization_on_outlined,
-    color: iconGreen,
-    size: 22,
-  );
+  static Icon moneyI(Color color) => Icon(
+        Icons.monetization_on_outlined,
+        color: color,
+        size: 22,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +161,7 @@ class InfoTile extends StatelessWidget {
                   iSselectTap: iSselectTap,
                 )
               : const SizedBox(),
-          Expanded(
+          Flexible(
             child: InkWell(
               onTap: () {
                 iSselectTap
@@ -187,7 +188,7 @@ class InfoTile extends StatelessWidget {
                         ),
                         salesIcon(isSales, size: 20),
                         SizedBox(
-                          width: iSselectTap ? 240.w : 249.w,
+                          width: iSselectTap ? 239.w : 248.w,
                           child: Text(
                             obj.accName!,
                             style: inputStyle,
@@ -206,7 +207,7 @@ class InfoTile extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
-                          width: 100.w,
+                          width: 90.w,
                           child: Text(
                             obj.itemname,
                             style: subTitle,
@@ -222,7 +223,7 @@ class InfoTile extends StatelessWidget {
                                 tQuantity + " " + obj.quantityType + " X ",
                                 style: subTitle,
                               ),
-                              moneyI,
+                              moneyI(iconGreen),
                               Text(
                                 price,
                                 style: inputStyle,
@@ -238,7 +239,7 @@ class InfoTile extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              moneyI,
+                              moneyI(iconGreen),
                               Text(
                                 amnt,
                                 style: inputStyle,
@@ -254,6 +255,44 @@ class InfoTile extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class SettleCard extends StatelessWidget {
+  final SettleMent obj;
+  const SettleCard(this.obj, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 3.0),
+      child: ListTile(
+        tileColor: obj.isSale ? red : iconGreen,
+        title: Row(
+          children: [
+            const Icon(Icons.arrow_right_alt_outlined),
+            Text(
+              obj.isSale ? 'Rceved'.tr : "Gvn".tr,
+              style: appbarStyle,
+            ),
+            const Expanded(child: Text("")),
+            Text(
+              Calender.dateFormatter(obj.createdDate),
+              style: subTitle,
+            )
+          ],
+        ),
+        subtitle: Row(
+          children: [
+            InfoTile.moneyI(obj.isSale ? iconGreen : Colors.white),
+            Text(
+              obj.totalAmount.toString(),
+              style: small16,
+            ),
+          ],
+        ),
       ),
     );
   }

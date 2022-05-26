@@ -84,7 +84,7 @@ class EntryControlls extends GetxController {
   /// only 15 at first and after the 15 is complete next next .
   void getAllEntry({bool isScrolling = false}) {
     for (_cIndex; _cIndex < builderTotal; _cIndex++) {
-      Transaction? out = o.getItems(_cIndex);
+      dynamic out = o.getItems(_cIndex);
       if (out != null) {
         allEntry.add(out);
       } else {
@@ -98,6 +98,8 @@ class EntryControlls extends GetxController {
       }
     }
   }
+
+
 
 // select tapp garesi hamro animated container ko side ma euta checkbox aauxaaaa
   void onSelectTap() {
