@@ -4,9 +4,11 @@ import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
+import 'package:app/screens/dataentry/controller/itemcatcon.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_utils/src/extensions/internacionalization.dart';
 
 // okey f the item name is too long when clicked on it tyo expand hunxa to show the item name !! yes yes
@@ -111,11 +113,8 @@ class _CustomTileState extends State<CustomTile> {
 class InfoTile extends StatelessWidget {
   int index;
   final Transaction obj;
-  final bool iSselectTap;
+  final bool iSselectTap, isSales, haveCheckbox;
   final dynamic controller;
-  final Map? db;
-  final bool haveCheckbox;
-  final bool isSales;
   // afnai tile ho yo muji kati wota render vayo ma track rakhxu muji
   InfoTile(
     this.obj,
@@ -124,7 +123,6 @@ class InfoTile extends StatelessWidget {
     this.iSselectTap = false,
     this.controller,
     required this.isSales,
-    this.db,
     required this.haveCheckbox,
   }) : super(key: key);
 
@@ -154,19 +152,22 @@ class InfoTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           haveCheckbox
-              ? CustomCheckBox(
-                  controller: controller!,
-                  index: index,
-                  uniqueId: obj.uniqueId!,
-                  iSselectTap: iSselectTap,
-                )
+              ? Obx(() => CustomCheckBox(
+                    controller: controller!,
+                    index: index,
+                    uniqueId: obj.uniqueId!,
+                    iSselectTap: iSselectTap,
+                    tapped: controller.isItSelected(index),
+                  ))
               : const SizedBox(),
           Flexible(
             child: InkWell(
               onTap: () {
                 iSselectTap
-                    ? controller!
-                        .onCheckBoxTapped(index, obj.uniqueId!,)
+                    ? controller!.onCheckBoxTapped(
+                        index,
+                        obj.uniqueId!,
+                      )
                     : null;
               },
               child: Container(

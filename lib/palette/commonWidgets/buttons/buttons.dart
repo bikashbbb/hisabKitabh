@@ -359,7 +359,7 @@ Widget secAddButton({bool isClicked = false, String name = "+"}) {
 }
 
 class CustomCheckBox extends StatelessWidget {
-  final EntryControlls controller;
+  final dynamic controller;
   final int index;
   final dynamic uniqueId;
   final bool isHome,iSselectTap,tapped;

@@ -50,7 +50,7 @@ class _DataScreenState extends State<DataScreen> {
       floatingActionButton: InkWell(
           onTap: () {
             Get.to(
-              CreateEntry(
+              () => CreateEntry(
                 "add".tr,
                 isDaily: widget.isDaily,
               ),

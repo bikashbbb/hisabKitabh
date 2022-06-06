@@ -12,12 +12,11 @@ import 'package:get/get.dart';
 class EntryControlls extends GetxController {
   String boxName;
   final RxList allAccounts = [].obs;
-    RxBool isSelectTap = false.obs;
-
+  RxBool isSelectTap = false.obs;
 
   bool hasdata = true;
   late HiveDatabase o;
-  
+
   RxBool isSelectTapHome = false.obs;
   Map selectedItemHOme = {}.obs;
 
@@ -47,7 +46,6 @@ class EntryControlls extends GetxController {
   // when clicked on the tile
   void onTileTapped(String accName, bool isdaily, bool isSales, double? amount,
       int? totalEntries) {
-    Get.delete<EntryControlls>();
     Get.to(() => AllTransactions(
           isSales,
           accName: accName,
@@ -57,8 +55,6 @@ class EntryControlls extends GetxController {
           totalEntries: totalEntries,
         ));
   }
-
-
 
   void onSelectTapHome() {
     isSelectTapHome.value = !isSelectTapHome.value;
@@ -131,9 +127,10 @@ class EntryControlls extends GetxController {
     Get.dialog(DeleteAccDialog(
       "delacc".tr,
       "1",
-      ishome: false,
+      ishome: true,
     ));
   }
+
   void onSelectTap() {
     isSelectTap.value = !isSelectTap.value;
   }

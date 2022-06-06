@@ -193,8 +193,6 @@ class _AllTransactionsState extends State<AllTransactions> {
                                                         isSales:
                                                             widget.isSalesAcc,
                                                         haveCheckbox: true,
-                                                        db: _controller!
-                                                            .selectedItem,
                                                         iSselectTap:
                                                             _controller!
                                                                 .isSelectTap
@@ -252,7 +250,6 @@ class _AllTransactionsState extends State<AllTransactions> {
                             iSselectTap: _controller!.isSelectTap.value,
                             controller: _controller,
                             isSales: widget.isSalesAcc,
-                            db: _controller!.selectedItem,
                             haveCheckbox: true)));
                       }),
                 ),
