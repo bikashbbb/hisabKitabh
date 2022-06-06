@@ -34,16 +34,16 @@ class _DataScreenState extends State<DataScreen> {
   @override
   void initState() {
     Get.delete<EntryControlls>();
-
-    c = Get.put(EntryControlls(widget.isDaily, boxName: "", auto: true));
-    super.initState();
+    c = c = Get.put(EntryControlls(widget.isDaily, boxName: "", auto: true));
     c.getAccData;
+    super.initState();
   }
 
   /* final GlobalKey<AnimatedListState> _accListKey =
       GlobalKey<AnimatedListState>(); */
   @override
   Widget build(BuildContext context) {
+//Get.reload<EntryControlls>();
     return Scaffold(
       bottomNavigationBar:
           const SizedBox(height: 33, child: UpperNavigationBar()),
@@ -61,7 +61,10 @@ class _DataScreenState extends State<DataScreen> {
       body: PageView(
           controller: DataScreen.pageController,
           onPageChanged: UpperNavigationBar.changePage,
-          children: [_pageViewWidgets(false), _pageViewWidgets(true)]),
+          children: [
+            _pageViewWidgets(false),
+            SingleChildScrollView(child: _pageViewWidgets(true))
+          ]),
     );
   }
 
@@ -139,7 +142,6 @@ class _DataScreenState extends State<DataScreen> {
           color: red,
         ),
         DeleteNunSelect(
-          c.selectedItemHOme,
           c,
         ),
         const Text("                "),
@@ -168,6 +170,9 @@ class _DataScreenState extends State<DataScreen> {
                       controller: c,
                       index: i,
                       iSselectTap: c.isSelectTapHome.value,
+                      tapped: c.isItSelected(
+                        i,
+                      ),
                     ),
                   ),
                   //
@@ -194,15 +199,18 @@ class _DataScreenState extends State<DataScreen> {
           //Map v = snapshot.data();
           //return SizedBox();
           // just add up the delete
-
+          int index = i++;
           return Row(
             children: [
               Obx(() => CustomCheckBox(
                     isHome: true,
                     controller: c,
-                    index: i++,
+                    index: index,
                     iSselectTap: c.isSelectTapHome.value,
                     uniqueId: snapshot.id,
+                    tapped: c.isItSelected(
+                      index,
+                    ),
                   )),
               Expanded(child: _accCard(AccountInfos.fromJson(snapshot))),
             ],

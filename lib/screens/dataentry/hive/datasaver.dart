@@ -48,7 +48,7 @@ class HiveDatabase {
 
     try {
       await setAcc();
-      setData();
+      await setData();
 
       return true;
     } on Exception {
@@ -69,9 +69,9 @@ class HiveDatabase {
   }
 
   /// set the data also upate the length of the map.
-  void setData() {
+  Future<void> setData() async {
     // set the data into the acc., i dont need the
-    saveObject();
+    await saveObject();
   }
 
   Future<Box> setRecordSaver() async {
@@ -79,11 +79,12 @@ class HiveDatabase {
   }
 
   /// uses the code + index...
-  void saveObject() async {
+  Future<void> saveObject() async {
     //recordSaverBox.length use this as a key and store in object ;
     Box putKey = await setRecordSaver();
     object!["uniqueId"] = putKey.length;
-    recordSaverBox!.put(putKey.length + 1, object);
+    await recordSaverBox!.put(putKey.length + 1, object);
+    print("save obj");
   }
 
   /// uses the account name as key to set the data..
@@ -122,7 +123,7 @@ class HiveDatabase {
     if (value == null) {
       return null;
     }
-    if (value.containsKey('isSment')) {
+    if (value['totalAmount'] < 0) {
       return SettleMent.fromJson(value);
     } else {
       return Transaction.fromJson(value);

@@ -2,10 +2,10 @@ import 'package:app/palette/dialogs/dialogs.dart';
 import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/controller/firebase.dart';
+import 'package:app/screens/dataentry/controller/itemcatcon.dart';
 import 'package:app/screens/dataentry/hive/datasaver.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
-import 'package:app/screens/login/logincontrolls.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -58,12 +58,7 @@ class CreateControlls extends GetxController {
         _onEntrysaveSucess(transObject, isPrevsAcc);
       } else {
         // offline !!
-        datasaver = HiveDatabase(isDaily, object: item, boxKonaam: aName);
-        bool result = await datasaver!.saveModel();
-        if (result) {
-          _onEntrysaveSucess(transObject, isPrevsAcc);
-          // animate and add
-        }
+        offlineSaver(item, isPrevsAcc);
       }
       _startLoaded();
     }
@@ -71,10 +66,25 @@ class CreateControlls extends GetxController {
     // have if else statement hw
   }
 
-  void _onEntrysaveSucess(Transaction transObject, bool isPrevsAcc) {
-    onAccNotClear();
-    offlineSucess(transObject);
-    isPrevsAcc ? _onAddPreviousAcc(transObject) : null;
+  Future<void> offlineSaver(dynamic item, bool isPrevsAcc,
+      {bool isSettle = false}) async {
+    datasaver = HiveDatabase(isDaily,
+        object: isSettle ? SettleMent.tojson(item) : item, boxKonaam: aName);
+    bool result = await datasaver!.saveModel();
+    if (result) {
+      _onEntrysaveSucess(
+          isSettle ? item : Transaction.fromJson(item), isPrevsAcc,
+          isSettle: isSettle);
+    }
+  }
+
+  void _onEntrysaveSucess(dynamic transObject, bool isPrevsAcc,
+      {bool isSettle = false}) {
+    if (!isSettle) {
+      onAccNotClear();
+      offlineSucess(transObject);
+    }
+    if (isPrevsAcc) _onAddPreviousAcc(transObject);
   }
 
   void delHiveAcc() {
@@ -82,17 +92,19 @@ class CreateControlls extends GetxController {
   }
 
   /// adds the data into the list if the list len <14 else just addups in to len
-  void _onAddPreviousAcc(Transaction obj) {
-    EntryControlls con = Get.find<EntryControlls>();
+  void _onAddPreviousAcc(dynamic obj) {
+    print("k vako lado");
+    ItemCatControlls con = Get.find<ItemCatControlls>();
     if (con.builderTotal < 13) {
       con.allEntry.add(obj);
+      print(con.allEntry);
       con.increaseTotalAmnt(obj.totalAmount!);
     }
     con.updateEntryTotal();
   }
 
   /// animates and adds up the item in the builder .
-  void offlineSucess(Transaction o) {
+  void offlineSucess(dynamic o) {
     Duration i = const Duration(milliseconds: 600);
     allinfoItems.add(o);
     listkey.currentState!.insertItem(0, duration: i);

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:app/palette/commonWidgets/buttons/buttons.dart';
 import 'package:app/palette/commonWidgets/buttons/expandedtile.dart';
 import 'package:app/palette/commonWidgets/constants/dropdowncons.dart';
+import 'package:app/palette/commonWidgets/homescreens.dart';
 import 'package:app/palette/commonWidgets/navigationbar.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/textstyles.dart';
@@ -9,9 +10,11 @@ import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/createdatac.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/controller/firebase.dart';
+import 'package:app/screens/dataentry/controller/itemcatcon.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:app/screens/dataentry/ui/createdata.dart';
+import 'package:app/screens/homescreen/ui/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
@@ -54,19 +57,21 @@ class AllTransactions extends StatefulWidget {
 }
 
 class _AllTransactionsState extends State<AllTransactions> {
-  late Future<bool> _futureList;
-  EntryControlls? _controller;
+  late Future _futureList;
+  ItemCatControlls? _controller;
   final Map _idIndex = {};
   //ScrollController _scrollController = ScrollController();
   /// initstate is an initializer function its called before build therefore we dont see any , null error in this case
   @override
   void initState() {
     //if (widget.isOffline) {
-    _controller =
-        Get.put(EntryControlls(widget.isdaily, boxName: widget.accName));
-    if (widget.isOffline) {
-      _futureList = _controller!.setObjects();
-    }
+
+    _controller = Get.put(ItemCatControlls(widget.isdaily, widget.accName));
+    /* _controller = Get.find<EntryControlls>();
+    _controller!.boxName = widget.accName; */
+    //if (widget.isOffline) {
+    _futureList = _controller!.setObjects();
+    //}
     //}
     super.initState();
   }
@@ -80,6 +85,8 @@ class _AllTransactionsState extends State<AllTransactions> {
   Widget build(BuildContext context) {
     FireItemCat obj = FireItemCat(widget.accName);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      //extendBodyBehindAppBar: true,
       backgroundColor: iconwhite,
       bottomNavigationBar: widget.isOffline
           ? Obx(() => ItemCatNavbar(widget.isSalesAcc,
@@ -102,16 +109,15 @@ class _AllTransactionsState extends State<AllTransactions> {
               }),
       appBar: AppBar(
         leadingWidth: 30,
-        leading: BackButton(
-          onPressed: () {
-            // _controller!.onDisposeBox();
-            //Get.delete<EntryControlls>();
-            Get.back();
-          },
-        ),
         backgroundColor: secondaryC,
         iconTheme: IconThemeData(color: iconGreen),
         systemOverlayStyle: appStyle,
+        /* leading: BackButton(
+          onPressed: () {
+            Get.to(const HisabKitabHome());
+            //DataScreen.pageController.jumpTo(1);
+          },
+        ), */
         title: Row(
           children: [
             contactI,
@@ -138,26 +144,29 @@ class _AllTransactionsState extends State<AllTransactions> {
                   //  then loop hanne yeha
                   _amountBuilder();
                   _controller!.getAllEntry();
-                  return GetBuilder<EntryControlls>(
+                  return GetBuilder<ItemCatControlls>(
                       init: _controller,
                       builder: (c) {
                         return Column(
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "tot".tr +
-                                      "ent".tr +
-                                      " : " +
-                                      _controller!.entryTotal.toString(),
-                                  style: subTitle,
-                                ),
-                                DeleteNunSelect(
-                                  _controller!.selectedItem,
-                                  _controller!,
-                                )
-                              ],
+                            Container(
+                              color: Colors.white,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "tot".tr +
+                                        "ent".tr +
+                                        " : " +
+                                        _controller!.entryTotal.toString(),
+                                    style: subTitle,
+                                  ),
+                                  DeleteNunSelect(
+                                    _controller!,
+                                  )
+                                ],
+                              ),
                             ),
                             // if its online have a stream builder else,a Listview builder.
                             Obx(
@@ -169,31 +178,40 @@ class _AllTransactionsState extends State<AllTransactions> {
                                           AllTransactions.scrollController,
                                       itemCount: _controller!.allEntry.length,
                                       itemBuilder: (ctx, i) {
-                                        return GetBuilder<EntryControlls>(
+                                        return GetBuilder<ItemCatControlls>(
                                           init: _controller,
                                           builder: (builder) {
-                                            return _controller!.isItDeleted(i)
-                                                ? const SizedBox()
-                                                : Obx(() => InfoTile(
-                                                      _controller!.allEntry[i],
-                                                      i,
-                                                      isSales:
-                                                          widget.isSalesAcc,
-                                                      haveCheckbox: true,
-                                                      db: _controller!
-                                                          .selectedItem,
-                                                      iSselectTap: _controller!
-                                                          .isSelectTap.value,
-                                                      controller: _controller,
-                                                    ));
+                                            if (_controller!
+                                                    .allEntry[i].runtimeType ==
+                                                Transaction) {
+                                              return _controller!.isItDeleted(i)
+                                                  ? const SizedBox()
+                                                  : Obx(() => InfoTile(
+                                                        _controller!
+                                                            .allEntry[i],
+                                                        i,
+                                                        isSales:
+                                                            widget.isSalesAcc,
+                                                        haveCheckbox: true,
+                                                        db: _controller!
+                                                            .selectedItem,
+                                                        iSselectTap:
+                                                            _controller!
+                                                                .isSelectTap
+                                                                .value,
+                                                        controller: _controller,
+                                                      ));
+                                            }
+                                            return SettleCard(
+                                                _controller!.allEntry[i]);
                                           },
                                         );
                                       }),
                                   onNotification: (not) {
                                     if (AllTransactions.scrollController
-                                            .position.maxScrollExtent ==
-                                        AllTransactions
-                                            .scrollController.position.pixels) {
+                                            .positions.last.maxScrollExtent ==
+                                        AllTransactions.scrollController
+                                            .positions.last.pixels) {
                                       _controller!
                                           .getAllEntry(isScrolling: true);
                                     }
@@ -223,12 +241,11 @@ class _AllTransactionsState extends State<AllTransactions> {
                       itemBuilder: (ctx, snaps) {
                         // yeha nahi diff hanna parchaw
                         if (snaps.get("totalAmount") < 0) {
-                          return SettleCard(SettleMent.fromJson(snaps));
+                          return SettleCard(
+                              SettleMent.fromJson(snaps, isSnaps: true));
                         }
                         String id = snaps.id;
                         _idValidator(id);
-                        // the index ladow !/snaps.data();
-                        // how do i fucking give the index ladow !
                         return Obx((() => InfoTile(
                             Transaction.fromJson(snaps, isSnaps: true),
                             _idIndex[id],
@@ -273,7 +290,6 @@ class _AllTransactionsState extends State<AllTransactions> {
             style: subTitle,
           ),
           DeleteNunSelect(
-            _controller!.selectedItem,
             _controller!,
             isHome: false,
           )

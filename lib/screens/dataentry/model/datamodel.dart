@@ -108,9 +108,12 @@ class SettleMent {
     };
   }
 
-  factory SettleMent.fromJson(obj) {
-    return SettleMent(obj['totalAmount'], obj['isSell'],
-        obj['createdDate'].toDate(), obj['isEdited']);
+  factory SettleMent.fromJson(obj, {bool isSnaps = false}) {
+    return SettleMent(
+        obj['totalAmount'],
+        obj['isSell'],
+        isSnaps ? obj['createdDate'].toDate() : obj['createdDate'],
+        obj['isEdited']);
   }
 }
 

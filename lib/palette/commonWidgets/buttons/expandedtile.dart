@@ -112,7 +112,7 @@ class InfoTile extends StatelessWidget {
   int index;
   final Transaction obj;
   final bool iSselectTap;
-  final EntryControlls? controller;
+  final dynamic controller;
   final Map? db;
   final bool haveCheckbox;
   final bool isSales;
@@ -166,7 +166,7 @@ class InfoTile extends StatelessWidget {
               onTap: () {
                 iSselectTap
                     ? controller!
-                        .onCheckBoxTapped(index, obj.uniqueId!, input: db)
+                        .onCheckBoxTapped(index, obj.uniqueId!,)
                     : null;
               },
               child: Container(

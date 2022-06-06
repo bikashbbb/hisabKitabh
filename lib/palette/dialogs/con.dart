@@ -1,3 +1,4 @@
+import 'package:app/palette/commonWidgets/navigationbar.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/ui/createdata.dart';
 import 'package:get/get.dart';
@@ -42,7 +43,11 @@ class DialogControlls extends GetxController {
 
   void onDoneClickedHome() async {
     await Get.delete<DialogControlls>();
-    await Get.delete<EntryControlls>();
+    if (UpperNavigationBar.iSoffline()) {
+      final con = Get.find<EntryControlls>();
+      con.updateEntry();
+    }
+
     CreateEntry.onBack();
   }
 }

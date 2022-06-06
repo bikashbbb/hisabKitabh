@@ -6,11 +6,11 @@ import 'package:app/palette/dialogs/dialogs.dart';
 import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/styles/textstyles.dart';
+import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/createdatac.dart';
 import 'package:app/screens/dataentry/controller/firebase.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:app/screens/homescreen/controller/homecontrolls.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import "package:get/get.dart";
@@ -181,9 +181,14 @@ class ItemCatNavbar extends StatelessWidget {
         _amountC, !iSsale, isOffline ? _iconTappedOffline : _iconTappedOnline);
   }
 
-  void _iconTappedOffline() {
-    CreateControlls c = Get.put(CreateControlls());
-    c.onAdditem(true);
+  void _iconTappedOffline() async {
+    if (_amountC.text != "") {
+      _progressloader();
+      CreateControlls c = Get.put(CreateControlls());
+      aName = accName;
+      await c.offlineSaver(_getObj(), true, isSettle: true);
+      Get.back();
+    }
   }
 
   void _iconTappedOnline() {
@@ -193,15 +198,20 @@ class ItemCatNavbar extends StatelessWidget {
   }
 
   void _backAnLoad() async {
-    Get.back();
-    Get.dialog(const Center(child: CircularProgressIndicator()));
-    await FireCreateEntry(
-            isdaily,
-            SettleMent.tojson(SettleMent(
-                -double.parse(_amountC.text), iSsale, DateTime.now(), false)),
-            accName)
+    _progressloader();
+    await FireCreateEntry(isdaily, SettleMent.tojson(_getObj()), accName)
         .onAdditem();
     Get.back();
+  }
+
+  void _progressloader() {
+    Get.back();
+    Get.dialog(const Center(child: CircularProgressIndicator()));
+  }
+
+  SettleMent _getObj() {
+    return SettleMent(
+        -double.parse(_amountC.text), iSsale, DateTime.now(), false);
   }
 }
 
@@ -218,6 +228,7 @@ class UpperNavigationBar extends StatefulWidget {
 
   static ValueNotifier<int> selectedIndex = ValueNotifier(0);
 
+  /// used fot the navigator
   static void changePage(int index) {
     selectedIndex.value = index;
   }
@@ -226,7 +237,9 @@ class UpperNavigationBar extends StatefulWidget {
     selectedIndex.value = 0;
   }
 
+  // used for changing the page
   static void animatePage(int index) {
+    
     DataScreen.pageController
         .animateToPage(index, duration: dura, curve: Curves.ease);
   }

@@ -5,6 +5,7 @@ import 'package:app/palette/styles/colors.dart';
 import 'package:app/palette/styles/decorations.dart';
 import 'package:app/palette/styles/textstyles.dart';
 import 'package:app/screens/dataentry/controller/entrycontroller.dart';
+import 'package:app/screens/dataentry/controller/itemcatcon.dart';
 import 'package:app/screens/dataentry/textcontroller/c.dart';
 import 'package:app/screens/dataentry/ui/createdata.dart';
 import 'package:flutter/material.dart';
@@ -334,7 +335,7 @@ Widget selectB = SizedBox(
   child: Row(children: [handI, select]),
 );
 
-Widget selectButon(EntryControlls con, {bool isHome = false}) => InkWell(
+Widget selectButon(dynamic con, {bool isHome = false}) => InkWell(
     onTap: isHome ? con.onSelectTapHome : con.onSelectTap, child: selectB);
 
 Widget secAddButton({bool isClicked = false, String name = "+"}) {
@@ -358,11 +359,10 @@ Widget secAddButton({bool isClicked = false, String name = "+"}) {
 }
 
 class CustomCheckBox extends StatelessWidget {
-  final bool iSselectTap;
   final EntryControlls controller;
   final int index;
   final dynamic uniqueId;
-  final bool isHome;
+  final bool isHome,iSselectTap,tapped;
 
   const CustomCheckBox(
       {Key? key,
@@ -370,49 +370,37 @@ class CustomCheckBox extends StatelessWidget {
       required this.controller,
       required this.index,
       this.uniqueId,
-      this.isHome = false})
+      this.isHome = false,this.tapped=false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<EntryControlls>(
-        init: controller,
-        builder: (c) {
-          return AnimatedContainer(
-            duration: dura,
-            width: iSselectTap ? 20.w : 0,
-            child: Checkbox(
-                side: const BorderSide(color: Colors.black),
-                checkColor: Colors.white,
-                activeColor: iconGreen,
-                value: controller.isItSelected(
-                    index,
-                    isHome
-                        ? controller.selectedItemHOme
-                        : controller.selectedItem),
-                onChanged: (b) {
-                  controller.onCheckBoxTapped(index, uniqueId!,
-                      input: isHome
-                          ? controller.selectedItemHOme
-                          : controller.selectedItem);
-                }),
-          );
-        });
+    return AnimatedContainer(
+      duration: dura,
+      width: iSselectTap ? 20.w : 0,
+      child: Checkbox(
+          side: const BorderSide(color: Colors.black),
+          checkColor: Colors.white,
+          activeColor: iconGreen,
+          value: tapped,
+          onChanged: (b) {
+            controller.onCheckBoxTapped(index, uniqueId!,);
+          }),
+    );
   }
 }
 
 class DeleteNunSelect extends StatelessWidget {
-  final Map input;
   final bool isHome;
-  final EntryControlls c;
+  final dynamic c;
 
-  const DeleteNunSelect(this.input, this.c, {Key? key, this.isHome = true})
+  const DeleteNunSelect( this.c, {Key? key, this.isHome = true})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      bool bowl = c.isDeleteOn(input);
+      bool bowl = c.isDeleteOn();
       return Expanded(
         child: Row(
           children: [
@@ -425,7 +413,7 @@ class DeleteNunSelect extends StatelessWidget {
                 ? const SizedBox()
                 : InkWell(
                     onTap: () {
-                      c.onUnselectTap(input, isHome);
+                      c.onUnselectTap();
                     },
                     child: Icon(
                       Icons.cancel_outlined,
@@ -436,7 +424,7 @@ class DeleteNunSelect extends StatelessWidget {
                 ? const SizedBox()
                 : InkWell(
                     onTap: () {
-                      c.onDeleteCLicked(isHome);
+                      c.onDeleteCLicked();
                     },
                     child: const Icon(
                       Icons.delete_forever_outlined,
