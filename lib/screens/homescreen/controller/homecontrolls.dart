@@ -11,4 +11,11 @@ class HomeController extends GetxController {
     UpperNavigationBar.setToZero();
     update();
   }
+
+  static isDailyPage() {
+    if (pageIndex == 2) {
+      return true;
+    }
+    return false;
+  }
 }

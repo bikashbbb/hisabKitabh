@@ -146,6 +146,8 @@ class ItemCatNavbar extends StatelessWidget {
       this.accName = ""})
       : super(key: key);
 
+  ValueNotifier<bool> isAmountLOading = ValueNotifier(false);
+
   @override
   Widget build(BuildContext context) {
     // print(isdaily);
@@ -158,11 +160,15 @@ class ItemCatNavbar extends StatelessWidget {
             Icons.monetization_on,
             color: black,
           ),
-          AnimatedFlipCounter(
-            value: totalAmount,
-            duration: Duration(seconds: secs),
-            textStyle: appbarStyle,
-          ),
+          ValueListenableBuilder(
+              valueListenable: isAmountLOading,
+              builder: (ctx, value, child) {
+                return /* value? */ AnimatedFlipCounter(
+                  value: totalAmount,
+                  duration: Duration(seconds: secs),
+                  textStyle: appbarStyle,
+                );
+              }),
           const SizedBox(width: 2),
           salesIcon(iSsale),
           const Expanded(child: SizedBox()),
@@ -184,9 +190,13 @@ class ItemCatNavbar extends StatelessWidget {
   void _iconTappedOffline() async {
     if (_amountC.text != "") {
       _progressloader();
-      CreateControlls c = Get.put(CreateControlls());
+      CreateControlls c = Get.put(CreateControlls(isDaily: false));
       aName = accName;
-      await c.offlineSaver(_getObj(), true, isSettle: true);
+      await c.offlineSaver(
+        _getObj(),
+        true,
+        isSettle: true,
+      );
       Get.back();
     }
   }
@@ -202,6 +212,7 @@ class ItemCatNavbar extends StatelessWidget {
     await FireCreateEntry(isdaily, SettleMent.tojson(_getObj()), accName)
         .onAdditem();
     Get.back();
+    // load the amount ani keep getting the amount update it
   }
 
   void _progressloader() {
@@ -211,7 +222,7 @@ class ItemCatNavbar extends StatelessWidget {
 
   SettleMent _getObj() {
     return SettleMent(
-        -double.parse(_amountC.text), iSsale, DateTime.now(), false);
+        -double.parse(_amountC.text), iSsale, DateTime.now(), false, 0);
   }
 }
 
@@ -239,7 +250,6 @@ class UpperNavigationBar extends StatefulWidget {
 
   // used for changing the page
   static void animatePage(int index) {
-    
     DataScreen.pageController
         .animateToPage(index, duration: dura, curve: Curves.ease);
   }

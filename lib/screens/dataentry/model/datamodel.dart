@@ -1,5 +1,6 @@
 // planning: Create some model,with hive
 
+import 'package:app/palette/commonWidgets/buttons/expandedtile.dart';
 import 'package:app/palette/commonWidgets/constants/dropdowncons.dart';
 import 'package:app/screens/dataentry/const.dart';
 import 'package:app/screens/dataentry/controller/createdatac.dart';
@@ -20,7 +21,7 @@ class Transaction extends HiveObject {
   double perQuantityPrice;
 
   /// a unique id that keeps the transactions in order ascending or descending .
-  int? uniqueId;
+  dynamic uniqueId;
   DateTime createdDate;
   String? editedDate;
   bool isOnlineStored;
@@ -38,9 +39,9 @@ class Transaction extends HiveObject {
       required this.quantityType,
       required this.isOnlineStored});
 
-  factory Transaction.fromJson(dynamic i, {bool isSnaps = false}) {
+  factory Transaction.fromJson(dynamic i, {bool isSnaps = false, String? id}) {
     return Transaction(
-        uniqueId: i["uniqueId"],
+        uniqueId: isSnaps ? id.toString() : i["uniqueId"],
         isOnlineStored: i["isOnlineStored"],
         accName: i["accName"],
         isSell: i["isSell"],
@@ -97,10 +98,14 @@ class SettleMent {
   bool isSale;
   DateTime createdDate;
   bool isEdited;
-  SettleMent(this.totalAmount, this.isSale, this.createdDate, this.isEdited);
+  int uniqueId;
+
+  SettleMent(this.totalAmount, this.isSale, this.createdDate, this.isEdited,
+      this.uniqueId);
 
   static tojson(SettleMent obj) {
     return {
+      "uniqueId": 0,
       "totalAmount": obj.totalAmount,
       "isSell": obj.isSale,
       'createdDate': obj.createdDate,
@@ -113,7 +118,8 @@ class SettleMent {
         obj['totalAmount'],
         obj['isSell'],
         isSnaps ? obj['createdDate'].toDate() : obj['createdDate'],
-        obj['isEdited']);
+        obj['isEdited'],
+        obj['uniqueId']);
   }
 }
 

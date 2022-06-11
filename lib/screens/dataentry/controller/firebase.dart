@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:app/screens/dataentry/const.dart';
+import 'package:app/screens/homescreen/controller/homecontrolls.dart';
 import 'package:app/screens/login/logincontrolls.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -36,9 +39,17 @@ class FireHomePage {
 
 class FireItemCat {
   String accountName;
-  late CollectionReference _snaps;
+  DocumentSnapshot? _output;
 
   FireItemCat(this.accountName);
+
+  get amount {
+    return _output!["totalAmount"];
+  }
+
+  get recordCount {
+    return _output!["total_entry"];
+  }
 
   Query getEntryQuery() {
     return FireHomePage._queryoutput
@@ -47,27 +58,47 @@ class FireItemCat {
         .orderBy("createdDate");
   }
 
-  /* Future getEntryTotal() async {
-    double counter = 0;
-/*    await FireHomePage._queryoutput
-        .doc(accountName)
-        .collection("data")
-        .snapshots()
-        .listen((data) =>
-            data.docs.forEach((doc) => counter += (doc["totalAmount"])));
-            
- */
-    FireHomePage._firestore
-        .collection("aG3zl2xbGIM932F74kVbnRrdRj0222")
+  Future<bool> deleteRecord(String docid, double amount) async {
+    // i must have the amount pani !
+    try {
+      final batch = FireHomePage._firestore.batch();
+      FieldValue totalAmnt = FieldValue.increment(-amount);
+
+      batch.set(
+          _getDocref(),
+          {"totalAmount": totalAmnt, "total_entry": FieldValue.increment(-1)},
+          SetOptions(merge: true));
+
+      batch.delete(_getDocref().collection("data").doc(docid));
+
+      await batch.commit();
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  DocumentReference _getDocref() {
+    return FireHomePage._firestore
+        .collection(Userdata.getCurrnetUsser())
         .doc("data")
-        .collection(daily)
-        .doc(accountName)
-        .collection("data")
-        .snapshots()
-        .listen((data) =>
-            data.docs.forEach((doc) => counter += (doc["totalAmount"])));
-    return counter;
-  } */
+        .collection(HomeController.isDailyPage() ? daily : lendAcc)
+        .doc(accountName);
+  }
+
+  Future getAmount() async {
+    Stream sub1 = _getDocref().snapshots();
+    sub1.listen(
+      _ondata,
+    );
+
+    await sub1.first;
+  }
+
+  void _ondata(snapshot) {
+    _output = snapshot;
+  }
 }
 
 class FireCreateEntry {
@@ -76,12 +107,10 @@ class FireCreateEntry {
   String accountNam;
 
   FireCreateEntry(this.isDaily, this.object, this.accountNam);
-  final String _fieldKey = "isSell";
+  static const String _fieldKey = "isSell";
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<dynamic> onAdditem() async {
-    /*   try { */
-    // i have two countters 1) no of doc i.e number of accounts 2) amount of account
     DocumentReference accountRef = _firestore
         .collection(Userdata.getCurrnetUsser())
         .doc("data")

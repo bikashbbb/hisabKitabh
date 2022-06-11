@@ -1,6 +1,6 @@
+import 'package:app/palette/commonWidgets/navigationbar.dart';
 import 'package:app/palette/dialogs/dialogs.dart';
 import 'package:app/screens/dataentry/const.dart';
-import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/controller/firebase.dart';
 import 'package:app/screens/dataentry/controller/itemcatcon.dart';
 import 'package:app/screens/dataentry/hive/datasaver.dart';
@@ -69,7 +69,9 @@ class CreateControlls extends GetxController {
   Future<void> offlineSaver(dynamic item, bool isPrevsAcc,
       {bool isSettle = false}) async {
     datasaver = HiveDatabase(isDaily,
-        object: isSettle ? SettleMent.tojson(item) : item, boxKonaam: aName);
+        // yeha xa samasya
+        object: isSettle ? SettleMent.tojson(item) : item,
+        boxKonaam: aName);
     bool result = await datasaver!.saveModel();
     if (result) {
       _onEntrysaveSucess(
@@ -84,7 +86,9 @@ class CreateControlls extends GetxController {
       onAccNotClear();
       offlineSucess(transObject);
     }
-    if (isPrevsAcc) _onAddPreviousAcc(transObject);
+    if (isPrevsAcc && UpperNavigationBar.iSoffline()) {
+      _onAddPreviousAcc(transObject);
+    }
   }
 
   void delHiveAcc() {
@@ -93,13 +97,11 @@ class CreateControlls extends GetxController {
 
   /// adds the data into the list if the list len <14 else just addups in to len
   void _onAddPreviousAcc(dynamic obj) {
-    print("k vako lado");
     ItemCatControlls con = Get.find<ItemCatControlls>();
     if (con.builderTotal < 13) {
       con.allEntry.add(obj);
-      print(con.allEntry);
-      con.increaseTotalAmnt(obj.totalAmount!);
     }
+    con.increaseTotalAmnt(obj.totalAmount!);
     con.updateEntryTotal();
   }
 

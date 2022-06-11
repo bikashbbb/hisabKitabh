@@ -50,4 +50,9 @@ class DialogControlls extends GetxController {
 
     CreateEntry.onBack();
   }
+
+  void updateCurrentIndex() {
+    currentIndex++;
+    update();
+  }
 }

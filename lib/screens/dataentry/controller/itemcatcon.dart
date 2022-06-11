@@ -1,5 +1,7 @@
 import 'package:app/palette/dialogs/con.dart';
+import 'package:app/screens/dataentry/controller/firebase.dart';
 import 'package:app/screens/dataentry/hive/datasaver.dart';
+import 'package:app/screens/dataentry/ui/itemcatalog.dart';
 import 'package:get/get.dart';
 
 import '../../../palette/commonWidgets/navigationbar.dart';
@@ -19,12 +21,15 @@ class ItemCatControlls extends GetxController {
   Map selectedItem = {}.obs;
 
   late DialogControlls c;
+  late FireItemCat con;
 //RxSet deletedItems = <dynamic>{}.obs;
   Set deletedItems = {};
 
   /// will just hold 15 entries.
   RxList allEntry = [].obs;
-  ItemCatControlls(this.isDaily, this.boxName);
+
+  int totalEntries;
+  ItemCatControlls(this.isDaily, this.boxName, {required this.totalEntries});
   double selectedItemAmount = 0.0;
 
   Future<bool> setObjects() async {
@@ -42,7 +47,7 @@ class ItemCatControlls extends GetxController {
   }
 
   /// only 15 at first and after the 15 is complete next next .
-  void getAllEntry({bool isScrolling = false}) {
+  void getAllEntry() {
     for (_cIndex; _cIndex < builderTotal; _cIndex++) {
       dynamic out = o.getItems(_cIndex);
       if (out != null) {
@@ -64,6 +69,7 @@ class ItemCatControlls extends GetxController {
     if (UpperNavigationBar.iSoffline()) {
       confirmDialog(_delRecord, false);
     } else {
+      //
       confirmDialog(_deleterecOn, false);
     }
   }
@@ -107,12 +113,13 @@ class ItemCatControlls extends GetxController {
 
   void _delRecordFromDb() {
     // this has a major bug !! fixx it
+
     selectedItem.forEach((index, uid) async {
-      index--;
+      //index--;
       deletedItems.add(index);
       selectedItemAmount += allEntry[index].totalAmount;
 
-      await o.removeRecord(uid);
+      await o.removeRecord(uid.keys.first);
     });
     _updateDeleteItems();
   }
@@ -136,18 +143,35 @@ class ItemCatControlls extends GetxController {
   }
 
   void updateEntryTotal() {
+    builderTotal++;
     entryTotal++;
+    AllTransactions.scrollController.jumpTo(
+        AllTransactions.scrollController.position.maxScrollExtent -
+            AllTransactions.scrollController.position.maxScrollExtent * 0.1);
     update();
   }
 
-  void _deleterecOn(bool ishome) {}
+  void _deleterecOn(bool ishome) {
+    _deleteDialog();
+    con = FireItemCat(boxName);
+    c = Get.find<DialogControlls>();
+    c.totalRcordCount = selectedItem.length;
+    selectedItem.forEach((key, value) async {
+      await con.deleteRecord(value.keys.first, value.values.first);
+      // dcon.cu
+    });
+    selectedItem.clear();
+    c.updateIsfinish();
+    _updateAmount();
+    // update amount and total entries !
+  }
 
-  void onCheckBoxTapped(int i, dynamic uId) {
+  void onCheckBoxTapped(int i, dynamic uId, double? amount) {
     if (isItSelected(i)) {
       selectedItem.remove(i);
       update();
     } else {
-      selectedItem[i] = uId;
+      selectedItem[i] = {uId: amount};
       update();
     }
   }
@@ -158,5 +182,18 @@ class ItemCatControlls extends GetxController {
 
   void initiAlizeControlls() {
     c = Get.put(DialogControlls());
+  }
+
+  void _updateAmount() async {
+    /*  accTotalAmount.value =  */
+    await con.getAmount();
+    AllTransactions.upateAmount(con.amount);
+    _updateEntries();
+    //con.
+  }
+
+  void _updateEntries() {
+    totalEntries = con.recordCount;
+    update();
   }
 }

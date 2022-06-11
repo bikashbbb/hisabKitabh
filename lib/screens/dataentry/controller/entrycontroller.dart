@@ -66,7 +66,7 @@ class EntryControlls extends GetxController {
   }
 
   /// adds up the index with unique id in the map , so we can remove both from the list ..... yes yes
-  void onCheckBoxTapped(int i, dynamic uId) {
+  void onCheckBoxTapped(int i, dynamic uId, double? amount) {
     if (isItSelected(i)) {
       selectedItemHOme.remove(i);
       update();

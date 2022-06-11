@@ -361,8 +361,9 @@ Widget secAddButton({bool isClicked = false, String name = "+"}) {
 class CustomCheckBox extends StatelessWidget {
   final dynamic controller;
   final int index;
+  final double? totalAmount;
   final dynamic uniqueId;
-  final bool isHome,iSselectTap,tapped;
+  final bool isHome, iSselectTap, tapped;
 
   const CustomCheckBox(
       {Key? key,
@@ -370,7 +371,8 @@ class CustomCheckBox extends StatelessWidget {
       required this.controller,
       required this.index,
       this.uniqueId,
-      this.isHome = false,this.tapped=false})
+      this.isHome = false,
+      this.tapped = false,this.totalAmount})
       : super(key: key);
 
   @override
@@ -384,7 +386,11 @@ class CustomCheckBox extends StatelessWidget {
           activeColor: iconGreen,
           value: tapped,
           onChanged: (b) {
-            controller.onCheckBoxTapped(index, uniqueId!,);
+            controller.onCheckBoxTapped(
+              index,
+              uniqueId!,
+              totalAmount
+            );
           }),
     );
   }
@@ -394,45 +400,54 @@ class DeleteNunSelect extends StatelessWidget {
   final bool isHome;
   final dynamic c;
 
-  const DeleteNunSelect( this.c, {Key? key, this.isHome = true})
-      : super(key: key);
+  const DeleteNunSelect(
+    this.c, {
+    Key? key,
+    this.isHome = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
       bool bowl = c.isDeleteOn();
       return Expanded(
-        child: Row(
-          children: [
-            const Expanded(
-                child: Text(
-              "data",
-              style: TextStyle(color: Colors.white),
-            )),
-            bowl
-                ? const SizedBox()
-                : InkWell(
-                    onTap: () {
-                      c.onUnselectTap();
-                    },
-                    child: Icon(
-                      Icons.cancel_outlined,
-                      color: black,
-                    )),
-            const Text(" "),
-            bowl
-                ? const SizedBox()
-                : InkWell(
-                    onTap: () {
-                      c.onDeleteCLicked();
-                    },
-                    child: const Icon(
-                      Icons.delete_forever_outlined,
-                      color: Colors.red,
-                      size: 33,
-                    ),
-                  )
-          ],
+        child: SizedBox(
+          width: 200,
+          height: 30,
+          child: Row(
+            children: [
+              const Expanded(
+                  child: Text(
+                "data",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              )),
+              bowl
+                  ? const SizedBox()
+                  : InkWell(
+                      onTap: () {
+                        c.onUnselectTap();
+                      },
+                      child: Icon(
+                        Icons.cancel_outlined,
+                        color: black,
+                      )),
+              const Text(" "),
+              bowl
+                  ? const SizedBox()
+                  : InkWell(
+                      onTap: () {
+                        c.onDeleteCLicked();
+                      },
+                      child: const Icon(
+                        Icons.delete_forever_outlined,
+                        color: Colors.red,
+                        size: 33,
+                      ),
+                    )
+            ],
+          ),
         ),
       );
     });

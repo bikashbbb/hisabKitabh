@@ -3,7 +3,7 @@ import 'package:app/screens/dataentry/controller/entrycontroller.dart';
 import 'package:app/screens/dataentry/model/datamodel.dart';
 import 'package:get/instance_manager.dart';
 import 'package:hive/hive.dart';
-
+// how great it will be to have your app on playstore and on your story man, youve done something , something productive !!!
 // tody i have to finish the remove at home and at the other page remove !
 class HiveDatabase {
   String boxKonaam;
@@ -84,7 +84,6 @@ class HiveDatabase {
     Box putKey = await setRecordSaver();
     object!["uniqueId"] = putKey.length;
     await recordSaverBox!.put(putKey.length + 1, object);
-    print("save obj");
   }
 
   /// uses the account name as key to set the data..
@@ -146,7 +145,7 @@ class HiveDatabase {
   }
 
   Future<void> removeRecord(int key) async {
-    await recordSaverBox!.delete(key);
+    await recordSaverBox!.delete(key + 1);
   }
 
   double getTotalAmount() {

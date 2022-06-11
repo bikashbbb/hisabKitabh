@@ -50,16 +50,15 @@ class Languages extends Translations {
           "acc4": "Taken",
           "t": 'to',
           "eg2": "eg. James acc",
-          "Gvn": "Given",
+          "Gvn": "Returned",
           "Rceved": "Received",
           "wb": "Welcome Back To Hisabh",
           "lga": "Login with google Account",
-          "msg":
-              "By logging-in to Hisabh with your google account you accept",
-              "msg2":"our terms and conditions.",
-              "failed":"Account Login failed !",
-              "on":"ONLINE",
-              "off":"OFFLINE  "
+          "msg": "By logging-in to Hisabh with your google account you accept",
+          "msg2": "our terms and conditions.",
+          "failed": "Account Login failed !",
+          "on": "ONLINE",
+          "off": "OFFLINE  "
         }
       };
 }

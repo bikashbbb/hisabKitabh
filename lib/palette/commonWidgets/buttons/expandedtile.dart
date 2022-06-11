@@ -111,12 +111,12 @@ class _CustomTileState extends State<CustomTile> {
 
 // ignore: must_be_immutable
 class InfoTile extends StatelessWidget {
-  int index;
+  final int index;
   final Transaction obj;
   final bool iSselectTap, isSales, haveCheckbox;
   final dynamic controller;
   // afnai tile ho yo muji kati wota render vayo ma track rakhxu muji
-  InfoTile(
+  const InfoTile(
     this.obj,
     this.index, {
     Key? key,
@@ -141,7 +141,6 @@ class InfoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    index += 1;
     String tQuantity = toTString(obj.totalQuantit);
     String price = toTString(obj.perQuantityPrice);
     String amnt = toTString(obj.totalAmount);
@@ -158,16 +157,15 @@ class InfoTile extends StatelessWidget {
                     uniqueId: obj.uniqueId!,
                     iSselectTap: iSselectTap,
                     tapped: controller.isItSelected(index),
+                    totalAmount: obj.totalAmount,
                   ))
               : const SizedBox(),
           Flexible(
             child: InkWell(
               onTap: () {
                 iSselectTap
-                    ? controller!.onCheckBoxTapped(
-                        index,
-                        obj.uniqueId!,
-                      )
+                    ? controller!
+                        .onCheckBoxTapped(index, obj.uniqueId!, obj.totalAmount)
                     : null;
               },
               child: Container(
@@ -179,7 +177,7 @@ class InfoTile extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          " $index.",
+                          "${index + 1}.",
                           style: subTitle,
                         ),
                         Icon(
@@ -263,14 +261,21 @@ class InfoTile extends StatelessWidget {
 
 class SettleCard extends StatelessWidget {
   final SettleMent obj;
-  const SettleCard(this.obj, {Key? key}) : super(key: key);
+  final int i;
+  final Function ontap;
+  const SettleCard(this.obj, this.ontap, this.i, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String totalAmount = obj.totalAmount.toString().replaceFirst("-", '');
+
     return Padding(
       padding: const EdgeInsets.only(top: 3.0),
       child: ListTile(
-        tileColor: obj.isSale ? red : iconGreen,
+        onTap: () {
+          ontap(i, obj.uniqueId, obj.totalAmount);
+        },
+        tileColor: obj.isSale ? red : black,
         title: Row(
           children: [
             const Icon(Icons.arrow_right_alt_outlined),
@@ -289,7 +294,7 @@ class SettleCard extends StatelessWidget {
           children: [
             InfoTile.moneyI(obj.isSale ? iconGreen : Colors.white),
             Text(
-              obj.totalAmount.toString(),
+              totalAmount,
               style: small16,
             ),
           ],
